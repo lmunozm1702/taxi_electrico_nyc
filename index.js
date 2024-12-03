@@ -5,3 +5,11 @@ function laCajaDePandora(numero) {
         return numero.toString(16);
     }
 }
+
+function joseQuispe() {
+    return {
+        nombre: "Jose Quispe",
+        edad: 23,
+        nacionalidad: "Argentino"
+    };
+}
