@@ -11,6 +11,7 @@ Responsable de explorar, analizar e interpretar los datos para generar insights 
 - Generar reportes, dashboards y visualizaciones.
 - Definir métricas clave de rendimiento (KPIs).
 - Colaborar con stakeholders para traducir requerimientos de negocio en consultas analíticas.
+- Crear dashboard interactivo para análisis de los datos recolectados.
 
 | ![Imagen usuario](assets/img/user-image.png) | ![Imagen usuario](assets/img/user-image.png) |
 |:--:|:--:|
@@ -39,6 +40,7 @@ Responsable de implementar, desplegar y mantener modelos de machine learning en 
 - Desplegar modelos en entornos de producción (CI/CD).
 - Monitorear el rendimiento y la precisión de los modelos en producción.
 - Optimizar modelos para escalabilidad y eficiencia.
+- Crear modelo de machine learning para predecir distritos con más solicitud de viajes.
 
 | ![Imagen usuario](assets/img/user-image.png) | ![Imagen usuario](assets/img/user-image.png) |
 |:--:|:--:|
