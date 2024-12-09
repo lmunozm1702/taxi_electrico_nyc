@@ -54,6 +54,11 @@
 ## Visualización
 
 - Dash by Plotly:
+
   - Es una biblioteca de Python que permite crear interfaces de usuario interactivas para visualizar datos.
   - Permite implementar formularios y visualizaciones interactivas en un sitio web.
   - Integra nativamente con Plotly para crear visualizaciones (gráficos y tablas) directamente desde la fuente de datos con código escrito en Python.
+
+- RENDER.com:
+  - Plataforma de alojamiento de aplicaciones web.
+  - Permite el despliegue de FrontEnd basados en Dash.
