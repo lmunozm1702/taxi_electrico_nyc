@@ -2,6 +2,12 @@
 
 ![Imagen usuario](/assets/img/nyc_taxi_tech_stack.jpg)
 
+## Gestión de versiones y planificación de tareas
+
+- GitHub: [Control de versiones](https://github.com/Luis-Munoz/nyc_taxi_project)
+- GitHub Projects: [Planificación de tareas](https://github.com/users/lmunozm1702/projects/12/views/1)
+- Giyhub Roadmap: [Diagrama de Gantt](https://github.com/users/lmunozm1702/projects/12/views/4)
+
 ## Lenguajes de programación
 
 - Python
