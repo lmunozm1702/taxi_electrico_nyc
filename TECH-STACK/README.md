@@ -1,3 +1,5 @@
+🏠[Inicio](/README.md)
+
 # Stack tecnológico propuesto para el proyecto
 
 ![Imagen usuario](/assets/img/nyc_taxi_tech_stack.jpg)
@@ -62,3 +64,5 @@
 - RENDER.com:
   - Plataforma de alojamiento de aplicaciones web.
   - Permite el despliegue de FrontEnd basados en Dash.
+
+🏠[Inicio](/README.md)
