@@ -1,5 +1,17 @@
 # Proyecto NYC Taxis
 
+## 📜 Alcance del Proyecto
+
+### Objetivo General
+
+Realizar un análisis de viabilidad económico y ambiental para la implementación de una nueva flotilla de taxis híbridos y eléctricos en Nueva York.
+
+### Objetivos Específicos
+
+- Encontrar que distritos cuentan con mayor número de usuarios que realizan viajes.
+- Realizar un análisis de viabilidad ambiental al utilizar vehículos híbridos y eléctricos.
+- Realizar un análisis costo/beneficio entre el consumo eléctrico y consumo gasolina.
+
 ## 👨‍🔬 Roles
 
 ### Data Analyst
