@@ -2,6 +2,12 @@
 
 ## 📜 Alcance del Proyecto
 
+### Contexto
+
+- Se busca diversificar el negocio de transporte mediante la incursión en transporte de pasajeros con automóviles en Nueva York.
+
+- Se desea analizar la posibilidad de incorporar vehículos eléctricos en la flota contribuyendo a un futuro menos contaminado y ajustándose a las demandas de |un mercado más consciente ambientalmente.
+
 ### Objetivo General
 
 Realizar un análisis de viabilidad económico y ambiental para la implementación de una nueva flotilla de taxis híbridos y eléctricos en Nueva York.
@@ -11,6 +17,60 @@ Realizar un análisis de viabilidad económico y ambiental para la implementaci�
 - Encontrar que distritos cuentan con mayor número de usuarios que realizan viajes.
 - Realizar un análisis de viabilidad ambiental al utilizar vehículos híbridos y eléctricos.
 - Realizar un análisis costo/beneficio entre el consumo eléctrico y consumo gasolina.
+
+## 🎯 KPIs
+
+### 1. Incrementar un 10 % por año en la cantidad de vehículos híbridos convertidos a eléctricos:
+
+![KPI1](/assets/img/KPI1.jpg)
+
+### 2. Incrementar un 20 % en la cantidad de viajes realizados con vehículos híbridos:
+
+Segundo KPI de tipo Return On Investment (ROI): Incrementar un 20 %:
+Retorno = (Totales de pasajeros que usaron el servicio - Inversión total en autos) / Inversión total en autos.
+
+Tercer KPI de tipo Runway: Durar 6 meses sin ingresos o ingresos insuficientes:
+Tiempo de vida sin ingresos = Dinero disponible ÷ Gastos mensuales totales. (Expresado en meses).
+
+### Reemplazos EV
+
+Aumentar la cantidad de vehículos híbridos que son reemplazados por vehículos eléctricos en un 10% por año.
+
+Porcentaje de Cambios de Motor = Numero de vehículos convertidos a eléctricos en un año / (Total de vehículos híbridos en un año anterior x 100)
+
+### Flota Activa
+
+Aumentar el numero de carros eléctricos o híbridos activos por trimestre.
+
+### Viajes Borough
+
+Aumentar la cantidad de viajes por trimestre en un determinado borough.
+
+## 🔍 Análisis Preliminar
+
+Para viabilizar el cumplimiento de los objetivos se revisó las fuentes de datos disponibles junto con el lanzamiento del proyecto, así como nuevas fuentes que se hacen necesarias para cumplir estos objetivos.
+
+Nuestra conclusión es obtener la infomación desde los dataset estáticos de viajes y emisiones e incorporar nuevas fuentes de datos al análisis, las que se especifican en el [informe de análisis preliminar](/EDA/Análisis%20Preliminar.md).
+
+## 🖥️ Tech Stack
+
+![Tech Stack](/assets/img/nyc_taxi_tech_stack.jpg)
+
+Puedes consultar la fundamentación del stack tecnológico en el siguiente [link](/TECH-STACK/README.md)
+
+## 📄 Flujo de trabajo
+
+![Flujo de trabajo](/assets/img/nyc_taxi_data_flow.jpg)
+
+El flujo de trabajo en lafigura anterior, presenta el flujo que seguirán los datos desde su origen hasta quedar disponibles en las plataformas de visulización.
+
+## 🧑‍💻 Metodología de trabajo
+
+Adoptamos la metodología ágil SCRUM para gestionar el proyecto, centrada en colaboración, adaptabilidad y entregas continuas mediante Sprints. El proyecto se divide en 3 Sprints para un seguimiento detallado:
+
+- Sprint 1: Establecimiento de base, configuración de herramientas de gestión, definición de roles, análisis preliminar de datos y acoplamiento a la metodología. (Semanas 1 y 2)
+- Sprint 2: Implementación de procesos ETL, diseño DataWarehouse y MVP visualización de datos. (Semanas 3 y 4)
+- Sprint 3: Desarrollo de Producto ML y Dashboard interactivo y finalización de la documentación técnica. (Semanas 5 y 6)
 
 ## 👨‍🔬 Roles
 
@@ -63,15 +123,3 @@ Responsable de implementar, desplegar y mantener modelos de machine learning en 
 | ![Imagen usuario](assets/img/user-image.png) | ![Imagen usuario](assets/img/user-image.png) |
 | :------------------------------------------: | :------------------------------------------: |
 |               **Jose Quispe**                |              **Sebastian Diaz**              |
-
-## 🖥️ Tech Stack
-
-![Tech Stack](/assets/img/nyc_taxi_tech_stack.jpg)
-
-Puedes consultar la fundamentación del stack tecnológico en el siguiente [link](/TECH-STACK/README.md)
-
-## 📄 Flujo de trabajo
-
-![Flujo de trabajo](/assets/img/nyc_taxi_data_flow.jpg)
-
-El flujo de trabajo en lafigura anterior, presenta el flujo que seguirán los datos desde su origen hasta quedar disponibles en las plataformas de visulización.
