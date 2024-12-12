@@ -20,31 +20,17 @@ Realizar un análisis de viabilidad económico y ambiental para la implementaci�
 
 ## 🎯 KPIs
 
-### 1. Incrementar un 10 % por año en la cantidad de vehículos híbridos convertidos a eléctricos:
+### 1. Aumentar el los taxis electricos e hibridos activos en el trimestre.
 
 ![KPI1](/assets/img/KPI1.jpg)
 
-### 2. Incrementar un 20 % en la cantidad de viajes realizados con vehículos híbridos:
+### 2. Aumentar la cantidad de viajes por borough por trimestre.
 
-Segundo KPI de tipo Return On Investment (ROI): Incrementar un 20 %:
-Retorno = (Totales de pasajeros que usaron el servicio - Inversión total en autos) / Inversión total en autos.
+![KPI2](/assets/img/KPI2.jpg)
 
-Tercer KPI de tipo Runway: Durar 6 meses sin ingresos o ingresos insuficientes:
-Tiempo de vida sin ingresos = Dinero disponible ÷ Gastos mensuales totales. (Expresado en meses).
+### 3. Mantener el tiempo promedio de espera mensual del pasajero en menos de 5 minutos.
 
-### Reemplazos EV
-
-Aumentar la cantidad de vehículos híbridos que son reemplazados por vehículos eléctricos en un 10% por año.
-
-Porcentaje de Cambios de Motor = Numero de vehículos convertidos a eléctricos en un año / (Total de vehículos híbridos en un año anterior x 100)
-
-### Flota Activa
-
-Aumentar el numero de carros eléctricos o híbridos activos por trimestre.
-
-### Viajes Borough
-
-Aumentar la cantidad de viajes por trimestre en un determinado borough.
+![KPI3](/assets/img/KPI3.jpg)
 
 ## 🔍 Análisis Preliminar
 
@@ -62,7 +48,7 @@ Puedes consultar la fundamentación del stack tecnológico en el siguiente [link
 
 ![Flujo de trabajo](/assets/img/nyc_taxi_data_flow.jpg)
 
-El flujo de trabajo en lafigura anterior, presenta el flujo que seguirán los datos desde su origen hasta quedar disponibles en las plataformas de visulización.
+El flujo de trabajo en la figura anterior, presenta el flujo que seguirán los datos desde su origen hasta quedar disponibles en las plataformas de visulización.
 
 ## 🧑‍💻 Metodología de trabajo
 
