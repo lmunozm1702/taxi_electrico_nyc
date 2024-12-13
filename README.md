@@ -64,6 +64,32 @@ Adoptamos la metodología ágil SCRUM para gestionar el proyecto, centrada en co
 
 Puedes consultar el [diagrama detallado](https://github.com/users/lmunozm1702/projects/12/views/4) y la [asignación de tareas](https://github.com/users/lmunozm1702/projects/12/views/1)
 
+## Análisis Exploratorio de Datos (EDA1)
+
+Basados en los objetivos planteados y en el producto a desarrollar, se requieren fuentes de datos con información relacionada con lo siguiente:
+
+- Información sobre los taxis activos en circulación, que incluya todo lo relacionado al vehiculo, principalmente el modelo.
+- Información sobre los modelos de carros, donde se pueda obtener información relacionada a sus costos de compra, costos de uso y características, principalmente del motor.
+- Información sobre la concentracion de $\text{CO}_2$ en la ciudad de Nueva York a través del tiempo.
+- Información sobre los niveles de sonido en la ciudad de Nueva York a través del tiempo, debido a vehículos.
+- Información sobre los viajes en taxi en la ciudad de Nueva York a través del tiempo.
+
+### Del análisis realizado, se obtuvieron las siguientes métricas de calidad de los datos en cada Dataset
+
+- [Taxis Verdes](/EDA/EDA%20green_tripdata_09_2024.ipynb): 95%
+- [Taxis Amarillos](/EDA/EDA%20yellow_tripdata_09_2024.ipynb): 93%
+- [For Hire](/EDA/EDA%20For-Hire_tripdata_09_2024.ipynb):
+- [High Values]:
+- [Calidad del Aire](/EDA/EDA-Calidad_de_Air_Quality.ipynb):
+- [Calidad de Emisiones de Gas](/EDA/EDA-Calidad_de_Gas_Emissions.ipynb):
+
+### Se agregarán a las fuentes de datos originales, 2 adicionales que se requieren para asegurar la calidad del prducto ML:
+
+- [API con info del VIN de los vehículos](https://vpic.nhtsa.dot.gov/api/), nos ayudará, a partir del VIN del vehículo poder determinar el modelo y tipo de motor del vehículo.
+- [Datasets emisiones de GAS de vehículos](https://data.cityofnewyork.us/Environment/NYC-Greenhouse-Gas-Emissions-Inventory/wq7q-htne/about_data), nos disponibilizará la información de las emisiones de gas de los vehículos en la ciudad de Nueva York.
+
+**_ En la estapa de ETL automatizaremos el acceso a estas fuentes de datos, vía webcrawling y ejecución de API's. _**
+
 ## 👨‍🔬 Roles
 
 ### Data Analyst
