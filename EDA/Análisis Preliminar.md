@@ -1,9 +1,8 @@
-# <h1 align='center'> **Henry DataPT11 - Proyecto Grupal** </h1>
-# <h1 align="center">**Proyecto NYC Taxis**</h1>
+🏠[Inicio](/README.md)
 
-### Análisis preliminar
+# Análisis preliminar
 
-Basados en los objetivos planteados y en el producto a desarrollar, se requieren bases de datos con información relacionada con lo siguiente:
+Basados en los objetivos planteados y en el producto a desarrollar, se requieren fuentes de datos con información relacionada con lo siguiente:
 
 - Información sobre los taxis activos en circulación, que incluya todo lo relacionado al vehiculo, principalmente el modelo.
 - Información sobre los modelos de carros, donde se pueda obtener información relacionada a sus costos de compra, costos de uso y características, principalmente del motor.
@@ -18,3 +17,5 @@ Para el análisis de viabilidad económico se cruzará la data del [consumo de e
 Sobre la data de los viajes de los diferentes grupos de taxis se usará principalmente la información de los pick-up, particularmente la zona, fecha y hora, como base para el desarrollo de un producto de Machine Learning que tendrá como función la generación de un mapa de calor prediciendo las zonas de acuerdo al dia y la hora donde se espera mayor demanda de servicios de taxi.
 
 Sobre la data de taxis en cirulacion, contaminación ($\text{CO}_2$ y calidad de aire), consumo de energía y modelos de carro, se utilizara principalmente para medir el impacto en la migración de la flota de vehículos a base de combustibles fósiles a vehículos eléctricos o híbridos, al comparar el cambio a través del tiempo en las flotas de transporte con las emisiones de gas en determinado período de tiempo.
+
+🏠[Inicio](/README.md)
