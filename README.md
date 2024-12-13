@@ -28,7 +28,7 @@ Realizar un análisis de viabilidad económico y ambiental para la implementaci�
 
 ![KPI2](/assets/img/KPI2.jpg)
 
-### 3. Mantener el tiempo promedio de espera mensual del pasajero en menos de 5 minutos.
+### 3. Mantener el tiempo promedio de espera del pasajero en menos de 5 minutos, medido mensualmente.
 
 ![KPI3](/assets/img/KPI3.jpg)
 
@@ -57,6 +57,12 @@ Adoptamos la metodología ágil SCRUM para gestionar el proyecto, centrada en co
 - Sprint 1: Establecimiento de base, configuración de herramientas de gestión, definición de roles, análisis preliminar de datos y acoplamiento a la metodología. (Semanas 1 y 2)
 - Sprint 2: Implementación de procesos ETL, diseño DataWarehouse y MVP visualización de datos. (Semanas 3 y 4)
 - Sprint 3: Desarrollo de Producto ML y Dashboard interactivo y finalización de la documentación técnica. (Semanas 5 y 6)
+
+### El cronograma de entregables es el siguiente:
+
+![Entregables](/assets/img/cronograma_entregables.jpg)
+
+Puedes consultar el [diagrama detallado](https://github.com/users/lmunozm1702/projects/12/views/4) y la [asignación de tareas](https://github.com/users/lmunozm1702/projects/12/views/1)
 
 ## 👨‍🔬 Roles
 
