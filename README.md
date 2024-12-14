@@ -62,7 +62,7 @@ Adoptamos la metodología ágil SCRUM para gestionar el proyecto, centrada en co
 
 ![Entregables](/assets/img/cronograma_entregables.jpg)
 
-Puedes consultar el [diagrama detallado](https://github.com/users/lmunozm1702/projects/12/views/4) y la [asignación de tareas](https://github.com/users/lmunozm1702/projects/12/views/1)
+Puedes consultar el [plan detallado](https://github.com/users/lmunozm1702/projects/12/views/4) y la [asignación de tareas](https://github.com/users/lmunozm1702/projects/12/views/1)
 
 ## Análisis Exploratorio de Datos (EDA1)
 
@@ -78,10 +78,10 @@ Basados en los objetivos planteados y en el producto a desarrollar, se requieren
 
 - [Taxis Verdes](/EDA/EDA%20green_tripdata_09_2024.ipynb): 95%
 - [Taxis Amarillos](/EDA/EDA%20yellow_tripdata_09_2024.ipynb): 93%
-- [For Hire](/EDA/EDA%20For-Hire_tripdata_09_2024.ipynb):
-- [High Values]:
-- [Calidad del Aire](/EDA/EDA-Calidad_de_Air_Quality.ipynb):
-- [Calidad de Emisiones de Gas](/EDA/EDA-Calidad_de_Gas_Emissions.ipynb):
+- [For Hire](/EDA/EDA%20For-Hire_tripdata_09_2024.ipynb): 25%
+- [High Volumes](/EDA/EDA%20High_Volumes_09_2024.ipynb): 76%
+- [Calidad del Aire](/EDA/EDA-Calidad_de_Air_Quality.ipynb): 99%
+- [Calidad de Emisiones de Gas](/EDA/EDA-Calidad_de_Gas_Emissions.ipynb): 100%
 
 ### Se agregarán a las fuentes de datos originales, 2 adicionales que se requieren para asegurar la calidad del prducto ML:
 
