@@ -54,7 +54,7 @@ El flujo de trabajo en la figura anterior, presenta el flujo que seguirán los d
 
 Adoptamos la metodología ágil SCRUM para gestionar el proyecto, centrada en colaboración, adaptabilidad y entregas continuas mediante Sprints. El proyecto se divide en 3 Sprints para un seguimiento detallado:
 
-- Sprint 1: Establecimiento de base, configuración de herramientas de gestión, definición de roles, análisis preliminar de datos y acoplamiento a la metodología. (Semanas 1 y 2)
+- Sprint 1: Establecimiento de base, configuración de herramientas de gestión, definición de roles, análisis preliminar de datos y acoplamiento a la metodología. (Semanas 1 y 2). [Presentación Demo 1](https://www.canva.com/design/DAGY7ya-EPw/MruL2JRRQEAlhUUPdKEfhw/edit?utm_content=DAGY7ya-EPw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 - Sprint 2: Implementación de procesos ETL, diseño DataWarehouse y MVP visualización de datos. (Semanas 3 y 4)
 - Sprint 3: Desarrollo de Producto ML y Dashboard interactivo y finalización de la documentación técnica. (Semanas 5 y 6)
 

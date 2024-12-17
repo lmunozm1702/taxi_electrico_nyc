@@ -8,7 +8,7 @@
 
 - GitHub: [Control de versiones](https://github.com/Luis-Munoz/nyc_taxi_project)
 - GitHub Projects: [Planificación de tareas](https://github.com/users/lmunozm1702/projects/12/views/1)
-- Giyhub Roadmap: [Diagrama de Gantt](https://github.com/users/lmunozm1702/projects/12/views/4)
+- Github Roadmap: [Diagrama de Gantt](https://github.com/users/lmunozm1702/projects/12/views/4)
 
 ## Lenguajes de programación
 
@@ -22,7 +22,7 @@
 ## Herramientas de desarrollo
 
 - Jupyter Notebook:
-  -Integra código python, visualizaciones y explicaciones en el mismo cuaderno.
+  - Integra código python, visualizaciones y explicaciones en el mismo cuaderno.
   - Permite explorar los datos en forma interactiva y colabar con otros desarrolladores.
 
 ## Datalake
@@ -36,9 +36,17 @@
 ## Integración de datos
 
 - Google Cloud Functions:
+
   - Orquestador de procesos que interactúa con los datos de la nube.
   - Permite ejecutar funciones de Python en respuesta a eventos de datos en tiempo real.
   - Infraestructura gestionada por google, por lo que sólo debemos ocuparnos del código de las funciones.
+  - Se utilizará para orquestar la extracción y transformación de datos.
+
+- Google Cloud Composer:
+  - Orquestador de procesos que interactúa con los datos de la nube.
+  - Acoplamiento natural con Apache Airflow.
+  - Permite ejecutar funciones de Python en respuesta a eventos de datos en tiempo real.
+  - Será utilizado para los procesos de carga incremental hacia el datalake en el ETL.
 
 ## Almacenamiento de datos
 
