@@ -1,0 +1,4 @@
+# Requirements for ETL/Extract/main.py
+requests==2.32.3
+beautifulsoup4==4.12.3
+google-cloud-storage==2.19.0
