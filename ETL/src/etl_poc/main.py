@@ -20,4 +20,4 @@ def etl_poc(request):
 
     pandas_gbq.to_gbq(df, table_id, project_id=project_id, if_exists='append')
 
-    return 'check the results in the logs'
+    return 'check the results in the logfiles'
