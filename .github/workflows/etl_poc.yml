@@ -1,7 +1,7 @@
 name: Deploy Cloud Functions
 run-name: 🚀 ${{ github.actor }} is deploying all cloud functions
 on:
-  push:
+  pull_request:
     paths:
       - ETL/src/etl_poc
     branches:
