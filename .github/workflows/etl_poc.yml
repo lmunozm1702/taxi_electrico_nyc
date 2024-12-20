@@ -29,4 +29,4 @@ jobs:
           --runtime=python312 \
           --source=./ETL/src/etl_poc \
           --entry-point=etl_poc \
-          --trigger-topic=https
+          --trigger-http
