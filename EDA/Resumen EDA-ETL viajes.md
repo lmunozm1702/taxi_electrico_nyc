@@ -17,7 +17,7 @@
 
 
 
-### Las siguientes son columnas opcionales que se pueden conservar para algun tipo de extra o plus.
+### Las siguientes son columnas opcionales que se pueden conservar para algun tipo de extra o plus (todos relacionados con tarifas, recargos e impuestos).
 
 | Columna          | Dataset |     tipo de dato   |   
 | ------             |    -----  | ----- 
@@ -67,9 +67,9 @@
 * Calcular tiempo de viaje (`drop_off_datetime` - `pick_up_datetime`).
 * Eliminar tiempos y distancias 0 y negativas.
 * Con tiempos y distancias positivas crear una nueva columna calculando velocidad promedio.
-* Mantener filas cuyas velocidades sean razonables (Valor a establecer, en este EDA se usara 65 mph como valor maximo ya que es la maxima velocidad permitida en NYC).
+* Mantener filas cuyas velocidades sean razonables (**Valor a establecer**, en este EDA se usara 65 mph como valor maximo ya que es la maxima velocidad permitida en NYC).
 
-## NOTA: para el dataset de `For-Hire` no hay informacion de la distancia, por lo que se debe tomar una decision sobre como filtrar este dataset, si no aplicar ese criterio, o descartar el dataset entero.
+## NOTA: para el dataset de `For-Hire` no hay informacion de la distancia, por lo que se debe tomar una decision sobre como filtrar este dataset, si se aplicará algun criterio y cual, o descartar el dataset entero.
 
 ## Luego de normalizar los nombres de las columnas mas importantes, y cambiar el tipo de dato donde es requerido como se menciona en la tabla anterior en la columna de `Detalle`, se pueden concatenar los 4 dataset para generar uno solo con toda la información relevante.
 
