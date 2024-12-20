@@ -141,3 +141,5 @@ Responsable de implementar, desplegar y mantener modelos de machine learning en 
 | ![Imagen usuario](assets/img/user-image.png) | ![Imagen usuario](assets/img/user-image.png) |
 | :------------------------------------------: | :------------------------------------------: |
 |               **Jose Quispe**                |              **Sebastian Diaz**              |
+
+## End
