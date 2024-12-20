@@ -3,7 +3,7 @@ run-name: 🚀 ${{ github.actor }} is deploying all cloud functions
 on:
   pull_request:
     paths:
-      - ETL/src/etl_poc
+      - ETL/src/etl_poc/**
     branches:
       - development
 jobs:
