@@ -5,7 +5,7 @@ import pandas_gbq
 @functions_framework.http
 def etl_poc(request):
     #Extract
-    df = pd.read_parquet('gs://ncy-taxi-bucket/static_files_for_etl/etl_poc/fhv_tripdata_2024-09.parquet')
+    df = pd.read_parquet('gs://ncy-taxi-bucket/raw_datasets/fhv_tripdata_2024-09.parquet')
     print(df.head())
     print(df.info())
 
