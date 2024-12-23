@@ -1,0 +1,9 @@
+# Requirements for extract_bulk_trip_record_data.py & extract_incremental_load_trip_record_data.py
+requests==2.32.3
+beautifulsoup4==4.12.3
+google-cloud-storage==2.19.0
+
+#Requirements for extract_greenhouse_gas_emissions.py & extract_air_quality.py
+
+sodapy==2.2.0
+google-cloud-storage==2.19.0
