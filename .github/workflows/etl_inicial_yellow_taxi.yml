@@ -1,11 +1,6 @@
 name: Deploy Cloud Functions
 run-name: 🚀 ${{ github.actor }} is deploying all cloud functions
 on:
-  pull_request:
-    paths:
-      - ETL/src/etl_inicial_yellow_taxi/**
-    branches:
-      - development
   push:
     branches:
       - development

@@ -47,17 +47,17 @@ def get_table_count(project_id, dataset_id, table_id):
         return 0
 
 @functions_framework.http
-def etl_inicial_yellow_taxi(request):
-    print('**** Iniciando proceso ETL para YELLOW TAXI ****')
+def etl_inicial_green_taxi(request):
+    print('**** Iniciando proceso ETL para GREEN TAXI ****')
     initial_time = datetime.now()
     #Load file list from GCS bucket
     client = storage.Client()
     bucket = client.get_bucket('ncy-taxi-bucket')
-    blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2022/yellow_tripdata_', max_results=3))    
+    blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2022/green_tripdata_', max_results=3))    
 
     #Drop table if exists    
     client = bigquery.Client('driven-atrium-445021-m2')
-    table_id = 'taxi_historic_data.yellow_taxi'
+    table_id = 'taxi_historic_data.green_taxi'
     try:
         client.delete_table(table_id, not_found_ok=True)
         print(f'Tabla {table_id} eliminada')
@@ -71,21 +71,21 @@ def etl_inicial_yellow_taxi(request):
         #Transform
         
         #Load
-        rows_before_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yellow_taxi")
-        print(f'Registros en tabla yellow-taxi antes de la carga: {format_count(rows_before_load)}')
+        rows_before_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "green_taxi")
+        print(f'Registros en tabla green-taxi antes de la carga: {format_count(rows_before_load)}')
         
         print(f'Insertando {format_count(df.shape[0])} registros desde el Dataset {blob.name}')
         project_id = 'driven-atrium-445021-m2'
-        table_id = 'taxi_historic_data.yellow_taxi'
+        table_id = 'taxi_historic_data.green_taxi'
         pandas_gbq.to_gbq(df, table_id, project_id=project_id, if_exists='append')
 
-        rows_after_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yellow_taxi")
-        print(f'Registros en tabla yellow-taxi después de la carga: {format_count(rows_after_load)}')
+        rows_after_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "green_taxi")
+        print(f'Registros en tabla green-taxi después de la carga: {format_count(rows_after_load)}')
         print(f'Diferencia cuenta de registros en tabla y registros en dataset: {format_count(rows_after_load - rows_before_load - df.shape[0])}')        
         print('-----------------------------------')
         
 
-    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yellow_taxi"))}')
+    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "green_taxi"))}')
     print(f'tiempo de ejecución: {datetime.now() - initial_time}')
 
     return 'Proceso terminado, revisar logs para detalles'
