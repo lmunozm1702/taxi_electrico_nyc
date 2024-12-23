@@ -2,10 +2,10 @@ name: Deploy Cloud Functions
 run-name: 🚀 ${{ github.actor }} is deploying all cloud functions
 on:
   push:
-    paths:
-      - ETL/src/etl_poc/**
     branches:
       - development
+    paths:
+      - ETL/src/etl_inicial_high_volume_taxi/**
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -25,10 +25,10 @@ jobs:
         run: 'gcloud info'
       - name: 'Deploy to gen2 cloud function'
         run: |
-          gcloud functions deploy etl_poc \
+          gcloud functions deploy etl_inicial_high_volume_taxi \
           --gen2 \
           --region=us-central1 \
           --runtime=python312 \
-          --source=./ETL/src/etl_poc \
-          --entry-point=etl_poc \
+          --source=./ETL/src/etl_inicial_high_volume_taxi \
+          --entry-point=etl_inicial_high_volume_taxi \
           --trigger-http

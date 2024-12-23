@@ -178,3 +178,7 @@ Samuel KPI.md
 # Francisco gitignore
 
 requirements_francisco.txt
+
+#Archivos de prueba para ETLS
+assets/Datasets/yellow_tripdata_2024-09.parquet
+assets/Datasets/yellow_tripdata_2022-02.parquet
