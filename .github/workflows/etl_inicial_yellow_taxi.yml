@@ -6,6 +6,11 @@ on:
       - ETL/src/etl_inicial_yellow_taxi/**
     branches:
       - development
+  push:
+    branches:
+      - development
+    paths:
+      - ETL/src/etl_inicial_yellow_taxi/**
 jobs:
   deploy:
     runs-on: ubuntu-latest
