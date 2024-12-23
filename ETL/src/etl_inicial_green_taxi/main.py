@@ -43,7 +43,7 @@ def get_table_count(project_id, dataset_id, table_id):
             count = row[0]
             break
         return count
-    except Exception as e:
+    except Exception:
         return 0
 
 @functions_framework.http
