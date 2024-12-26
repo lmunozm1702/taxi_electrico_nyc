@@ -164,15 +164,7 @@ cython_debug/
 
 # Samuel gitignore
 
-Samuel-notebook.ipynb
-fhv_tripdata_2024-09.parquet
-fhvhv_tripdata_2024-09.parquet
-
-data_reports_monthly.csv
-
-2022_Yellow_Taxi_Trip_Data_20241210.csv
-/Análisis Preliminar
-Samuel KPI.md
+/SamuelGitIgnore
 
 
 # Francisco gitignore
