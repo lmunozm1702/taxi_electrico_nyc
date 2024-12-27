@@ -125,7 +125,7 @@ def etl_inicial_active_medallion_vehicles(request):
     print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_vehicles"))}')
     print(f'tiempo de ejecución: {datetime.now() - initial_time}')
     result_json['end_time'] = datetime.now()
-    result_json['execution_time'] = datetime.now() - initial_time
+    #result_json['execution_time'] = datetime.now() - initial_time
     result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_vehicles")
 
-    return 'Proceso terminado, revisar logs para detalles'
+    return result_json
