@@ -1,4 +1,4 @@
-name: Deploy Cloud Functions
+name: Deploy Cloud Functions - Yellow Taxi
 run-name: 🚀 ${{ github.actor }} is deploying all cloud functions
 on:
   push:
