@@ -46,46 +46,86 @@ def get_table_count(project_id, dataset_id, table_id):
     except Exception:
         return 0
 
+def load_data_to_bigquery(df, client, table_id, filename):
+    """
+    Load a DataFrame to a BigQuery table
+
+    Args:
+    df (pd.DataFrame): The DataFrame to load
+    client (bigquery.Client): The BigQuery client
+    table_id (str): The table ID
+    filename (str): The filename containing the data
+    """
+    pandas_gbq.to_gbq(df, 'taxi_historic_data.active_medallion_vehicles', project_id='driven-atrium-445021-m2', if_exists='append')
+
+    rows_before_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_vehicles")
+    print(f'Registros en tabla active-medallion-vehicles antes de la carga: {format_count(rows_before_load)}')
+    
+    print(f'Insertando {format_count(df.shape[0])} registros desde el Dataset {filename}')
+    project_id = 'driven-atrium-445021-m2'
+    table_id = 'taxi_historic_data.active_medallion_vehicles'
+    pandas_gbq.to_gbq(df, table_id, project_id=project_id, if_exists='append')
+    rows_after_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_vehicles")
+    print(f'Registros en tabla active-medallion-vehicles después de la carga: {format_count(rows_after_load)}')
+    print(f'Diferencia cuenta de registros en tabla y registros en dataset: {format_count(rows_after_load - rows_before_load - df.shape[0])}')        
+    print('-----------------------------------')
+
+    return {
+        'rows_before_load': rows_before_load,
+        'rows_after_load': rows_after_load,
+        'rows_loaded': df.shape[0],
+        'rows_difference': rows_after_load - rows_before_load - df.shape[0]
+    }
+
 @functions_framework.http
 def etl_inicial_active_medallion_vehicles(request):
     print('**** Iniciando proceso ETL para ACTIVE MEDALLION VEHICLES ****')
     initial_time = datetime.now()
-    #Load file list from GCS bucket
-    client = storage.Client()
-    bucket = client.get_bucket('ncy-taxi-bucket')
-    blobs = list(bucket.list_blobs(prefix='raw_datasets/active_medallion_vehicles/2022/active_medallion_vehicles_', max_results=3))    
+    process_type = 'initial'
+    result_json = {}
 
-    #Drop table if exists    
+    result_json['process_type'] = process_type
+    result_json['start_time'] = initial_time
+    result_json['rows_before_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_vehicles")
+
+    if request.args and 'filename' in request.args:
+        filename = request.args['filename']
+        process_type = 'incremental'        
+    else:
+        #Load file list from GCS bucket
+        client = storage.Client()
+        bucket = client.get_bucket('ncy-taxi-bucket')
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/active_medallion_vehicles/2022/active_medallion_vehicles_', max_results=3))    
+
+    print(f'Proceso de tipo {process_type}')
+
     client = bigquery.Client('driven-atrium-445021-m2')
     table_id = 'taxi_historic_data.active_medallion_vehicles'
-    try:
-        client.delete_table(table_id, not_found_ok=True)
-        print(f'Tabla {table_id} eliminada')
-    except Exception:
-        print(f'Tabla {table_id} no existe')
+    if process_type == 'initial':
+        #Drop table if exists    
+        try:
+            client.delete_table(table_id, not_found_ok=True)
+            print(f'Tabla {table_id} eliminada')
+        except Exception:
+            print(f'Tabla {table_id} no existe')
 
-    for blob in blobs: 
-        #Extract
-        df = pd.read_csv(f'gs://ncy-taxi-bucket/{blob.name}')       
-        
-        #Transform
-        
-        #Load
-        rows_before_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_vehicles")
-        print(f'Registros en tabla active-medallion-vehicles antes de la carga: {format_count(rows_before_load)}')
-        
-        print(f'Insertando {format_count(df.shape[0])} registros desde el Dataset {blob.name}')
-        project_id = 'driven-atrium-445021-m2'
-        table_id = 'taxi_historic_data.active_medallion_vehicles'
-        pandas_gbq.to_gbq(df, table_id, project_id=project_id, if_exists='append')
+    if process_type == 'incremental':
+        df = pd.read_csv(f'gs://ncy-taxi-bucket/{filename}')
+        result_json[filename] = load_data_to_bigquery(df, client, table_id, filename)
+    else:
+        for blob in blobs: 
+            #Extract
+            df = pd.read_csv(f'gs://ncy-taxi-bucket/{blob.name}')       
 
-        rows_after_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_vehicles")
-        print(f'Registros en tabla active-medallion-vehicles después de la carga: {format_count(rows_after_load)}')
-        print(f'Diferencia cuenta de registros en tabla y registros en dataset: {format_count(rows_after_load - rows_before_load - df.shape[0])}')        
-        print('-----------------------------------')
-        
+            #Transform
+
+            #Load
+            result_json[blob.name] = load_data_to_bigquery(df, client, table_id, blob.name)
 
     print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_vehicles"))}')
     print(f'tiempo de ejecución: {datetime.now() - initial_time}')
+    result_json['end_time'] = datetime.now()
+    result_json['execution_time'] = datetime.now() - initial_time
+    result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_vehicles")
 
     return 'Proceso terminado, revisar logs para detalles'
