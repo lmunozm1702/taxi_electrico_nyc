@@ -95,7 +95,7 @@ def etl_inicial_active_medallion_vehicles(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/active_medallion_vehicles/2022/active_medallion_vehicles_', max_results=3))    
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/active_medallion_vehicles/2022/2022', max_results=3))                                                   
 
     print(f'Proceso de tipo {process_type}')
 
