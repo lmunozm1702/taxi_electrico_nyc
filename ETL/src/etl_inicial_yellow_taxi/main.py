@@ -57,14 +57,14 @@ def load_data_to_bigquery(df, client, table_id, filename):
     filename (str): The filename containing the data
     """
 
-    rows_before_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yelow_taxi")
-    print(f'Registros en tabla yelow-taxi antes de la carga: {format_count(rows_before_load)}')
+    rows_before_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yellow_taxi")
+    print(f'Registros en tabla yellow-taxi antes de la carga: {format_count(rows_before_load)}')
     print(f'Insertando {format_count(df.shape[0])} registros desde el Dataset {filename}')
     project_id = 'driven-atrium-445021-m2'
-    table_id = 'taxi_historic_data.yelow_taxi'
+    table_id = 'taxi_historic_data.yellow_taxi'
     pandas_gbq.to_gbq(df, table_id, project_id=project_id, if_exists='append')
-    rows_after_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yelow_taxi")
-    print(f'Registros en tabla yelow-taxi después de la carga: {format_count(rows_after_load)}')
+    rows_after_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yellow_taxi")
+    print(f'Registros en tabla yellow-taxi después de la carga: {format_count(rows_after_load)}')
     print(f'Diferencia cuenta de registros en tabla y registros en dataset: {format_count(rows_after_load - rows_before_load - df.shape[0])}')        
     print('-----------------------------------')
 
@@ -119,7 +119,7 @@ def transform_data(df, filename):
     return df
 
 @functions_framework.http
-def etl_inicial_yelow_taxi(request):
+def etl_inicial_yellow_taxi(request):
     print('**** Iniciando proceso ETL para YELLOW TAXI ****')
     initial_time = datetime.now()
     process_type = 'initial'
@@ -127,7 +127,7 @@ def etl_inicial_yelow_taxi(request):
 
     result_json['process_type'] = process_type
     result_json['start_time'] = initial_time
-    result_json['rows_before_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yelow_taxi")
+    result_json['rows_before_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yellow_taxi")
 
     if request.args and 'filename' in request.args:
         filename = request.args['filename']
@@ -136,12 +136,12 @@ def etl_inicial_yelow_taxi(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2022/yelow_tripdata_', max_results=3))    
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2022/yellow_tripdata_', max_results=3))    
 
     print(f'Proceso de tipo {process_type}')
 
     client = bigquery.Client('driven-atrium-445021-m2')
-    table_id = 'taxi_historic_data.yelow_taxi'
+    table_id = 'taxi_historic_data.yellow_taxi'
     
     if process_type == 'initial':
         #Drop table if exists 
@@ -164,10 +164,10 @@ def etl_inicial_yelow_taxi(request):
             #Load
             result_json[blob.name] = load_data_to_bigquery(df, client, table_id, blob.name)        
 
-    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yelow_taxi"))}')
+    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yellow_taxi"))}')
     print(f'tiempo de ejecución: {datetime.now() - initial_time}')
 
     result_json['end_time'] = datetime.now()
-    result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yelow_taxi")
+    result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "yellow_taxi")
 
     return result_json
