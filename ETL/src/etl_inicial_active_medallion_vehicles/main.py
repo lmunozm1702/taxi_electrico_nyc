@@ -77,6 +77,33 @@ def load_data_to_bigquery(df, client, table_id, filename):
         'rows_difference': rows_after_load - rows_before_load - df.shape[0]
     }
 
+def transform_data(df):
+    """
+    Transform the data in the DataFrame
+
+    Args:
+    df (pd.DataFrame): The DataFrame to transform
+
+    Returns:
+    pd.DataFrame: The transformed DataFrame
+    """
+    #Eliminar columnas con información del conductor
+    df.drop(columns=['agent_number', 'agent_name', 'agent_telephone_number', 'agent_address'], inplace=True)
+
+    #Eliminar columnas de auditoría
+    df.drop(columns=['last_updated_date', 'last_updated_time'], inplace=True)
+
+    #Eliminar columnas con información no requerida
+    df.drop(columns=['name', 'type', 'current_status', 'medallion_type'], inplace=True)
+
+    #Contar registros duplicados
+    print(f'Registros duplicados: {df.duplicated().sum()}')
+    
+    #Eliminar duplicados
+    df.drop_duplicates(inplace=True)
+
+    return df
+
 @functions_framework.http
 def etl_inicial_active_medallion_vehicles(request):
     print('**** Iniciando proceso ETL para ACTIVE MEDALLION VEHICLES ****')
@@ -95,7 +122,7 @@ def etl_inicial_active_medallion_vehicles(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/active_medallion_vehicles/2022/active_medallion_vehicles_', max_results=3))    
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/active_medallion_vehicles/2022/2022', max_results=3))                                                   
 
     print(f'Proceso de tipo {process_type}')
 
@@ -111,14 +138,14 @@ def etl_inicial_active_medallion_vehicles(request):
 
     if process_type == 'incremental':
         df = pd.read_csv(f'gs://ncy-taxi-bucket/{filename}')
+        df = transform_data(df)
         result_json[filename] = load_data_to_bigquery(df, client, table_id, filename)
     else:
         for blob in blobs: 
             #Extract
             df = pd.read_csv(f'gs://ncy-taxi-bucket/{blob.name}')       
-
             #Transform
-
+            df = transform_data(df)
             #Load
             result_json[blob.name] = load_data_to_bigquery(df, client, table_id, blob.name)
 
