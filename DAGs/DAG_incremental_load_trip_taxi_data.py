@@ -3,8 +3,8 @@ import datetime
 import google.auth.transport.requests
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
-from airflow.operators.email_operator import EmailOperator
 from airflow.operators.python_operator import PythonOperator
+from airflow.operators.python_operator import BranchPythonOperator
 from airflow.providers.google.common.utils import id_token_credentials as id_token_credential_utils
 from google.auth.transport.requests import AuthorizedSession
 
@@ -18,6 +18,28 @@ nameDAG           = 'DAG_incremental_load_trip_taxi_data'
 project           = 'incremental-load-taxi-electrico-nyc'
 owner             = 'juankaruna'
 email             = ['juankarua@gmail.com']
+
+raw_datasets_path = "raw_datasets/trip_record_data/"
+current_year = '2024' #str(datetime.datetime.now().year)
+current_year_month = '2024-10' #"-".join([current_year,str(datetime.datetime.now().month-2)])
+
+kwargs_extract = {
+    'function': "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/extract_incremental_load_trip_record_data",
+    'params': ""
+}
+kwargs_transform_load_yellow_taxi = {
+    'function': "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/etl_inicial_yellow_taxi",
+    'params': {
+                'filename': "".join([raw_datasets_path,current_year,'/yellow_tripdata_',current_year_month,'.parquet'])
+            }
+}
+kwargs_transform_load_green_taxi = {
+    'function': "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/etl_inicial_green_taxi",
+    'params': {
+                'filename': "".join([raw_datasets_path,current_year,'/green_tripdata_',current_year_month,'.parquet'])
+            }
+}
+
 #######################################################################################
 
 default_args = {
@@ -31,15 +53,13 @@ default_args = {
     'retry_delay': datetime.timedelta(minutes=1),  # Time between retries
 }
 
-def invoke_extract_function():
-    url = "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/extract_incremental_load_trip_record_data" #the url is also the target audience. 
+def invoke_function(**kwargs):
+    url = kwargs['function'] #the url is also the target audience. 
     request = google.auth.transport.requests.Request()  #this is a request for obtaining the the credentials
     id_token_credentials = id_token_credential_utils.get_default_id_token_credentials(url, request=request) # If your cloud function url has query parameters, remove them before passing to the audience 
 
-    resp = AuthorizedSession(id_token_credentials).request("GET", url=url) # the authorized session object is used to access the Cloud Function
+    resp = AuthorizedSession(id_token_credentials).request("GET", url=url, params=kwargs['params']) # the authorized session object is used to access the Cloud Function
 
-    print(resp.status_code) # should return 200
-    print(resp.content) # the body of the HTTP response
 
 with DAG(nameDAG,
          default_args = default_args,
@@ -53,10 +73,26 @@ with DAG(nameDAG,
     t_begin = DummyOperator(task_id="begin")
     
     extract_cf = PythonOperator(task_id='extract_cf',
-                    python_callable=invoke_extract_function
-                )
+                                provide_context=True,
+                                python_callable=invoke_function,
+                                op_kwargs=kwargs_extract
+                            )
+    
+    transform_load_yellow_taxi = PythonOperator(task_id='transform_load_yellow_taxi',
+                                provide_context=True,
+                                python_callable=invoke_function,
+                                op_kwargs=kwargs_transform_load_yellow_taxi
+                            )
+    
+    transform_load_green_taxi = PythonOperator(task_id='transform_load_green_taxi',
+                                provide_context=True,
+                                python_callable=invoke_function,
+                                op_kwargs=kwargs_transform_load_green_taxi
+                            )
 
-    t_end = DummyOperator(task_id="end")
+    t_end = DummyOperator(task_id="end", trigger_rule='all_success')
 
     #############################################################
-    t_begin >> extract_cf >> t_end
+    t_begin >> extract_cf
+    extract_cf >> transform_load_yellow_taxi >> t_end
+    extract_cf >> transform_load_green_taxi >> t_end
