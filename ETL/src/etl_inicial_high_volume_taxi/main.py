@@ -137,15 +137,7 @@ def transform_data(df, filename):
 @functions_framework.http
 def etl_inicial_high_volume_taxi(request):
     print('**** Iniciando proceso ETL para HIGH VOLUME TAXI ****')
-    columns = ['hvfhs_license_num',
-               'dispatching_base_num',
-               'pickup_datetime',
-               'pulocationid',
-               'dolocationid',
-               'trip_miles',
-               'trip_time',               
-               'base_passenger_fare',
-               'driver_pay']
+    columns = ['hvfhs_license_num', 'dispatching_base_num', 'pickup_datetime', 'PULocationID', 'DOLocationID', 'trip_miles', 'trip_time', 'base_passenger_fare', 'driver_pay']
 
     initial_time = datetime.now()
     process_type = 'initial'
