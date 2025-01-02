@@ -86,15 +86,11 @@ def transform_data(df, filename):
     pd.DataFrame: The transformed DataFrame
     """
 
-    #cambiar nombre de columnas
-    
-    #Eliminar columnas no necesarias
+    df.info()
 
     #Cambiar nombre de columnas
-    df.columns = ['unique_id', 'indicator_id', 'name', 'measure', 'measure_info', 'geo_type_name', 'geo_join_id', 'geo_place_name', 'time_period', 'start_date', 'data_value', 'message']
+    df.columns = ['unique_id', 'indicator_id', 'name', 'measure', 'measure_info', 'geo_type_name', 'geo_join_id', 'geo_place_name', 'time_period', 'start_date', 'data_value']
 
-    #Eliminar columna 'message'
-    df.drop(columns=['message'], inplace=True)
     #Eliminar duplicados
     df.drop_duplicates(inplace=True)
     #Eliminar dupicados analizando columna 'unique_id'
@@ -143,7 +139,7 @@ def etl_inicial_air_quality(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/air_quality/', max_results=3))    
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/air_quality/2', max_results=3))    
 
     print(f'Proceso de tipo {process_type}')
 
@@ -159,13 +155,14 @@ def etl_inicial_air_quality(request):
             print(f'Tabla {table_id} no existe')
     
     if process_type == 'incremental':
-        df = pd.read_parquet(f'gs://ncy-taxi-bucket/{filename}')
+        df = pd.read_csv(f'gs://ncy-taxi-bucket/{filename}')
         df = transform_data(df, filename)
         result_json[filename] = load_data_to_bigquery(df, client, table_id, filename)
     else:
         for blob in blobs: 
             #Extract
-            df = pd.read_parquet(f'gs://ncy-taxi-bucket/{blob.name}')       
+            print(f'gs://ncy-taxi-bucket/{blob.name}')
+            df = pd.read_csv(f'gs://ncy-taxi-bucket/{blob.name}')       
             #Transform
             df = transform_data(df, blob.name)        
             #Load
