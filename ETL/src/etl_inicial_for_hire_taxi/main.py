@@ -87,7 +87,7 @@ def transform_data(df, filename):
     """
    
     #cambiar nombre de columnas
-    df.columns = ['dispatching_base_number', 'pickup_datetime', 'dropoff_datetime', 'start_location_id', 'end_location_id', 'sr_flag', 'affiliated_base_num']
+    df.columns = ['dispatching_base_number', 'pickup_datetime', 'dropoff_datetime', 'start_location_id', 'end_location_id', 'sr_flag', 'affiliate_base_num']
 
     #Convertir a datetime
     df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])
@@ -107,7 +107,9 @@ def transform_data(df, filename):
     df = df.drop_duplicates()
 
     #Tipos de datos
-    df['affiliate_base_num'] = df['affiliate_base_num'].astype('int64')
+    df['dispatching_base_number'] = df['dispatching_base_number'].astype('string')
+    df['affiliate_base_num'] = df['affiliate_base_num'].astype('string')
+    df['sr_flag'] = df['sr_flag'].astype('boolean')
 
     #regenerar índice
     df.reset_index(drop=True, inplace=True)

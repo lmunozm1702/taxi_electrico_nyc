@@ -85,9 +85,8 @@ def transform_data(df, filename):
     Returns:
     pd.DataFrame: The transformed DataFrame
     """
-
     #cambiar nombre de columnas
-    df.columns = ['license_num', 'dispatching_base_num', 'affiliate_base_num', 'request_datetime', 'on_scene_date_time', 'pickup_datetime', 'dropoff_datetime', 'start_location_id', 'end_location_id', 'trip_distance', 'trip_time', 'base_passenger_fare', 'tolls_amount', 'bcf_amount', 'sales_tax', 'congestion_surcharge', 'airport_fee', 'tips', 'driver_pay', 'shared_request_flag', 'shared_match_flag', 'access_a_ride_flag', 'wav_request_flag', 'wav_match_flag']
+    df.columns = ['license_num', 'dispatching_base_num', 'pickup_datetime', 'start_location_id', 'end_location_id', 'trip_distance', 'trip_time', 'base_passenger_fare', 'driver_pay']
 
     #Eliminar valores que no corresponden al mes y año del dataset
     print(filename)
@@ -96,10 +95,10 @@ def transform_data(df, filename):
     df = df[(df['pickup_datetime'].dt.month == int(dataset_month)) & (df['pickup_datetime'].dt.year == int(dataset_year))]
 
     #Imputar 0 en valores nulos de la columna 'affiliate_base_num'
-    df['affiliate_base_num'] = df['affiliate_base_num'].fillna(0)
+    #df['affiliate_base_num'] = df['affiliate_base_num'].fillna(0)
 
     #Imputar 0 en valores nulos de la columna 'on_scene_date_time'
-    df['on_scene_date_time'] = df['on_scene_date_time'].fillna(0)
+    #df['on_scene_date_time'] = df['on_scene_date_time'].fillna(0)
 
     #Agregar columna start_month and start_year
     df['start_month'] = df['pickup_datetime'].dt.month
@@ -108,15 +107,26 @@ def transform_data(df, filename):
     #Eliminar duplicados
     df = df.drop_duplicates()
 
+    #cambiar valores de columnas booleanas
+    #df['shared_request_flag'] = df['shared_request_flag'].replace({'Y': True, 'N': False})
+    #df['shared_match_flag'] = df['shared_match_flag'].replace({'Y': True, 'N': False})
+    #df['access_a_ride_flag'] = df['access_a_ride_flag'].replace({'Y': True, 'N': False, ' ': False})
+    #df['wav_request_flag'] = df['wav_request_flag'].replace({'Y': True, 'N': False})
+    #df['wav_match_flag'] = df['wav_match_flag'].replace({'Y': True, 'N': False})
+
+    #Mostrar datos unicos en columna 'acces_a_ride_flag'
+    #print(df['access_a_ride_flag'].unique())
+
+
     #Tipos de datos
-    df['license_num'] = df['license_num'].astype('int64')
-    df['dispatching_base_num'] = df['dispatching_base_num'].astype('int64')
-    df['affiliate_base_num'] = df['affiliate_base_num'].astype('int64')
-    df['shared_request_flag'] = df['shared_request_flag'].astype('boolean')
-    df['shared_match_flag'] = df['shared_match_flag'].astype('boolean')
-    df['access_a_ride_flag'] = df['access_a_ride_flag'].astype('boolean')
-    df['wav_request_flag'] = df['wav_request_flag'].astype('boolean')
-    df['wav_match_flag'] = df['wav_match_flag'].astype('boolean')
+    df['license_num'] = df['license_num'].astype('string')
+    df['dispatching_base_num'] = df['dispatching_base_num'].astype('string')
+    #df['affiliate_base_num'] = df['affiliate_base_num'].astype('string')
+    #df['shared_request_flag'] = df['shared_request_flag'].astype('boolean')
+    #df['shared_match_flag'] = df['shared_match_flag'].astype('boolean')
+    #df['access_a_ride_flag'] = df['access_a_ride_flag'].astype('boolean')
+    #df['wav_request_flag'] = df['wav_request_flag'].astype('boolean')
+    #df['wav_match_flag'] = df['wav_match_flag'].astype('boolean')
 
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
@@ -127,6 +137,16 @@ def transform_data(df, filename):
 @functions_framework.http
 def etl_inicial_high_volume_taxi(request):
     print('**** Iniciando proceso ETL para HIGH VOLUME TAXI ****')
+    columns = ['hvfhs_license_num',
+               'dispatching_base_num',
+               'pickup_datetime',
+               'pulocationid',
+               'dolocationid',
+               'trip_miles',
+               'trip_time',               
+               'base_passenger_fare',
+               'driver_pay']
+
     initial_time = datetime.now()
     process_type = 'initial'
     result_json = {}
@@ -158,13 +178,13 @@ def etl_inicial_high_volume_taxi(request):
             print(f'Tabla {table_id} no existe')
     
     if process_type == 'incremental':
-        df = pd.read_parquet(f'gs://ncy-taxi-bucket/{filename}')
+        df = pd.read_parquet(f'gs://ncy-taxi-bucket/{filename}', columns=columns)
         df = transform_data(df, filename)
         result_json[filename] = load_data_to_bigquery(df, client, table_id, filename)
     else:
         for blob in blobs: 
             #Extract
-            df = pd.read_parquet(f'gs://ncy-taxi-bucket/{blob.name}')       
+            df = pd.read_parquet(f'gs://ncy-taxi-bucket/{blob.name}', columns=columns)
             #Transform
             df = transform_data(df, blob.name)        
             #Load
