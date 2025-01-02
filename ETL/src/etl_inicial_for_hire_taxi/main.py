@@ -85,37 +85,34 @@ def transform_data(df, filename):
     Returns:
     pd.DataFrame: The transformed DataFrame
     """
-
+   
     #cambiar nombre de columnas
-    df.columns = ['vendor_id', 'pickup_datetime', 'dropoff_datetime', 'passenger_count', 'trip_distance', 'rate_code_id', 'store_and_forward_flag', 'start_location_id', 'end_location_id', 'payment_type', 'fare_amount', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'total_amount', 'congestion_surcharge', 'airport_fee']
+    df.columns = ['dispatching_base_number', 'pickup_datetime', 'dropoff_datetime', 'start_location_id', 'end_location_id', 'sr_flag', 'affiliated_base_num']
 
+    #Convertir a datetime
+    df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])
+    df['dropoff_datetime'] = pd.to_datetime(df['dropoff_datetime'])
+    
     #Eliminar valores que no corresponden al mes y año del dataset
     print(filename)
     dataset_month = filename.split('/')[-1].split('.')[0].split('_')[-1].split('-')[1]
     dataset_year = filename.split('/')[-1].split('.')[0].split('_')[-1].split('-')[0]
     df = df[(df['pickup_datetime'].dt.month == int(dataset_month)) & (df['pickup_datetime'].dt.year == int(dataset_year))]
 
-    #Imputar 0 en valores nulos de la columna 'airport_fee'
-    df['airport_fee'] = df['airport_fee'].fillna(0)
-
-    #Imputar 0 en valores nulos de la columna 'passenger_count'
-    df['passenger_count'] = df['passenger_count'].fillna(0)
-
-    #Imputar promedios en valores nulos de la columna 'trip_distance' agrupando por 'start_location_id' y 'end_location_id'
-    df['trip_distance'] = df.groupby(['start_location_id', 'end_location_id'])['trip_distance'].transform(lambda x: x.fillna(x.mean()))
-
-    #Imputar 0 en valores nulos de la columna 'rate_code_id'
-    df['rate_code_id'] = df['rate_code_id'].fillna(0)
-
-    #Imputar 'N' en valores nulos de la columna 'store_and_forward_flag'
-    df['store_and_forward_flag'] = df['store_and_forward_flag'].fillna('N')
-
-    #Imputar 0 en valores nulos de la columna 'congestion_surcharge'
-    df['congestion_surcharge'] = df['congestion_surcharge'].fillna(0)
-
+    #agregar columnas start_month and start_year
+    df['start_month'] = df['pickup_datetime'].dt.month
+    df['start_year'] = df['pickup_datetime'].dt.year
+        
     #Eliminar duplicados
     df = df.drop_duplicates()
+
+    #Tipos de datos
+    df['affiliate_base_num'] = df['affiliate_base_num'].astype('int64')
+
+    #regenerar índice
+    df.reset_index(drop=True, inplace=True)
     
+    print(df.info())
     return df
 
 @functions_framework.http
