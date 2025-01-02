@@ -102,14 +102,14 @@ def transform_data(df, filename):
     #Eliminar outliers en columna 'data_value'
     stats = df['data_value'].describe(percentiles=[.25, .5, .75])
     q1 = stats['25%']
-    median = stats['50%']
+    #median = stats['50%']
     q3 = stats['75%']
     iqr = q3 - q1
     lower_fence = q1 - 1.5 * iqr
     upper_fence = q3 + 1.5 * iqr
     outliers = df[(df['data_value'] < lower_fence) | (df['data_value'] > upper_fence)].shape[0]
-    within_box = df[(df['data_value'] >= q1) & (df['data_value'] <= q3)].shape[0]
-    within_whiskers = df[(df['data_value'] >= lower_fence) & (df['data_value'] <= upper_fence)].shape[0]
+    #within_box = df[(df['data_value'] >= q1) & (df['data_value'] <= q3)].shape[0]
+    #within_whiskers = df[(df['data_value'] >= lower_fence) & (df['data_value'] <= upper_fence)].shape[0]
     #eliminar los registros que no estén dentro de los whiskers
     df = df[(df['data_value'] >= lower_fence) & (df['data_value'] <= upper_fence)]
     print(f'Outliers eliminados en columna data_value: {outliers}')   
