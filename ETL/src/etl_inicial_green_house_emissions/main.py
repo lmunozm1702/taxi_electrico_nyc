@@ -108,8 +108,8 @@ def transform_data(df, filename):
     #Agregar columna year extraida de 'concept'
     melted_df['year'] = melted_df['concept'].str.extract(r'(\d{4})')
 
-    #Elimina texto '_{year}' en columna 'concept'
-    melted_df['concept'] = melted_df['concept'].map(lambda x: x.replace(f'_{melted_df["year"].iloc[0]}', ''))
+    #Elimina texto '_{year}' en columna 'concept'    
+    melted_df['concept'] = melted_df['concept'].map(lambda x: re.sub(r'cy_\d{4}_', '', x))
 
     #eliminar valores que contengan 'Change' o 'change' en columna 'concept'
     melted_df = melted_df[~melted_df['concept'].str.contains('Change')]
