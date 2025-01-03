@@ -108,6 +108,9 @@ def transform_data(df, filename):
     #Agregar columna year extraida de 'concept'
     melted_df['year'] = melted_df['concept'].str.extract(r'(\d{4})')
 
+    #Elimina texto '_{year}' en columna 'concept'
+    melted_df['concept'] = melted_df['concept'].map(lambda x: x.replace(f'_{melted_df["year"].iloc[0]}', ''))
+
     #eliminar valores que contengan 'Change' o 'change' en columna 'concept'
     melted_df = melted_df[~melted_df['concept'].str.contains('Change')]
     melted_df = melted_df[~melted_df['concept'].str.contains('change')]
@@ -115,7 +118,7 @@ def transform_data(df, filename):
     #Eliminar duplicados
     melted_df = melted_df.drop_duplicates()
     
-    return df
+    return melted_df
 
 @functions_framework.http
 def etl_inicial_green_house_emissions(request):
@@ -151,13 +154,13 @@ def etl_inicial_green_house_emissions(request):
             print(f'Tabla {table_id} no existe')
     
     if process_type == 'incremental':
-        df = pd.read_parquet(f'gs://ncy-taxi-bucket/{filename}')
+        df = pd.read_csv(f'gs://ncy-taxi-bucket/{filename}')
         df = transform_data(df, filename)
         result_json[filename] = load_data_to_bigquery(df, client, table_id, filename)
     else:
         for blob in blobs: 
             #Extract
-            df = pd.read_parquet(f'gs://ncy-taxi-bucket/{blob.name}')       
+            df = pd.read_csv(f'gs://ncy-taxi-bucket/{blob.name}')       
             #Transform
             df = transform_data(df, blob.name)        
             #Load

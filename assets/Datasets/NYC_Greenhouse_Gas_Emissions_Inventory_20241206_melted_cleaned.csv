@@ -1,340 +1,340 @@
 inventory_type,sectors_sector,category_full,category_label,source_full,source_label,source_units,concept,value,year
-GPC,Stationary Energy,Residential (small and large residential),Residential,#2 fuel oil,#2 fuel oil,gallon,cy_2005_consumed,146645995.87,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,#4 fuel oil,#4 fuel oil,gallon,cy_2005_consumed,77860780.31,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,#6 fuel oil,#6 fuel oil,gallon,cy_2005_consumed,193846082.8,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Biofuel,Biofuel,gallon,cy_2005_consumed,719495.07,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Electricity,Electricity,kWh,cy_2005_consumed,14168364733.94,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Natural gas,Natural gas,SCF,cy_2005_consumed,164840051823.53,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Steam,Steam,kg,cy_2005_consumed,1998982583.67,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Electricity,Upstream Electricity,kWh,cy_2005_consumed,14168364733.94,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Steam,Upstream Steam,kg,cy_2005_consumed,1998982583.67,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_consumed,164840051823.53,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_consumed,164840051823.53,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#2 fuel oil,#2 fuel oil,gallon,cy_2005_consumed,83099254.7,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#4 fuel oil,#4 fuel oil,gallon,cy_2005_consumed,13896492.65,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#6 fuel oil,#6 fuel oil,gallon,cy_2005_consumed,23786850.49,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Biofuel,Biofuel,gallon,cy_2005_consumed,181117.2,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Electricity,Electricity,kWh,cy_2005_consumed,26226076079.28,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Natural gas,Natural gas,SCF,cy_2005_consumed,55128302373.38,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Steam,Steam,kg,cy_2005_consumed,7457786325.72,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Electricity,Upstream Electricity,kWh,cy_2005_consumed,26226076079.28,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Steam,Upstream Steam,kg,cy_2005_consumed,7457786325.72,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_consumed,55128302373.38,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_consumed,55128302373.38,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#2 fuel oil,#2 fuel oil,gallon,cy_2005_consumed,19157830.89,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#4 fuel oil,#4 fuel oil,gallon,cy_2005_consumed,2994049.18,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#6 fuel oil,#6 fuel oil,gallon,cy_2005_consumed,1836775.17,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Biofuel,Biofuel,gallon,cy_2005_consumed,32152.17,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Electricity,Electricity,kWh,cy_2005_consumed,8779889925.83,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Natural gas,Natural gas,SCF,cy_2005_consumed,16538490712.01,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Steam,Steam,kg,cy_2005_consumed,2237335897.71,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Electricity,Upstream Electricity,kWh,cy_2005_consumed,8779889925.83,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Steam,Upstream Steam,kg,cy_2005_consumed,2237335897.71,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_consumed,16538490712.01,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_consumed,16538490712.01,2005
-GPC,Stationary Energy,Fugitive natural gas,Fugitive,CH4 - natural gas distribution,Fugitive CH4,GJ,cy_2005_consumed,442833.0,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Gasoline,Gasoline,VMT,cy_2005_consumed,17241220767.81,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Diesel,Diesel,VMT,cy_2005_consumed,91007294.35,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,CNG,Natural gas,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Electricity,Electricity,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Other,Other,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Gasoline,Gasoline,VMT,cy_2005_consumed,366138397.18,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Diesel,Diesel,VMT,cy_2005_consumed,121490182.96,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,CNG,Natural gas,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Electricity,Electricity,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Gasoline,Gasoline,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Diesel,Diesel,VMT,cy_2005_consumed,593693069.88,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,CNG,Natural gas,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Electricity,Electricity,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Biofuel,Biofuel,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Diesel,Diesel,VMT,cy_2005_consumed,38600985.12,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,CNG,Natural gas,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Gasoline,Gasoline,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,For Hire,For hire vehicles,Gasoline,Gasoline,VMT,cy_2005_consumed,1985823083.0,2005
-GPC,Transportation,For Hire,For hire vehicles,Diesel,Diesel,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,For Hire,For hire vehicles,Electricity,Electricity,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,School Bus,School buses,Gasoline,Gasoline,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,School Bus,School buses,Diesel,Diesel,VMT,cy_2005_consumed,51309025.0,2005
-GPC,Transportation,School Bus,School buses,Electricity,Electricity,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream CNG,Upstream CNG,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Downstream CNG,Downstream CNG,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream Electricity,Upstream Electricity,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,School Bus,School buses,Upstream Electricity,Upstream Electricity,VMT,cy_2005_consumed,0.0,2005
-CLCPA Addition,Transportation,For Hire,For hire vehicles,Upstream Electricity,Upstream Electricity,VMT,cy_2005_consumed,0.0,2005
-GPC,Transportation,Buses,Buses,Diesel,Diesel,VMT,cy_2005_consumed,339477973.55,2005
-GPC,Transportation,Buses,Buses,CNG,Natural gas,VMT,cy_2005_consumed,6523813.14,2005
-CLCPA Addition,Transportation,Buses,Buses,Upstream CNG,Upstream CNG,VMT,cy_2005_consumed,6523813.14,2005
-CLCPA Addition,Transportation,Buses,Buses,Downstream CNG,Downstream CNG,VMT,cy_2005_consumed,6523813.14,2005
-GPC,Transportation,Railways,Railways,Electricity - subway and commuter rail,Electricity,kWh,cy_2005_consumed,2223041707.65,2005
-GPC,Transportation,Railways,Railways,Diesel - commuter rail,Diesel,gallon,cy_2005_consumed,1375601.3,2005
-CLCPA Addition,Transportation,Railways,Railways,Upstream Electricity,Upstream Electricity,kWh,cy_2005_consumed,2223041707.65,2005
-GPC,Transportation,Marine Navigation,Marine Navigation,Diesel - marine navigation,Marine diesel,gallon,cy_2005_consumed,4820479.61,2005
-GPC,Transportation,Marine Navigation,Marine Navigation,Biofuel,Biofuel,gallon,cy_2005_consumed,0.0,2005
-GPC,Transportation,Aviation,Aviation,Jet fuel - aviation,Jet fuel,gallon,cy_2005_consumed,246497.04,2005
-GPC,Waste,Landfills,Landfills,Exported solid waste - landfills,CH4,MT,cy_2005_consumed,7420036.11,2005
-GPC,Waste,Biological treatment,Biological treatment,CH4 and N2O - composting,CH4 and N2O from composting,MT,cy_2005_consumed,26351.0,2005
-GPC,Waste,Wastewater treatment,Wastewater treatment,CH4 - wastewater treatment plants,CH4,MT,cy_2005_consumed,6536.09,2005
-GPC,Waste,Wastewater treatment,Wastewater treatment,N2O - wastewater treatment plants,N2O,MT,cy_2005_consumed,285.64,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,#2 fuel oil,#2 fuel oil,gallon,cy_2005_tco2e_100_yr_gwp,1517233.2,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,#4 fuel oil,#4 fuel oil,gallon,cy_2005_tco2e_100_yr_gwp,856223.01,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,#6 fuel oil,#6 fuel oil,gallon,cy_2005_tco2e_100_yr_gwp,2191841.89,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Biofuel,Biofuel,gallon,cy_2005_tco2e_100_yr_gwp,4.77,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Electricity,Electricity,kWh,cy_2005_tco2e_100_yr_gwp,7062392.25,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Natural gas,Natural gas,SCF,cy_2005_tco2e_100_yr_gwp,8983129.56,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Steam,Steam,kg,cy_2005_tco2e_100_yr_gwp,332184.37,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Electricity,Upstream Electricity,kWh,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Steam,Upstream Steam,kg,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#2 fuel oil,#2 fuel oil,gallon,cy_2005_tco2e_100_yr_gwp,859764.0,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#4 fuel oil,#4 fuel oil,gallon,cy_2005_tco2e_100_yr_gwp,152817.59,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#6 fuel oil,#6 fuel oil,gallon,cy_2005_tco2e_100_yr_gwp,268960.89,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Biofuel,Biofuel,gallon,cy_2005_tco2e_100_yr_gwp,1.2,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Electricity,Electricity,kWh,cy_2005_tco2e_100_yr_gwp,13072703.86,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Natural gas,Natural gas,SCF,cy_2005_tco2e_100_yr_gwp,3004274.01,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Steam,Steam,kg,cy_2005_tco2e_100_yr_gwp,1239310.47,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Electricity,Upstream Electricity,kWh,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Steam,Upstream Steam,kg,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#2 fuel oil,#2 fuel oil,gallon,cy_2005_tco2e_100_yr_gwp,198211.32,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#4 fuel oil,#4 fuel oil,gallon,cy_2005_tco2e_100_yr_gwp,32925.1,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#6 fuel oil,#6 fuel oil,gallon,cy_2005_tco2e_100_yr_gwp,20768.65,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Biofuel,Biofuel,gallon,cy_2005_tco2e_100_yr_gwp,0.21,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Electricity,Electricity,kWh,cy_2005_tco2e_100_yr_gwp,4376442.0,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Natural gas,Natural gas,SCF,cy_2005_tco2e_100_yr_gwp,901282.2,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Steam,Steam,kg,cy_2005_tco2e_100_yr_gwp,371793.14,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Electricity,Upstream Electricity,kWh,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Steam,Upstream Steam,kg,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Stationary Energy,Fugitive natural gas,Fugitive,CH4 - natural gas distribution,Fugitive CH4,GJ,cy_2005_tco2e_100_yr_gwp,206847.19,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Gasoline,Gasoline,VMT,cy_2005_tco2e_100_yr_gwp,11130380.02,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Diesel,Diesel,VMT,cy_2005_tco2e_100_yr_gwp,75131.67,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,CNG,Natural gas,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Electricity,Electricity,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Other,Other,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Gasoline,Gasoline,VMT,cy_2005_tco2e_100_yr_gwp,268443.02,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Diesel,Diesel,VMT,cy_2005_tco2e_100_yr_gwp,117119.82,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,CNG,Natural gas,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Electricity,Electricity,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Gasoline,Gasoline,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Diesel,Diesel,VMT,cy_2005_tco2e_100_yr_gwp,1362756.54,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,CNG,Natural gas,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Electricity,Electricity,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Biofuel,Biofuel,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Diesel,Diesel,VMT,cy_2005_tco2e_100_yr_gwp,61694.52,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,CNG,Natural gas,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Gasoline,Gasoline,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,For Hire,For hire vehicles,Gasoline,Gasoline,VMT,cy_2005_tco2e_100_yr_gwp,1280453.84,2005
-GPC,Transportation,For Hire,For hire vehicles,Diesel,Diesel,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,For Hire,For hire vehicles,Electricity,Electricity,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,School Bus,School buses,Gasoline,Gasoline,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,School Bus,School buses,Diesel,Diesel,VMT,cy_2005_tco2e_100_yr_gwp,49463.29,2005
-GPC,Transportation,School Bus,School buses,Electricity,Electricity,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream CNG,Upstream CNG,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Downstream CNG,Downstream CNG,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream Electricity,Upstream Electricity,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,School Bus,School buses,Upstream Electricity,Upstream Electricity,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,For Hire,For hire vehicles,Upstream Electricity,Upstream Electricity,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Buses,Buses,Diesel,Diesel,VMT,cy_2005_tco2e_100_yr_gwp,674530.21,2005
-GPC,Transportation,Buses,Buses,CNG,Natural gas,VMT,cy_2005_tco2e_100_yr_gwp,12532.5,2005
-CLCPA Addition,Transportation,Buses,Buses,Upstream CNG,Upstream CNG,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Buses,Buses,Downstream CNG,Downstream CNG,VMT,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Railways,Railways,Electricity - subway and commuter rail,Electricity,kWh,cy_2005_tco2e_100_yr_gwp,1108101.94,2005
-GPC,Transportation,Railways,Railways,Diesel - commuter rail,Diesel,gallon,cy_2005_tco2e_100_yr_gwp,14233.32,2005
-CLCPA Addition,Transportation,Railways,Railways,Upstream Electricity,Upstream Electricity,kWh,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Marine Navigation,Marine Navigation,Diesel - marine navigation,Marine diesel,gallon,cy_2005_tco2e_100_yr_gwp,50737.18,2005
-GPC,Transportation,Marine Navigation,Marine Navigation,Biofuel,Biofuel,gallon,cy_2005_tco2e_100_yr_gwp,0.0,2005
-GPC,Transportation,Aviation,Aviation,Jet fuel - aviation,Jet fuel,gallon,cy_2005_tco2e_100_yr_gwp,2068.58,2005
-GPC,Waste,Landfills,Landfills,Exported solid waste - landfills,CH4,MT,cy_2005_tco2e_100_yr_gwp,2256528.29,2005
-GPC,Waste,Biological treatment,Biological treatment,CH4 and N2O - composting,CH4 and N2O from composting,MT,cy_2005_tco2e_100_yr_gwp,5098.92,2005
-GPC,Waste,Wastewater treatment,Wastewater treatment,CH4 - wastewater treatment plants,CH4,MT,cy_2005_tco2e_100_yr_gwp,182356.92,2005
-GPC,Waste,Wastewater treatment,Wastewater treatment,N2O - wastewater treatment plants,N2O,MT,cy_2005_tco2e_100_yr_gwp,77978.75,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,#2 fuel oil,#2 fuel oil,gallon,cy_2005_source_mmbtu,20439518.9,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,#4 fuel oil,#4 fuel oil,gallon,cy_2005_source_mmbtu,11481350.66,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,#6 fuel oil,#6 fuel oil,gallon,cy_2005_source_mmbtu,29367681.54,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Biofuel,Biofuel,gallon,cy_2005_source_mmbtu,93016.32,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Electricity,Electricity,kWh,cy_2005_source_mmbtu,123273274.2,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Natural gas,Natural gas,SCF,cy_2005_source_mmbtu,177582187.83,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Steam,Steam,kg,cy_2005_source_mmbtu,6314357.94,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Electricity,Upstream Electricity,kWh,cy_2005_source_mmbtu,123273274.2,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Steam,Upstream Steam,kg,cy_2005_source_mmbtu,6314357.94,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_source_mmbtu,177582187.83,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_source_mmbtu,177582187.83,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#2 fuel oil,#2 fuel oil,gallon,cy_2005_source_mmbtu,11582374.12,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#4 fuel oil,#4 fuel oil,gallon,cy_2005_source_mmbtu,2049176.81,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#6 fuel oil,#6 fuel oil,gallon,cy_2005_source_mmbtu,3603707.85,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Biofuel,Biofuel,gallon,cy_2005_source_mmbtu,23414.83,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Electricity,Electricity,kWh,cy_2005_source_mmbtu,228182597.54,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Natural gas,Natural gas,SCF,cy_2005_source_mmbtu,59389720.15,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Steam,Steam,kg,cy_2005_source_mmbtu,23557550.06,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Electricity,Upstream Electricity,kWh,cy_2005_source_mmbtu,228182597.54,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Steam,Upstream Steam,kg,cy_2005_source_mmbtu,23557550.06,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_source_mmbtu,59389720.15,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_source_mmbtu,59389720.15,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#2 fuel oil,#2 fuel oil,gallon,cy_2005_source_mmbtu,2670218.47,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#4 fuel oil,#4 fuel oil,gallon,cy_2005_source_mmbtu,441502.49,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#6 fuel oil,#6 fuel oil,gallon,cy_2005_source_mmbtu,278271.44,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Biofuel,Biofuel,gallon,cy_2005_source_mmbtu,4156.63,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Electricity,Electricity,kWh,cy_2005_source_mmbtu,76390310.29,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Natural gas,Natural gas,SCF,cy_2005_source_mmbtu,17816916.04,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Steam,Steam,kg,cy_2005_source_mmbtu,7067265.02,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Electricity,Upstream Electricity,kWh,cy_2005_source_mmbtu,76390310.29,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Steam,Upstream Steam,kg,cy_2005_source_mmbtu,7067265.02,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_source_mmbtu,17816916.04,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_source_mmbtu,17816916.04,2005
-GPC,Stationary Energy,Fugitive natural gas,Fugitive,CH4 - natural gas distribution,Fugitive CH4,GJ,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Gasoline,Gasoline,VMT,cy_2005_source_mmbtu,171946107.41,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Diesel,Diesel,VMT,cy_2005_source_mmbtu,1027050.23,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,CNG,Natural gas,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Electricity,Electricity,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Other,Other,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Gasoline,Gasoline,VMT,cy_2005_source_mmbtu,4127988.42,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Diesel,Diesel,VMT,cy_2005_source_mmbtu,1542980.94,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,CNG,Natural gas,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Electricity,Electricity,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Gasoline,Gasoline,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Diesel,Diesel,VMT,cy_2005_source_mmbtu,18831026.43,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,CNG,Natural gas,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Electricity,Electricity,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Biofuel,Biofuel,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Diesel,Diesel,VMT,cy_2005_source_mmbtu,941745.16,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,CNG,Natural gas,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Gasoline,Gasoline,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,For Hire,For hire vehicles,Gasoline,Gasoline,VMT,cy_2005_source_mmbtu,19787676.37,2005
-GPC,Transportation,For Hire,For hire vehicles,Diesel,Diesel,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,For Hire,For hire vehicles,Electricity,Electricity,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,School Bus,School buses,Gasoline,Gasoline,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,School Bus,School buses,Diesel,Diesel,VMT,cy_2005_source_mmbtu,650953.34,2005
-GPC,Transportation,School Bus,School buses,Electricity,Electricity,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream CNG,Upstream CNG,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Downstream CNG,Downstream CNG,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream Electricity,Upstream Electricity,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,School Bus,School buses,Upstream Electricity,Upstream Electricity,VMT,cy_2005_source_mmbtu,0.0,2005
-CLCPA Addition,Transportation,For Hire,For hire vehicles,Upstream Electricity,Upstream Electricity,VMT,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Buses,Buses,Diesel,Diesel,VMT,cy_2005_source_mmbtu,9300446.98,2005
-GPC,Transportation,Buses,Buses,CNG,Natural gas,VMT,cy_2005_source_mmbtu,247859.85,2005
-CLCPA Addition,Transportation,Buses,Buses,Upstream CNG,Upstream CNG,VMT,cy_2005_source_mmbtu,247859.85,2005
-CLCPA Addition,Transportation,Buses,Buses,Downstream CNG,Downstream CNG,VMT,cy_2005_source_mmbtu,247859.85,2005
-GPC,Transportation,Railways,Railways,Electricity - subway and commuter rail,Electricity,kWh,cy_2005_source_mmbtu,19341796.68,2005
-GPC,Transportation,Railways,Railways,Diesel - commuter rail,Diesel,gallon,cy_2005_source_mmbtu,191731.31,2005
-CLCPA Addition,Transportation,Railways,Railways,Upstream Electricity,Upstream Electricity,kWh,cy_2005_source_mmbtu,19341796.68,2005
-GPC,Transportation,Marine Navigation,Marine Navigation,Diesel - marine navigation,Marine diesel,gallon,cy_2005_source_mmbtu,671878.45,2005
-GPC,Transportation,Marine Navigation,Marine Navigation,Biofuel,Biofuel,gallon,cy_2005_source_mmbtu,0.0,2005
-GPC,Transportation,Aviation,Aviation,Jet fuel - aviation,Jet fuel,gallon,cy_2005_source_mmbtu,29875.44,2005
-GPC,Waste,Landfills,Landfills,Exported solid waste - landfills,CH4,MT,cy_2005_source_mmbtu,0.0,2005
-GPC,Waste,Biological treatment,Biological treatment,CH4 and N2O - composting,CH4 and N2O from composting,MT,cy_2005_source_mmbtu,0.0,2005
-GPC,Waste,Wastewater treatment,Wastewater treatment,CH4 - wastewater treatment plants,CH4,MT,cy_2005_source_mmbtu,0.0,2005
-GPC,Waste,Wastewater treatment,Wastewater treatment,N2O - wastewater treatment plants,N2O,MT,cy_2005_source_mmbtu,0.0,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,#2 fuel oil,#2 fuel oil,gallon,cy_2005_tco2e_20_yr_gwp,1549279.75,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,#4 fuel oil,#4 fuel oil,gallon,cy_2005_tco2e_20_yr_gwp,858049.0,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,#6 fuel oil,#6 fuel oil,gallon,cy_2005_tco2e_20_yr_gwp,2196491.29,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Biofuel,Biofuel,gallon,cy_2005_tco2e_20_yr_gwp,10.14,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Electricity,Electricity,kWh,cy_2005_tco2e_20_yr_gwp,7072258.42,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Natural gas,Natural gas,SCF,cy_2005_tco2e_20_yr_gwp,8992179.12,2005
-GPC,Stationary Energy,Residential (small and large residential),Residential,Steam,Steam,kg,cy_2005_tco2e_20_yr_gwp,332750.46,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Electricity,Upstream Electricity,kWh,cy_2005_tco2e_20_yr_gwp,4456021.92,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Steam,Upstream Steam,kg,cy_2005_tco2e_20_yr_gwp,94468.23,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_tco2e_20_yr_gwp,7128793.77,2005
-CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_tco2e_20_yr_gwp,1015584.67,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#2 fuel oil,#2 fuel oil,gallon,cy_2005_tco2e_20_yr_gwp,877923.68,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#4 fuel oil,#4 fuel oil,gallon,cy_2005_tco2e_20_yr_gwp,153143.49,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#6 fuel oil,#6 fuel oil,gallon,cy_2005_tco2e_20_yr_gwp,269531.42,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Biofuel,Biofuel,gallon,cy_2005_tco2e_20_yr_gwp,2.55,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Electricity,Electricity,kWh,cy_2005_tco2e_20_yr_gwp,13090966.45,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Natural gas,Natural gas,SCF,cy_2005_tco2e_20_yr_gwp,3007300.49,2005
-GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Steam,Steam,kg,cy_2005_tco2e_20_yr_gwp,1241422.44,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Electricity,Upstream Electricity,kWh,cy_2005_tco2e_20_yr_gwp,8248232.73,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Steam,Upstream Steam,kg,cy_2005_tco2e_20_yr_gwp,352441.22,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_tco2e_20_yr_gwp,2384118.99,2005
-CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_tco2e_20_yr_gwp,339647.18,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#2 fuel oil,#2 fuel oil,gallon,cy_2005_tco2e_20_yr_gwp,202397.89,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#4 fuel oil,#4 fuel oil,gallon,cy_2005_tco2e_20_yr_gwp,32995.31,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#6 fuel oil,#6 fuel oil,gallon,cy_2005_tco2e_20_yr_gwp,20812.7,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Biofuel,Biofuel,gallon,cy_2005_tco2e_20_yr_gwp,0.45,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Electricity,Electricity,kWh,cy_2005_tco2e_20_yr_gwp,4382555.9,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Natural gas,Natural gas,SCF,cy_2005_tco2e_20_yr_gwp,902190.15,2005
-GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Steam,Steam,kg,cy_2005_tco2e_20_yr_gwp,372426.73,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Electricity,Upstream Electricity,kWh,cy_2005_tco2e_20_yr_gwp,2761319.51,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Steam,Upstream Steam,kg,cy_2005_tco2e_20_yr_gwp,105732.37,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Natural gas,Upstream Natural gas,SCF,cy_2005_tco2e_20_yr_gwp,715235.7,2005
-CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Downstream Natural gas,Downstream Natural gas,SCF,cy_2005_tco2e_20_yr_gwp,101894.15,2005
-GPC,Stationary Energy,Fugitive natural gas,Fugitive,CH4 - natural gas distribution,Fugitive CH4,GJ,cy_2005_tco2e_20_yr_gwp,602006.87,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Gasoline,Gasoline,VMT,cy_2005_tco2e_20_yr_gwp,11141873.52,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Diesel,Diesel,VMT,cy_2005_tco2e_20_yr_gwp,75198.33,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,CNG,Natural gas,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Electricity,Electricity,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Passenger cars (public and private),Passenger cars,Other,Other,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Gasoline,Gasoline,VMT,cy_2005_tco2e_20_yr_gwp,268847.53,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Diesel,Diesel,VMT,cy_2005_tco2e_20_yr_gwp,117248.56,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,CNG,Natural gas,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Electricity,Electricity,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Gasoline,Gasoline,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Diesel,Diesel,VMT,cy_2005_tco2e_20_yr_gwp,1364045.94,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,CNG,Natural gas,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Electricity,Electricity,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Biofuel,Biofuel,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Diesel,Diesel,VMT,cy_2005_tco2e_20_yr_gwp,61743.4,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,CNG,Natural gas,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Gasoline,Gasoline,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,For Hire,For hire vehicles,Gasoline,Gasoline,VMT,cy_2005_tco2e_20_yr_gwp,1281774.76,2005
-GPC,Transportation,For Hire,For hire vehicles,Diesel,Diesel,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,For Hire,For hire vehicles,Electricity,Electricity,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,School Bus,School buses,Gasoline,Gasoline,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,School Bus,School buses,Diesel,Diesel,VMT,cy_2005_tco2e_20_yr_gwp,49517.66,2005
-GPC,Transportation,School Bus,School buses,Electricity,Electricity,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream CNG,Upstream CNG,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Downstream CNG,Downstream CNG,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Upstream CNG,Upstream CNG,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Downstream CNG,Downstream CNG,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream Electricity,Upstream Electricity,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,School Bus,School buses,Upstream Electricity,Upstream Electricity,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-CLCPA Addition,Transportation,For Hire,For hire vehicles,Upstream Electricity,Upstream Electricity,VMT,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Buses,Buses,Diesel,Diesel,VMT,cy_2005_tco2e_20_yr_gwp,674663.89,2005
-GPC,Transportation,Buses,Buses,CNG,Natural gas,VMT,cy_2005_tco2e_20_yr_gwp,12535.75,2005
-CLCPA Addition,Transportation,Buses,Buses,Upstream CNG,Upstream CNG,VMT,cy_2005_tco2e_20_yr_gwp,365.84,2005
-CLCPA Addition,Transportation,Buses,Buses,Downstream CNG,Downstream CNG,VMT,cy_2005_tco2e_20_yr_gwp,365.84,2005
-GPC,Transportation,Railways,Railways,Electricity - subway and commuter rail,Electricity,kWh,cy_2005_tco2e_20_yr_gwp,1109649.97,2005
-GPC,Transportation,Railways,Railways,Diesel - commuter rail,Diesel,gallon,cy_2005_tco2e_20_yr_gwp,14291.97,2005
-CLCPA Addition,Transportation,Railways,Railways,Upstream Electricity,Upstream Electricity,kWh,cy_2005_tco2e_20_yr_gwp,699157.79,2005
-GPC,Transportation,Marine Navigation,Marine Navigation,Diesel - marine navigation,Marine diesel,gallon,cy_2005_tco2e_20_yr_gwp,52384.11,2005
-GPC,Transportation,Marine Navigation,Marine Navigation,Biofuel,Biofuel,gallon,cy_2005_tco2e_20_yr_gwp,0.0,2005
-GPC,Transportation,Aviation,Aviation,Jet fuel - aviation,Jet fuel,gallon,cy_2005_tco2e_20_yr_gwp,2068.58,2005
-GPC,Waste,Landfills,Landfills,Exported solid waste - landfills,CH4,MT,cy_2005_tco2e_20_yr_gwp,6567386.99,2005
-GPC,Waste,Biological treatment,Biological treatment,CH4 and N2O - composting,CH4 and N2O from composting,MT,cy_2005_tco2e_20_yr_gwp,10716.95,2005
-GPC,Waste,Wastewater treatment,Wastewater treatment,CH4 - wastewater treatment plants,CH4,MT,cy_2005_tco2e_20_yr_gwp,530730.54,2005
-GPC,Waste,Wastewater treatment,Wastewater treatment,N2O - wastewater treatment plants,N2O,MT,cy_2005_tco2e_20_yr_gwp,77978.75,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#2 fuel oil,#2 fuel oil,gallon,cy_consumed,146645995.87,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#4 fuel oil,#4 fuel oil,gallon,cy_consumed,77860780.31,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#6 fuel oil,#6 fuel oil,gallon,cy_consumed,193846082.8,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Biofuel,Biofuel,gallon,cy_consumed,719495.07,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Electricity,Electricity,kWh,cy_consumed,14168364733.94,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Natural gas,Natural gas,SCF,cy_consumed,164840051823.53,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Steam,Steam,kg,cy_consumed,1998982583.67,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Electricity,Upstream Electricity,kWh,cy_consumed,14168364733.94,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Steam,Upstream Steam,kg,cy_consumed,1998982583.67,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Natural gas,Upstream Natural gas,SCF,cy_consumed,164840051823.53,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Downstream Natural gas,Downstream Natural gas,SCF,cy_consumed,164840051823.53,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#2 fuel oil,#2 fuel oil,gallon,cy_consumed,83099254.7,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#4 fuel oil,#4 fuel oil,gallon,cy_consumed,13896492.65,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#6 fuel oil,#6 fuel oil,gallon,cy_consumed,23786850.49,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Biofuel,Biofuel,gallon,cy_consumed,181117.2,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Electricity,Electricity,kWh,cy_consumed,26226076079.28,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Natural gas,Natural gas,SCF,cy_consumed,55128302373.38,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Steam,Steam,kg,cy_consumed,7457786325.72,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Electricity,Upstream Electricity,kWh,cy_consumed,26226076079.28,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Steam,Upstream Steam,kg,cy_consumed,7457786325.72,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Natural gas,Upstream Natural gas,SCF,cy_consumed,55128302373.38,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Downstream Natural gas,Downstream Natural gas,SCF,cy_consumed,55128302373.38,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#2 fuel oil,#2 fuel oil,gallon,cy_consumed,19157830.89,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#4 fuel oil,#4 fuel oil,gallon,cy_consumed,2994049.18,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#6 fuel oil,#6 fuel oil,gallon,cy_consumed,1836775.17,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Biofuel,Biofuel,gallon,cy_consumed,32152.17,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Electricity,Electricity,kWh,cy_consumed,8779889925.83,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Natural gas,Natural gas,SCF,cy_consumed,16538490712.01,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Steam,Steam,kg,cy_consumed,2237335897.71,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Electricity,Upstream Electricity,kWh,cy_consumed,8779889925.83,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Steam,Upstream Steam,kg,cy_consumed,2237335897.71,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Natural gas,Upstream Natural gas,SCF,cy_consumed,16538490712.01,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Downstream Natural gas,Downstream Natural gas,SCF,cy_consumed,16538490712.01,2005
+GPC,Stationary Energy,Fugitive natural gas,Fugitive,CH4 - natural gas distribution,Fugitive CH4,GJ,cy_consumed,442833.0,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Gasoline,Gasoline,VMT,cy_consumed,17241220767.81,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Diesel,Diesel,VMT,cy_consumed,91007294.35,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,CNG,Natural gas,VMT,cy_consumed,0.0,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Electricity,Electricity,VMT,cy_consumed,0.0,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Other,Other,VMT,cy_consumed,0.0,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Gasoline,Gasoline,VMT,cy_consumed,366138397.18,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Diesel,Diesel,VMT,cy_consumed,121490182.96,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,CNG,Natural gas,VMT,cy_consumed,0.0,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Electricity,Electricity,VMT,cy_consumed,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Gasoline,Gasoline,VMT,cy_consumed,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Diesel,Diesel,VMT,cy_consumed,593693069.88,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,CNG,Natural gas,VMT,cy_consumed,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Electricity,Electricity,VMT,cy_consumed,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Biofuel,Biofuel,VMT,cy_consumed,0.0,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Diesel,Diesel,VMT,cy_consumed,38600985.12,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,CNG,Natural gas,VMT,cy_consumed,0.0,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Gasoline,Gasoline,VMT,cy_consumed,0.0,2005
+GPC,Transportation,For Hire,For hire vehicles,Gasoline,Gasoline,VMT,cy_consumed,1985823083.0,2005
+GPC,Transportation,For Hire,For hire vehicles,Diesel,Diesel,VMT,cy_consumed,0.0,2005
+GPC,Transportation,For Hire,For hire vehicles,Electricity,Electricity,VMT,cy_consumed,0.0,2005
+GPC,Transportation,School Bus,School buses,Gasoline,Gasoline,VMT,cy_consumed,0.0,2005
+GPC,Transportation,School Bus,School buses,Diesel,Diesel,VMT,cy_consumed,51309025.0,2005
+GPC,Transportation,School Bus,School buses,Electricity,Electricity,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream CNG,Upstream CNG,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Downstream CNG,Downstream CNG,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream CNG,Upstream CNG,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Downstream CNG,Downstream CNG,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream CNG,Upstream CNG,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Downstream CNG,Downstream CNG,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Upstream CNG,Upstream CNG,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Downstream CNG,Downstream CNG,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream Electricity,Upstream Electricity,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,School Bus,School buses,Upstream Electricity,Upstream Electricity,VMT,cy_consumed,0.0,2005
+CLCPA Addition,Transportation,For Hire,For hire vehicles,Upstream Electricity,Upstream Electricity,VMT,cy_consumed,0.0,2005
+GPC,Transportation,Buses,Buses,Diesel,Diesel,VMT,cy_consumed,339477973.55,2005
+GPC,Transportation,Buses,Buses,CNG,Natural gas,VMT,cy_consumed,6523813.14,2005
+CLCPA Addition,Transportation,Buses,Buses,Upstream CNG,Upstream CNG,VMT,cy_consumed,6523813.14,2005
+CLCPA Addition,Transportation,Buses,Buses,Downstream CNG,Downstream CNG,VMT,cy_consumed,6523813.14,2005
+GPC,Transportation,Railways,Railways,Electricity - subway and commuter rail,Electricity,kWh,cy_consumed,2223041707.65,2005
+GPC,Transportation,Railways,Railways,Diesel - commuter rail,Diesel,gallon,cy_consumed,1375601.3,2005
+CLCPA Addition,Transportation,Railways,Railways,Upstream Electricity,Upstream Electricity,kWh,cy_consumed,2223041707.65,2005
+GPC,Transportation,Marine Navigation,Marine Navigation,Diesel - marine navigation,Marine diesel,gallon,cy_consumed,4820479.61,2005
+GPC,Transportation,Marine Navigation,Marine Navigation,Biofuel,Biofuel,gallon,cy_consumed,0.0,2005
+GPC,Transportation,Aviation,Aviation,Jet fuel - aviation,Jet fuel,gallon,cy_consumed,246497.04,2005
+GPC,Waste,Landfills,Landfills,Exported solid waste - landfills,CH4,MT,cy_consumed,7420036.11,2005
+GPC,Waste,Biological treatment,Biological treatment,CH4 and N2O - composting,CH4 and N2O from composting,MT,cy_consumed,26351.0,2005
+GPC,Waste,Wastewater treatment,Wastewater treatment,CH4 - wastewater treatment plants,CH4,MT,cy_consumed,6536.09,2005
+GPC,Waste,Wastewater treatment,Wastewater treatment,N2O - wastewater treatment plants,N2O,MT,cy_consumed,285.64,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#2 fuel oil,#2 fuel oil,gallon,cy_tco2e_100_yr_gwp,1517233.2,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#4 fuel oil,#4 fuel oil,gallon,cy_tco2e_100_yr_gwp,856223.01,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#6 fuel oil,#6 fuel oil,gallon,cy_tco2e_100_yr_gwp,2191841.89,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Biofuel,Biofuel,gallon,cy_tco2e_100_yr_gwp,4.77,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Electricity,Electricity,kWh,cy_tco2e_100_yr_gwp,7062392.25,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Natural gas,Natural gas,SCF,cy_tco2e_100_yr_gwp,8983129.56,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Steam,Steam,kg,cy_tco2e_100_yr_gwp,332184.37,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Electricity,Upstream Electricity,kWh,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Steam,Upstream Steam,kg,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Natural gas,Upstream Natural gas,SCF,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Downstream Natural gas,Downstream Natural gas,SCF,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#2 fuel oil,#2 fuel oil,gallon,cy_tco2e_100_yr_gwp,859764.0,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#4 fuel oil,#4 fuel oil,gallon,cy_tco2e_100_yr_gwp,152817.59,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#6 fuel oil,#6 fuel oil,gallon,cy_tco2e_100_yr_gwp,268960.89,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Biofuel,Biofuel,gallon,cy_tco2e_100_yr_gwp,1.2,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Electricity,Electricity,kWh,cy_tco2e_100_yr_gwp,13072703.86,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Natural gas,Natural gas,SCF,cy_tco2e_100_yr_gwp,3004274.01,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Steam,Steam,kg,cy_tco2e_100_yr_gwp,1239310.47,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Electricity,Upstream Electricity,kWh,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Steam,Upstream Steam,kg,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Natural gas,Upstream Natural gas,SCF,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Downstream Natural gas,Downstream Natural gas,SCF,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#2 fuel oil,#2 fuel oil,gallon,cy_tco2e_100_yr_gwp,198211.32,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#4 fuel oil,#4 fuel oil,gallon,cy_tco2e_100_yr_gwp,32925.1,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#6 fuel oil,#6 fuel oil,gallon,cy_tco2e_100_yr_gwp,20768.65,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Biofuel,Biofuel,gallon,cy_tco2e_100_yr_gwp,0.21,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Electricity,Electricity,kWh,cy_tco2e_100_yr_gwp,4376442.0,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Natural gas,Natural gas,SCF,cy_tco2e_100_yr_gwp,901282.2,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Steam,Steam,kg,cy_tco2e_100_yr_gwp,371793.14,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Electricity,Upstream Electricity,kWh,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Steam,Upstream Steam,kg,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Natural gas,Upstream Natural gas,SCF,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Downstream Natural gas,Downstream Natural gas,SCF,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Stationary Energy,Fugitive natural gas,Fugitive,CH4 - natural gas distribution,Fugitive CH4,GJ,cy_tco2e_100_yr_gwp,206847.19,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Gasoline,Gasoline,VMT,cy_tco2e_100_yr_gwp,11130380.02,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Diesel,Diesel,VMT,cy_tco2e_100_yr_gwp,75131.67,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,CNG,Natural gas,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Electricity,Electricity,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Other,Other,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Gasoline,Gasoline,VMT,cy_tco2e_100_yr_gwp,268443.02,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Diesel,Diesel,VMT,cy_tco2e_100_yr_gwp,117119.82,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,CNG,Natural gas,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Electricity,Electricity,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Gasoline,Gasoline,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Diesel,Diesel,VMT,cy_tco2e_100_yr_gwp,1362756.54,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,CNG,Natural gas,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Electricity,Electricity,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Biofuel,Biofuel,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Diesel,Diesel,VMT,cy_tco2e_100_yr_gwp,61694.52,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,CNG,Natural gas,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Gasoline,Gasoline,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,For Hire,For hire vehicles,Gasoline,Gasoline,VMT,cy_tco2e_100_yr_gwp,1280453.84,2005
+GPC,Transportation,For Hire,For hire vehicles,Diesel,Diesel,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,For Hire,For hire vehicles,Electricity,Electricity,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,School Bus,School buses,Gasoline,Gasoline,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,School Bus,School buses,Diesel,Diesel,VMT,cy_tco2e_100_yr_gwp,49463.29,2005
+GPC,Transportation,School Bus,School buses,Electricity,Electricity,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream CNG,Upstream CNG,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Downstream CNG,Downstream CNG,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream CNG,Upstream CNG,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Downstream CNG,Downstream CNG,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream CNG,Upstream CNG,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Downstream CNG,Downstream CNG,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Upstream CNG,Upstream CNG,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Downstream CNG,Downstream CNG,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream Electricity,Upstream Electricity,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,School Bus,School buses,Upstream Electricity,Upstream Electricity,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,For Hire,For hire vehicles,Upstream Electricity,Upstream Electricity,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Buses,Buses,Diesel,Diesel,VMT,cy_tco2e_100_yr_gwp,674530.21,2005
+GPC,Transportation,Buses,Buses,CNG,Natural gas,VMT,cy_tco2e_100_yr_gwp,12532.5,2005
+CLCPA Addition,Transportation,Buses,Buses,Upstream CNG,Upstream CNG,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Buses,Buses,Downstream CNG,Downstream CNG,VMT,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Railways,Railways,Electricity - subway and commuter rail,Electricity,kWh,cy_tco2e_100_yr_gwp,1108101.94,2005
+GPC,Transportation,Railways,Railways,Diesel - commuter rail,Diesel,gallon,cy_tco2e_100_yr_gwp,14233.32,2005
+CLCPA Addition,Transportation,Railways,Railways,Upstream Electricity,Upstream Electricity,kWh,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Marine Navigation,Marine Navigation,Diesel - marine navigation,Marine diesel,gallon,cy_tco2e_100_yr_gwp,50737.18,2005
+GPC,Transportation,Marine Navigation,Marine Navigation,Biofuel,Biofuel,gallon,cy_tco2e_100_yr_gwp,0.0,2005
+GPC,Transportation,Aviation,Aviation,Jet fuel - aviation,Jet fuel,gallon,cy_tco2e_100_yr_gwp,2068.58,2005
+GPC,Waste,Landfills,Landfills,Exported solid waste - landfills,CH4,MT,cy_tco2e_100_yr_gwp,2256528.29,2005
+GPC,Waste,Biological treatment,Biological treatment,CH4 and N2O - composting,CH4 and N2O from composting,MT,cy_tco2e_100_yr_gwp,5098.92,2005
+GPC,Waste,Wastewater treatment,Wastewater treatment,CH4 - wastewater treatment plants,CH4,MT,cy_tco2e_100_yr_gwp,182356.92,2005
+GPC,Waste,Wastewater treatment,Wastewater treatment,N2O - wastewater treatment plants,N2O,MT,cy_tco2e_100_yr_gwp,77978.75,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#2 fuel oil,#2 fuel oil,gallon,cy_source_mmbtu,20439518.9,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#4 fuel oil,#4 fuel oil,gallon,cy_source_mmbtu,11481350.66,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#6 fuel oil,#6 fuel oil,gallon,cy_source_mmbtu,29367681.54,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Biofuel,Biofuel,gallon,cy_source_mmbtu,93016.32,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Electricity,Electricity,kWh,cy_source_mmbtu,123273274.2,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Natural gas,Natural gas,SCF,cy_source_mmbtu,177582187.83,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Steam,Steam,kg,cy_source_mmbtu,6314357.94,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Electricity,Upstream Electricity,kWh,cy_source_mmbtu,123273274.2,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Steam,Upstream Steam,kg,cy_source_mmbtu,6314357.94,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Natural gas,Upstream Natural gas,SCF,cy_source_mmbtu,177582187.83,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Downstream Natural gas,Downstream Natural gas,SCF,cy_source_mmbtu,177582187.83,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#2 fuel oil,#2 fuel oil,gallon,cy_source_mmbtu,11582374.12,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#4 fuel oil,#4 fuel oil,gallon,cy_source_mmbtu,2049176.81,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#6 fuel oil,#6 fuel oil,gallon,cy_source_mmbtu,3603707.85,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Biofuel,Biofuel,gallon,cy_source_mmbtu,23414.83,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Electricity,Electricity,kWh,cy_source_mmbtu,228182597.54,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Natural gas,Natural gas,SCF,cy_source_mmbtu,59389720.15,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Steam,Steam,kg,cy_source_mmbtu,23557550.06,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Electricity,Upstream Electricity,kWh,cy_source_mmbtu,228182597.54,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Steam,Upstream Steam,kg,cy_source_mmbtu,23557550.06,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Natural gas,Upstream Natural gas,SCF,cy_source_mmbtu,59389720.15,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Downstream Natural gas,Downstream Natural gas,SCF,cy_source_mmbtu,59389720.15,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#2 fuel oil,#2 fuel oil,gallon,cy_source_mmbtu,2670218.47,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#4 fuel oil,#4 fuel oil,gallon,cy_source_mmbtu,441502.49,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#6 fuel oil,#6 fuel oil,gallon,cy_source_mmbtu,278271.44,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Biofuel,Biofuel,gallon,cy_source_mmbtu,4156.63,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Electricity,Electricity,kWh,cy_source_mmbtu,76390310.29,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Natural gas,Natural gas,SCF,cy_source_mmbtu,17816916.04,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Steam,Steam,kg,cy_source_mmbtu,7067265.02,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Electricity,Upstream Electricity,kWh,cy_source_mmbtu,76390310.29,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Steam,Upstream Steam,kg,cy_source_mmbtu,7067265.02,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Natural gas,Upstream Natural gas,SCF,cy_source_mmbtu,17816916.04,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Downstream Natural gas,Downstream Natural gas,SCF,cy_source_mmbtu,17816916.04,2005
+GPC,Stationary Energy,Fugitive natural gas,Fugitive,CH4 - natural gas distribution,Fugitive CH4,GJ,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Gasoline,Gasoline,VMT,cy_source_mmbtu,171946107.41,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Diesel,Diesel,VMT,cy_source_mmbtu,1027050.23,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,CNG,Natural gas,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Electricity,Electricity,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Other,Other,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Gasoline,Gasoline,VMT,cy_source_mmbtu,4127988.42,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Diesel,Diesel,VMT,cy_source_mmbtu,1542980.94,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,CNG,Natural gas,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Electricity,Electricity,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Gasoline,Gasoline,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Diesel,Diesel,VMT,cy_source_mmbtu,18831026.43,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,CNG,Natural gas,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Electricity,Electricity,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Biofuel,Biofuel,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Diesel,Diesel,VMT,cy_source_mmbtu,941745.16,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,CNG,Natural gas,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Gasoline,Gasoline,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,For Hire,For hire vehicles,Gasoline,Gasoline,VMT,cy_source_mmbtu,19787676.37,2005
+GPC,Transportation,For Hire,For hire vehicles,Diesel,Diesel,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,For Hire,For hire vehicles,Electricity,Electricity,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,School Bus,School buses,Gasoline,Gasoline,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,School Bus,School buses,Diesel,Diesel,VMT,cy_source_mmbtu,650953.34,2005
+GPC,Transportation,School Bus,School buses,Electricity,Electricity,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream CNG,Upstream CNG,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Downstream CNG,Downstream CNG,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream CNG,Upstream CNG,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Downstream CNG,Downstream CNG,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream CNG,Upstream CNG,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Downstream CNG,Downstream CNG,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Upstream CNG,Upstream CNG,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Downstream CNG,Downstream CNG,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream Electricity,Upstream Electricity,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,School Bus,School buses,Upstream Electricity,Upstream Electricity,VMT,cy_source_mmbtu,0.0,2005
+CLCPA Addition,Transportation,For Hire,For hire vehicles,Upstream Electricity,Upstream Electricity,VMT,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Buses,Buses,Diesel,Diesel,VMT,cy_source_mmbtu,9300446.98,2005
+GPC,Transportation,Buses,Buses,CNG,Natural gas,VMT,cy_source_mmbtu,247859.85,2005
+CLCPA Addition,Transportation,Buses,Buses,Upstream CNG,Upstream CNG,VMT,cy_source_mmbtu,247859.85,2005
+CLCPA Addition,Transportation,Buses,Buses,Downstream CNG,Downstream CNG,VMT,cy_source_mmbtu,247859.85,2005
+GPC,Transportation,Railways,Railways,Electricity - subway and commuter rail,Electricity,kWh,cy_source_mmbtu,19341796.68,2005
+GPC,Transportation,Railways,Railways,Diesel - commuter rail,Diesel,gallon,cy_source_mmbtu,191731.31,2005
+CLCPA Addition,Transportation,Railways,Railways,Upstream Electricity,Upstream Electricity,kWh,cy_source_mmbtu,19341796.68,2005
+GPC,Transportation,Marine Navigation,Marine Navigation,Diesel - marine navigation,Marine diesel,gallon,cy_source_mmbtu,671878.45,2005
+GPC,Transportation,Marine Navigation,Marine Navigation,Biofuel,Biofuel,gallon,cy_source_mmbtu,0.0,2005
+GPC,Transportation,Aviation,Aviation,Jet fuel - aviation,Jet fuel,gallon,cy_source_mmbtu,29875.44,2005
+GPC,Waste,Landfills,Landfills,Exported solid waste - landfills,CH4,MT,cy_source_mmbtu,0.0,2005
+GPC,Waste,Biological treatment,Biological treatment,CH4 and N2O - composting,CH4 and N2O from composting,MT,cy_source_mmbtu,0.0,2005
+GPC,Waste,Wastewater treatment,Wastewater treatment,CH4 - wastewater treatment plants,CH4,MT,cy_source_mmbtu,0.0,2005
+GPC,Waste,Wastewater treatment,Wastewater treatment,N2O - wastewater treatment plants,N2O,MT,cy_source_mmbtu,0.0,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#2 fuel oil,#2 fuel oil,gallon,cy_tco2e_20_yr_gwp,1549279.75,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#4 fuel oil,#4 fuel oil,gallon,cy_tco2e_20_yr_gwp,858049.0,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,#6 fuel oil,#6 fuel oil,gallon,cy_tco2e_20_yr_gwp,2196491.29,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Biofuel,Biofuel,gallon,cy_tco2e_20_yr_gwp,10.14,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Electricity,Electricity,kWh,cy_tco2e_20_yr_gwp,7072258.42,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Natural gas,Natural gas,SCF,cy_tco2e_20_yr_gwp,8992179.12,2005
+GPC,Stationary Energy,Residential (small and large residential),Residential,Steam,Steam,kg,cy_tco2e_20_yr_gwp,332750.46,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Electricity,Upstream Electricity,kWh,cy_tco2e_20_yr_gwp,4456021.92,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Steam,Upstream Steam,kg,cy_tco2e_20_yr_gwp,94468.23,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Upstream Natural gas,Upstream Natural gas,SCF,cy_tco2e_20_yr_gwp,7128793.77,2005
+CLCPA Addition,Stationary Energy,Residential (small and large residential),Residential,Downstream Natural gas,Downstream Natural gas,SCF,cy_tco2e_20_yr_gwp,1015584.67,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#2 fuel oil,#2 fuel oil,gallon,cy_tco2e_20_yr_gwp,877923.68,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#4 fuel oil,#4 fuel oil,gallon,cy_tco2e_20_yr_gwp,153143.49,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,#6 fuel oil,#6 fuel oil,gallon,cy_tco2e_20_yr_gwp,269531.42,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Biofuel,Biofuel,gallon,cy_tco2e_20_yr_gwp,2.55,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Electricity,Electricity,kWh,cy_tco2e_20_yr_gwp,13090966.45,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Natural gas,Natural gas,SCF,cy_tco2e_20_yr_gwp,3007300.49,2005
+GPC,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Steam,Steam,kg,cy_tco2e_20_yr_gwp,1241422.44,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Electricity,Upstream Electricity,kWh,cy_tco2e_20_yr_gwp,8248232.73,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Steam,Upstream Steam,kg,cy_tco2e_20_yr_gwp,352441.22,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Upstream Natural gas,Upstream Natural gas,SCF,cy_tco2e_20_yr_gwp,2384118.99,2005
+CLCPA Addition,Stationary Energy,"Commercial and Institutional (commercial, institutional, and streetlights)",Commercial and Institutional,Downstream Natural gas,Downstream Natural gas,SCF,cy_tco2e_20_yr_gwp,339647.18,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#2 fuel oil,#2 fuel oil,gallon,cy_tco2e_20_yr_gwp,202397.89,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#4 fuel oil,#4 fuel oil,gallon,cy_tco2e_20_yr_gwp,32995.31,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,#6 fuel oil,#6 fuel oil,gallon,cy_tco2e_20_yr_gwp,20812.7,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Biofuel,Biofuel,gallon,cy_tco2e_20_yr_gwp,0.45,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Electricity,Electricity,kWh,cy_tco2e_20_yr_gwp,4382555.9,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Natural gas,Natural gas,SCF,cy_tco2e_20_yr_gwp,902190.15,2005
+GPC,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Steam,Steam,kg,cy_tco2e_20_yr_gwp,372426.73,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Electricity,Upstream Electricity,kWh,cy_tco2e_20_yr_gwp,2761319.51,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Steam,Upstream Steam,kg,cy_tco2e_20_yr_gwp,105732.37,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Upstream Natural gas,Upstream Natural gas,SCF,cy_tco2e_20_yr_gwp,715235.7,2005
+CLCPA Addition,Stationary Energy,Manufacturing and Construction (Industrial),Manufacturing and Construction,Downstream Natural gas,Downstream Natural gas,SCF,cy_tco2e_20_yr_gwp,101894.15,2005
+GPC,Stationary Energy,Fugitive natural gas,Fugitive,CH4 - natural gas distribution,Fugitive CH4,GJ,cy_tco2e_20_yr_gwp,602006.87,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Gasoline,Gasoline,VMT,cy_tco2e_20_yr_gwp,11141873.52,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Diesel,Diesel,VMT,cy_tco2e_20_yr_gwp,75198.33,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,CNG,Natural gas,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Electricity,Electricity,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Passenger cars (public and private),Passenger cars,Other,Other,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Gasoline,Gasoline,VMT,cy_tco2e_20_yr_gwp,268847.53,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Diesel,Diesel,VMT,cy_tco2e_20_yr_gwp,117248.56,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,CNG,Natural gas,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Medium duty trucks (public and private),Medium duty trucks,Electricity,Electricity,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Gasoline,Gasoline,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Diesel,Diesel,VMT,cy_tco2e_20_yr_gwp,1364045.94,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,CNG,Natural gas,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Electricity,Electricity,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Biofuel,Biofuel,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Diesel,Diesel,VMT,cy_tco2e_20_yr_gwp,61743.4,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,CNG,Natural gas,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Refuse Truck (public and private),Refuse trucks,Gasoline,Gasoline,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,For Hire,For hire vehicles,Gasoline,Gasoline,VMT,cy_tco2e_20_yr_gwp,1281774.76,2005
+GPC,Transportation,For Hire,For hire vehicles,Diesel,Diesel,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,For Hire,For hire vehicles,Electricity,Electricity,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,School Bus,School buses,Gasoline,Gasoline,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,School Bus,School buses,Diesel,Diesel,VMT,cy_tco2e_20_yr_gwp,49517.66,2005
+GPC,Transportation,School Bus,School buses,Electricity,Electricity,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream CNG,Upstream CNG,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Downstream CNG,Downstream CNG,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream CNG,Upstream CNG,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Downstream CNG,Downstream CNG,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream CNG,Upstream CNG,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Downstream CNG,Downstream CNG,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Upstream CNG,Upstream CNG,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Refuse Truck (public and private),Refuse trucks,Downstream CNG,Downstream CNG,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Passenger cars (public and private),Passenger cars,Upstream Electricity,Upstream Electricity,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Medium duty trucks (public and private),Medium duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,Heavy duty trucks (public and private),Heavy duty trucks,Upstream Electricity,Upstream Electricity,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,School Bus,School buses,Upstream Electricity,Upstream Electricity,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+CLCPA Addition,Transportation,For Hire,For hire vehicles,Upstream Electricity,Upstream Electricity,VMT,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Buses,Buses,Diesel,Diesel,VMT,cy_tco2e_20_yr_gwp,674663.89,2005
+GPC,Transportation,Buses,Buses,CNG,Natural gas,VMT,cy_tco2e_20_yr_gwp,12535.75,2005
+CLCPA Addition,Transportation,Buses,Buses,Upstream CNG,Upstream CNG,VMT,cy_tco2e_20_yr_gwp,365.84,2005
+CLCPA Addition,Transportation,Buses,Buses,Downstream CNG,Downstream CNG,VMT,cy_tco2e_20_yr_gwp,365.84,2005
+GPC,Transportation,Railways,Railways,Electricity - subway and commuter rail,Electricity,kWh,cy_tco2e_20_yr_gwp,1109649.97,2005
+GPC,Transportation,Railways,Railways,Diesel - commuter rail,Diesel,gallon,cy_tco2e_20_yr_gwp,14291.97,2005
+CLCPA Addition,Transportation,Railways,Railways,Upstream Electricity,Upstream Electricity,kWh,cy_tco2e_20_yr_gwp,699157.79,2005
+GPC,Transportation,Marine Navigation,Marine Navigation,Diesel - marine navigation,Marine diesel,gallon,cy_tco2e_20_yr_gwp,52384.11,2005
+GPC,Transportation,Marine Navigation,Marine Navigation,Biofuel,Biofuel,gallon,cy_tco2e_20_yr_gwp,0.0,2005
+GPC,Transportation,Aviation,Aviation,Jet fuel - aviation,Jet fuel,gallon,cy_tco2e_20_yr_gwp,2068.58,2005
+GPC,Waste,Landfills,Landfills,Exported solid waste - landfills,CH4,MT,cy_tco2e_20_yr_gwp,6567386.99,2005
+GPC,Waste,Biological treatment,Biological treatment,CH4 and N2O - composting,CH4 and N2O from composting,MT,cy_tco2e_20_yr_gwp,10716.95,2005
+GPC,Waste,Wastewater treatment,Wastewater treatment,CH4 - wastewater treatment plants,CH4,MT,cy_tco2e_20_yr_gwp,530730.54,2005
+GPC,Waste,Wastewater treatment,Wastewater treatment,N2O - wastewater treatment plants,N2O,MT,cy_tco2e_20_yr_gwp,77978.75,2005
 GPC,Stationary Energy,Residential (small and large residential),Residential,#2 fuel oil,#2 fuel oil,gallon,cy_2006_consumed,123651982.44,2006
 GPC,Stationary Energy,Residential (small and large residential),Residential,#4 fuel oil,#4 fuel oil,gallon,cy_2006_consumed,65022633.96,2006
 GPC,Stationary Energy,Residential (small and large residential),Residential,#6 fuel oil,#6 fuel oil,gallon,cy_2006_consumed,163766139.67,2006
