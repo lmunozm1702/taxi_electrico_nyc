@@ -86,16 +86,16 @@ def transform_data(df, filename):
     pd.DataFrame: The transformed DataFrame
     """
 
-    melted_df = pd.melt(df, id_vars=['Inventory Type', 'Sectors Sector', 'Category Full', 'Category Label', 'Source Full', 'Source Label', 'Source Units'], var_name='concept', value_name='value')
+    melted_df = pd.melt(df, id_vars=['inventory_type', 'sectors_sector', 'category_full', 'category_label', 'source_full', 'source_label', 'source_units'], var_name='concept', value_name='value')
 
     #Tipos de datos
-    melted_df['Inventory Type'] = melted_df['Inventory Type'].astype('string')
-    melted_df['Sectors Sector'] = melted_df['Sectors Sector'].astype('string')
-    melted_df['Category Full'] = melted_df['Category Full'].astype('string')
-    melted_df['Category Label'] = melted_df['Category Label'].astype('string')
-    melted_df['Source Full'] = melted_df['Source Full'].astype('string')
-    melted_df['Source Label'] = melted_df['Source Label'].astype('string')
-    melted_df['Source Units'] = melted_df['Source Units'].astype('string')
+    melted_df['inventory_type'] = melted_df['inventory_type'].astype('string')
+    melted_df['sectors_sector'] = melted_df['sectors_sector'].astype('string')
+    melted_df['category_full'] = melted_df['category_full'].astype('string')
+    melted_df['category_label'] = melted_df['category_label'].astype('string')
+    melted_df['source_full'] = melted_df['source_full'].astype('string')
+    melted_df['source_label'] = melted_df['source_label'].astype('string')
+    melted_df['source_units'] = melted_df['source_units'].astype('string')
     melted_df['concept'] = melted_df['concept'].astype('string')
     melted_df['value'] = melted_df['value'].astype('float')
 
