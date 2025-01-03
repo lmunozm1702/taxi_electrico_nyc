@@ -1,6 +1,7 @@
 import functions_framework
 import pandas as pd
 import pandas_gbq
+import re
 from datetime import datetime
 from google.cloud import storage
 from google.cloud import bigquery
