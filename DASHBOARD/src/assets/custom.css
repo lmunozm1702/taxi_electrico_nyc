@@ -1,0 +1,23 @@
+body {
+  background-color: #f2f1ec;
+}
+
+[class*='primary'] {
+  color: #365b6d !important;
+}
+
+[class*='secondary'] {
+  color: #41c1b0 !important;
+}
+
+.kpi_card_border {
+  border: 2px solid rgb(54, 91, 109);
+  border-radius: 5px;
+  padding: 0px;
+  margin-bottom: 1rem;
+}
+
+.kpi_card_subtitle {
+  color: #365b6d;
+  font-size: 0.2rem;
+}
