@@ -104,6 +104,30 @@ def transform_data(df):
 
     return df
 
+def calculate_month_dataset(df):
+    """
+    Calculate the month totals of the dataset for vehicle_type column = 'HYB', 'WAV' and 'BEV'
+
+    Args:
+    df (pd.DataFrame): The DataFrame to calculate the month
+
+    Returns:
+    pd.DataFrame: The DataFrame with the month calculated
+    """
+    
+    #Eliminar registros con vehicle_type != ['HYB','WAV','BEV']
+    df = df[df['vehicle_type'].isin(['HYB','WAV','BEV'])]
+
+    #Crear nuevo dataset con la suma de registros agrupados por 'vehicle_type'
+    df_result = df.groupby('vehicle_type').size().reset_index(name='total')
+
+    #agregar columna 'month' al dataset df_result, con el mes del primer registro del dataset original
+    df_result['month'] = df['last_updated_date'].min().month
+    df_result['year'] = df['last_updated_date'].min().year
+    df_result['quarter'] = df['last_updated_date'].min().quarter
+
+    return df_result    
+
 @functions_framework.http
 def etl_inicial_active_medallion_vehicles(request):
     print('**** Iniciando proceso ETL para ACTIVE MEDALLION VEHICLES ****')
@@ -122,7 +146,7 @@ def etl_inicial_active_medallion_vehicles(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/active_medallion_vehicles/2022/2022', max_results=3))                                                   
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/active_medallion_vehicles/2'))                                                   
 
     print(f'Proceso de tipo {process_type}')
 
@@ -132,14 +156,16 @@ def etl_inicial_active_medallion_vehicles(request):
         #Drop table if exists    
         try:
             client.delete_table(table_id, not_found_ok=True)
-            print(f'Tabla {table_id} eliminada')
+            client.delete_table('taxi_historic_data.active_medallion_month_resume', not_found_ok=True)
+            print(f'Tablas {table_id} y taxi_historic_data.active_medallion_month_resume eliminada')
         except Exception:
-            print(f'Tabla {table_id} no existe')
+            print(f'Tablas {table_id} y taxi_historic_data.active_medallion_month_resume no existen')
 
     if process_type == 'incremental':
         df = pd.read_csv(f'gs://ncy-taxi-bucket/{filename}')
         df = transform_data(df)
         result_json[filename] = load_data_to_bigquery(df, client, table_id, filename)
+        result_json['medallion_resume'] = load_data_to_bigquery(calculate_month_dataset(df), client, 'taxi_historic_data.active_medallion_month_resume', 'active_medallion_month_resume')
     else:
         for blob in blobs: 
             #Extract
@@ -148,11 +174,11 @@ def etl_inicial_active_medallion_vehicles(request):
             df = transform_data(df)
             #Load
             result_json[blob.name] = load_data_to_bigquery(df, client, table_id, blob.name)
+            result_json['medallion_resume'] = load_data_to_bigquery(calculate_month_dataset(df), client, 'taxi_historic_data.active_medallion_month_resume', 'active_medallion_month_resume')
 
     print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_vehicles"))}')
     print(f'tiempo de ejecución: {datetime.now() - initial_time}')
     result_json['end_time'] = datetime.now()
-    #result_json['execution_time'] = datetime.now() - initial_time
     result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_vehicles")
 
     return result_json
