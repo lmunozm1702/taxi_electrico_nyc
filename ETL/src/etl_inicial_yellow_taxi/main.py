@@ -113,6 +113,21 @@ def transform_data(df, filename):
     #Imputar 0 en valores nulos de la columna 'congestion_surcharge'
     df['congestion_surcharge'] = df['congestion_surcharge'].fillna(0)
 
+    #Agregar columna 'year' con el año de la columna 'pickup_datetime'
+    df['year'] = df['pickup_datetime'].dt.year
+
+    #Agregar columna 'month' con el mes de la columna 'pickup_datetime'
+    df['month'] = df['pickup_datetime'].dt.month
+
+    #Agregar columna 'day' con el día de la columna 'pickup_datetime'
+    df['day'] = df['pickup_datetime'].dt.day
+
+    #Agregar columna 'weekday' con el día de la semana de la columna 'pickup_datetime'
+    df['weekday'] = df['pickup_datetime'].dt.weekday
+
+    #Agregar columna 'quarter' con el trimestre de la columna 'pickup_datetime'
+    df['quarter'] = df['pickup_datetime'].dt.quarter
+
     #Eliminar duplicados
     df = df.drop_duplicates()
     

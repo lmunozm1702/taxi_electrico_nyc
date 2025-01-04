@@ -94,12 +94,6 @@ def transform_data(df, filename):
     dataset_year = filename.split('/')[-1].split('.')[0].split('_')[-1].split('-')[0]
     df = df[(df['pickup_datetime'].dt.month == int(dataset_month)) & (df['pickup_datetime'].dt.year == int(dataset_year))]
 
-    #Imputar 0 en valores nulos de la columna 'affiliate_base_num'
-    #df['affiliate_base_num'] = df['affiliate_base_num'].fillna(0)
-
-    #Imputar 0 en valores nulos de la columna 'on_scene_date_time'
-    #df['on_scene_date_time'] = df['on_scene_date_time'].fillna(0)
-
     #Agregar columna start_month and start_year
     df['start_month'] = df['pickup_datetime'].dt.month
     df['start_year'] = df['pickup_datetime'].dt.year
@@ -107,26 +101,24 @@ def transform_data(df, filename):
     #Eliminar duplicados
     df = df.drop_duplicates()
 
-    #cambiar valores de columnas booleanas
-    #df['shared_request_flag'] = df['shared_request_flag'].replace({'Y': True, 'N': False})
-    #df['shared_match_flag'] = df['shared_match_flag'].replace({'Y': True, 'N': False})
-    #df['access_a_ride_flag'] = df['access_a_ride_flag'].replace({'Y': True, 'N': False, ' ': False})
-    #df['wav_request_flag'] = df['wav_request_flag'].replace({'Y': True, 'N': False})
-    #df['wav_match_flag'] = df['wav_match_flag'].replace({'Y': True, 'N': False})
+    #Agregar columna 'year' con el año de la columna 'pickup_datetime'
+    df['year'] = df['pickup_datetime'].dt.year
 
-    #Mostrar datos unicos en columna 'acces_a_ride_flag'
-    #print(df['access_a_ride_flag'].unique())
+    #Agregar columna 'month' con el mes de la columna 'pickup_datetime'
+    df['month'] = df['pickup_datetime'].dt.month
 
+    #Agregar columna 'day' con el día de la columna 'pickup_datetime'
+    df['day'] = df['pickup_datetime'].dt.day
+
+    #Agregar columna 'weekday' con el día de la semana de la columna 'pickup_datetime'
+    df['weekday'] = df['pickup_datetime'].dt.weekday
+
+    #Agregar columna 'quarter' con el trimestre de la columna 'pickup_datetime'
+    df['quarter'] = df['pickup_datetime'].dt.quarter
 
     #Tipos de datos
     df['license_num'] = df['license_num'].astype('string')
     df['dispatching_base_num'] = df['dispatching_base_num'].astype('string')
-    #df['affiliate_base_num'] = df['affiliate_base_num'].astype('string')
-    #df['shared_request_flag'] = df['shared_request_flag'].astype('boolean')
-    #df['shared_match_flag'] = df['shared_match_flag'].astype('boolean')
-    #df['access_a_ride_flag'] = df['access_a_ride_flag'].astype('boolean')
-    #df['wav_request_flag'] = df['wav_request_flag'].astype('boolean')
-    #df['wav_match_flag'] = df['wav_match_flag'].astype('boolean')
 
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
