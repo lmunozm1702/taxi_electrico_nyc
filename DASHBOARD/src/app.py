@@ -1,13 +1,11 @@
 import dash
 from dash import dcc
 from dash import html
-
-
 import dash_bootstrap_components as dbc
-
 import pandas as pd
-
 import plotly.graph_objects as go
+from google.cloud import bigquery
+from google.oauth2 import service_account
 
 #funcion para calcular el kpi1
 def render_kpi(kpi_id):
@@ -20,8 +18,8 @@ def render_kpi(kpi_id):
         mode = "number+delta",
         value = value,
         number = {"prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1]},
-        #delta = {"reference": delta, "valueformat": ".0f", "prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1]},
-        delta = {"reference": delta, "prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1], 'relative': True},
+        delta = {"reference": delta, "valueformat": ".0f", "prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1]},
+        #delta = {"reference": delta, "prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1], 'relative': True},
         title = {"text": f"{kpi_titles[kpi_id-1]}<br><span style='font-size:0.7em;color:gray'>{kpi_subtitles[kpi_id-1]}</span>"},
         domain = {'y': [0.15, 0.5], 'x': [0.25, 0.75]}))
 
@@ -34,12 +32,32 @@ def render_kpi(kpi_id):
 
 
 def calculate_kpi(kpi_id):
-    value = 492
-    delta = 489
-    traces = [325, 324, 405, 400, 424, 404, 417, 432, 419, 394, 410, 426, 413, 419, 404, 408, 401, 377, 368, 361, 356, 359, 375, 397, 394, 418, 437, 450, 430, 442, 424, 443, 420, 418, 423, 423, 426, 440, 437, 436, 447, 460, 478, 472, 450, 456, 436, 418, 429, 412, 429, 442, 464, 447, 434, 457, 474, 480, 499, 497, 480, 502, 512, 492]
+    credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-6aa68b6352dd.json')
+    query_job = bigquery.Client(credentials=credentials).query('SELECT year, quarter, month, total FROM `driven-atrium-445021-m2.taxi_historic_data.active_medallion_month_resume` WHERE vehicle_type = \'HYB\' or vehicle_type = \'BEV\'')
+    results = query_job.result().to_dataframe()
+
+    #cuenta los valores distintos en la columna month para el year y month del último registro del dataframe
+    count = results[(results['year'] == results['year'].values[-1]) & (results['quarter'] == results['quarter'].values[-1])]['month'].nunique()
+    #print(count)
+
+    #agrupa los resultados por year y quarter
+    results = results.groupby(['year', 'quarter']).sum().reset_index()
+    #print(results)
+
+    #ordena los resultados por year y quarter
+    results = results.sort_values(by=['year', 'quarter'], ascending=[True, True])
+
+    #selecciona la columna f0_ en una lista
+    traces = results['total'].map(lambda x: x / count).tolist()
+
+    #value es el valor de la columna f0_ para el ultimo registro de los resultados dividido por la cantidad de months en un trimestre
+    value = results['total'].values[-1] / count  
+
+    #delta es el valor de la columna f0_ para el segundo registro de los resultados más el 5%
+    delta = (results['total'].values[-2] / 3) * 1.05
+    #print(value, delta, traces)
+
     return value, delta, traces
-
-
 
 # Load data
 df = pd.read_parquet('../../assets/Datasets/green_tripdata_2024-09.parquet')
