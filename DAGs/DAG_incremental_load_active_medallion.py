@@ -1,9 +1,7 @@
-import json
 import datetime
 import google.auth.transport.requests
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
-from airflow.operators.email_operator import EmailOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.google.common.utils import id_token_credentials as id_token_credential_utils
 from google.auth.transport.requests import AuthorizedSession
