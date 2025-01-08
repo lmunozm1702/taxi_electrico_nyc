@@ -162,7 +162,7 @@ def etl_inicial_green_taxi(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2022/green_tripdata_', max_results=3))    
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2023/green_tripdata_', max_results=3))    
 
     print(f'Proceso de tipo {process_type}')
 
