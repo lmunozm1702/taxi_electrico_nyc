@@ -105,12 +105,8 @@ def transform_data(df, filename):
     df['day_of_month'] = df['date'].dt.day
     #agregar columna 'hour_of_day' 
     df['hour_of_day'] = df['date'].dt.hour
-    df.info()
-
 
     df.drop(columns=['date'], inplace=True)
-
-    df.info()
 
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
