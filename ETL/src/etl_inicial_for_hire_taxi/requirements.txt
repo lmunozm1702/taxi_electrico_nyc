@@ -4,3 +4,4 @@ pandas_gbq
 google-cloud-storage
 google-cloud-bigquery
 datetime
+uuid
