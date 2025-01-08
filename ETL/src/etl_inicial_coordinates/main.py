@@ -91,41 +91,19 @@ def transform_data(df):
 
     #cambiar nombre de columnas
     df.columns = ['zone', 'location_id', 'borough']
+
+    #datatypes
+    df['location_id'] = df['location_id'].astype(int)
+    df['zone'] = df['zone'].astype(str)
+    df['borough'] = df['borough'].astype(str)
     
     #Eliminar duplicados
     df.drop_duplicates(inplace=True)
 
     return df
 
-def calculate_month_dataset(df):
-    """
-    Calculate the month totals of the dataset for vehicle_type column = 'HYB', 'WAV' and 'BEV'
-
-    Args:
-    df (pd.DataFrame): The DataFrame to calculate the month
-
-    Returns:
-    pd.DataFrame: The DataFrame with the month calculated
-    """
-    
-    #Eliminar registros con vehicle_type != ['HYB','WAV','BEV']
-    df = df[df['vehicle_type'].isin(['HYB','WAV','BEV'])]
-
-    #Crear nuevo dataset con la suma de registros agrupados por 'vehicle_type'
-    df_result = df.groupby('vehicle_type').size().reset_index(name='count')    
-
-    #agregar columna 'month' al dataset df_result, con el mes del primer registro del dataset original
-    df_result['month'] = df['last_updated_date'].min().month
-    df_result['year'] = df['last_updated_date'].min().year
-    df_result['quarter'] = df['last_updated_date'].min().quarter
-
-    #regenerar el índice
-    df_result.reset_index(drop=True, inplace=True)
-
-    return df_result    
-
 @functions_framework.http
-def etl_inicial_active_medallion_vehicles(request):
+def etl_inicial_coordinates(request):
     print('**** Iniciando proceso ETL para COORDENADAS ****')
     initial_time = datetime.now()
     process_type = 'initial'
@@ -152,7 +130,7 @@ def etl_inicial_active_medallion_vehicles(request):
     if process_type == 'incremental':
         df = pd.read_csv(f'gs://ncy-taxi-bucket/{filename}')
         df = transform_data(df)
-        result_json[filename] = load_data_to_bigquery(calculate_month_dataset(df), client, 'project_data.coordinates', filename)
+        result_json[filename] = load_data_to_bigquery(df, client, 'project_data.coordinates', filename)
     else:
         for blob in blobs: 
             #Extract
@@ -160,7 +138,7 @@ def etl_inicial_active_medallion_vehicles(request):
             #Transform
             df = transform_data(df)
             #Load
-            result_json[blob.name] = load_data_to_bigquery(calculate_month_dataset(df), client, 'project_data.coordinates', blob.name)
+            result_json[blob.name] = load_data_to_bigquery(df, client, 'project_data.coordinates', blob.name)
 
     print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "project_data", "coordinates"))}')
     print(f'tiempo de ejecución: {datetime.now() - initial_time}')

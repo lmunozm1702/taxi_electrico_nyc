@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `project_data.coordinates`;
 
 CREATE TABLE `project_data.coordinates` (
   `location_id` INT64 NOT NULL,
-  `zone` FLOAT64 NOT NULL,
+  `zone` STRING NOT NULL,
   `borough` STRING NOT NULL,
   PRIMARY KEY (`location_id`) NOT ENFORCED
 );
