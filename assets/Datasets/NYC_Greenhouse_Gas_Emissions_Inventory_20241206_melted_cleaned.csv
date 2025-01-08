@@ -1,4 +1,4 @@
-inventory_type,sectors_sector,category_full,category_label,source_full,source_label,source_units,concept,value,year
+inventory_type,sector,category_full,category_label,source_full,source_label,source_units,concept,value,year
 GPC,Stationary Energy,Residential (small and large residential),Residential,#2 fuel oil,#2 fuel oil,gallon,consumed,146645995.87,2005
 GPC,Stationary Energy,Residential (small and large residential),Residential,#4 fuel oil,#4 fuel oil,gallon,consumed,77860780.31,2005
 GPC,Stationary Energy,Residential (small and large residential),Residential,#6 fuel oil,#6 fuel oil,gallon,consumed,193846082.8,2005
