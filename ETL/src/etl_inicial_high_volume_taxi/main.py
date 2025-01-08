@@ -88,6 +88,9 @@ def transform_data(df, filename):
     """
     #cambiar nombre de columnas
     df.columns = ['pickup_datetime', 'pickup_location_id', 'fare_amount']
+    
+    #eliminar registros con columna 'pickup_location_id' == na
+    df = df.dropna(subset=['pickup_location_id'])
 
     #Eliminar valores que no corresponden al mes y año del dataset
     print(filename)
@@ -96,7 +99,7 @@ def transform_data(df, filename):
     df = df[(df['pickup_datetime'].dt.month == int(dataset_month)) & (df['pickup_datetime'].dt.year == int(dataset_year))]
 
     #agregar uuid integer en columna 'trip_id'
-    df['trip_id'] = uuid.uuid4().int
+    df['trip_id'] = uuid.uuid4()
 
     #agregar columna taxi_type con 'high_volume'
     df['taxi_type'] = 'high_volume'
@@ -124,6 +127,13 @@ def transform_data(df, filename):
 
     #agregar columna 'hour_of_day' 
     df['pickup_hour_of_day'] = df['pickup_datetime'].dt.hour
+
+    #pasar columnas tipo object a string
+    df['trip_id'] = df['pickup_location_id'].astype(str)
+    df['taxi_type'] = df['taxi_type'].astype(str)
+    df['motor_type'] = df['motor_type'].astype(str)
+
+    df.drop(columns=['pickup_datetime'], inplace=True)
 
     #regenerar índice
     df.reset_index(drop=True, inplace=True)

@@ -94,7 +94,7 @@ def transform_data(df, filename):
     df.drop(columns=['dispatching_base_number', 'dropoff_datetime', 'end_location_id', 'sr_flag', 'affiliate_base_num'], inplace=True)
 
     #agregar uuid integer en columna 'trip_id'
-    df['trip_id'] = uuid.uuid4().int
+    df['trip_id'] = uuid.uuid4()
 
     #Convertir a datetime
     df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])    
@@ -136,8 +136,20 @@ def transform_data(df, filename):
     #eliminar columna 'pickup_datetime'
     df.drop(columns=['pickup_datetime'], inplace=True)
 
+    #agregar columna 'fare_amount' = 0
+    df['fare_amount'] = 0
+
+    #eliminar registros con columna 'pickup_location_id' == na
+    df = df.dropna(subset=['pickup_location_id'])
+
     #Eliminar duplicados
     df = df.drop_duplicates()
+
+    df.info()
+    #pasar columnas tipo object a string
+    df['trip_id'] = df['pickup_location_id'].astype(str)
+    df['taxi_type'] = df['taxi_type'].astype(str)
+    df['motor_type'] = df['motor_type'].astype(str)
 
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
