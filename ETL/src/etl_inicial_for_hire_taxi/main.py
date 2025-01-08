@@ -4,6 +4,7 @@ import pandas_gbq
 from datetime import datetime
 from google.cloud import storage
 from google.cloud import bigquery
+import uuid
 
 def format_count(count):
     """
@@ -57,13 +58,13 @@ def load_data_to_bigquery(df, client, table_id, filename):
     filename (str): The filename containing the data
     """
 
-    rows_before_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "for_hire_taxi")
+    rows_before_load = get_table_count("driven-atrium-445021-m2", "project_data", "trips")
     print(f'Registros en tabla for-hire-taxi antes de la carga: {format_count(rows_before_load)}')
     print(f'Insertando {format_count(df.shape[0])} registros desde el Dataset {filename}')
     project_id = 'driven-atrium-445021-m2'
-    table_id = 'taxi_historic_data.for_hire_taxi'
+    table_id = 'project_data.trips'
     pandas_gbq.to_gbq(df, table_id, project_id=project_id, if_exists='append')
-    rows_after_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "for_hire_taxi")
+    rows_after_load = get_table_count("driven-atrium-445021-m2", "project_data", "trips")
     print(f'Registros en tabla for-hire-taxi después de la carga: {format_count(rows_after_load)}')
     print(f'Diferencia cuenta de registros en tabla y registros en dataset: {format_count(rows_after_load - rows_before_load - df.shape[0])}')        
     print('-----------------------------------')
@@ -87,11 +88,16 @@ def transform_data(df, filename):
     """
    
     #cambiar nombre de columnas
-    df.columns = ['dispatching_base_number', 'pickup_datetime', 'dropoff_datetime', 'start_location_id', 'end_location_id', 'sr_flag', 'affiliate_base_num']
+    df.columns = ['dispatching_base_number', 'pickup_datetime', 'dropoff_datetime', 'pickup_location_id', 'end_location_id', 'sr_flag', 'affiliate_base_num']
+
+    #eliminar las columnas 'dispatching_base_number', 'dropoff_datetime', 'end_location_id', 'sr_flag', 'affiliate_base_num'
+    df.drop(columns=['dispatching_base_number', 'dropoff_datetime', 'end_location_id', 'sr_flag', 'affiliate_base_num'], inplace=True)
+
+    #agregar uuid integer en columna 'trip_id'
+    df['trip_id'] = uuid.uuid4().int
 
     #Convertir a datetime
-    df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])
-    df['dropoff_datetime'] = pd.to_datetime(df['dropoff_datetime'])
+    df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])    
     
     #Eliminar valores que no corresponden al mes y año del dataset
     print(filename)
@@ -99,32 +105,39 @@ def transform_data(df, filename):
     dataset_year = filename.split('/')[-1].split('.')[0].split('_')[-1].split('-')[0]
     df = df[(df['pickup_datetime'].dt.month == int(dataset_month)) & (df['pickup_datetime'].dt.year == int(dataset_year))]
 
-    #agregar columnas start_month and start_year
-    df['start_month'] = df['pickup_datetime'].dt.month
-    df['start_year'] = df['pickup_datetime'].dt.year
-        
-    #Eliminar duplicados
-    df = df.drop_duplicates()
+    #agregar columnas pickup_month and pickup_year
+    df['pickup_month'] = df['pickup_datetime'].dt.month
+    df['pickup_year'] = df['pickup_datetime'].dt.year
 
-    #Tipos de datos
-    df['dispatching_base_number'] = df['dispatching_base_number'].astype('string')
-    df['affiliate_base_num'] = df['affiliate_base_num'].astype('string')
-    df['sr_flag'] = df['sr_flag'].astype('boolean')
+    #agregar columna 'taxi_type' con el valor 'for-hire'
+    df['taxi_type'] = 'for-hire'
+
+    #agregar columna 'motor_type' con el valor 'n/a'
+    df['motor_type'] = 'n/a'
 
     #Agregar columna 'year' con el año de la columna 'pickup_datetime'
-    df['year'] = df['pickup_datetime'].dt.year
+    df['pickup_year'] = df['pickup_datetime'].dt.year
 
     #Agregar columna 'month' con el mes de la columna 'pickup_datetime'
-    df['month'] = df['pickup_datetime'].dt.month
+    df['pickup_month'] = df['pickup_datetime'].dt.month
 
     #Agregar columna 'day' con el día de la columna 'pickup_datetime'
-    df['day'] = df['pickup_datetime'].dt.day
+    df['pickup_day_of_month'] = df['pickup_datetime'].dt.day
 
     #Agregar columna 'weekday' con el día de la semana de la columna 'pickup_datetime'
-    df['weekday'] = df['pickup_datetime'].dt.weekday
+    df['pickup_day_of_week'] = df['pickup_datetime'].dt.weekday
+
+    #agregar columna 'pickup_huor_of_day' con el valor de la hora del día en formato 24 horas
+    df['pickup_hour_of_day'] = df['pickup_datetime'].dt.hour    
 
     #Agregar columna 'quarter' con el trimestre de la columna 'pickup_datetime'
-    df['quarter'] = df['pickup_datetime'].dt.quarter
+    df['pickup_quarter'] = df['pickup_datetime'].dt.quarter
+
+    #eliminar columna 'pickup_datetime'
+    df.drop(columns=['pickup_datetime'], inplace=True)
+
+    #Eliminar duplicados
+    df = df.drop_duplicates()
 
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
@@ -141,7 +154,7 @@ def etl_inicial_for_hire_taxi(request):
 
     result_json['process_type'] = process_type
     result_json['start_time'] = initial_time
-    result_json['rows_before_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "for_hire_taxi")
+    result_json['rows_before_load'] = get_table_count("driven-atrium-445021-m2", "project_data", "trips")
 
     if request.args and 'filename' in request.args:
         filename = request.args['filename']
@@ -155,16 +168,8 @@ def etl_inicial_for_hire_taxi(request):
     print(f'Proceso de tipo {process_type}')
 
     client = bigquery.Client('driven-atrium-445021-m2')
-    table_id = 'taxi_historic_data.for_hire_taxi'
-    
-    if process_type == 'initial':
-        #Drop table if exists 
-        try:
-            client.delete_table(table_id, not_found_ok=True)
-            print(f'Tabla {table_id} eliminada')
-        except Exception:
-            print(f'Tabla {table_id} no existe')
-    
+    table_id = 'project_data.trips'
+     
     if process_type == 'incremental':
         df = pd.read_parquet(f'gs://ncy-taxi-bucket/{filename}')
         df = transform_data(df, filename)
@@ -178,10 +183,10 @@ def etl_inicial_for_hire_taxi(request):
             #Load
             result_json[blob.name] = load_data_to_bigquery(df, client, table_id, blob.name)        
 
-    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "for_hire_taxi"))}')
+    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "project_data", "trips"))}')
     print(f'tiempo de ejecución: {datetime.now() - initial_time}')
 
     result_json['end_time'] = datetime.now()
-    result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "for_hire_taxi")
+    result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "project_data", "trips")
 
     return result_json
