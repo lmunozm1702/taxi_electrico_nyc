@@ -89,9 +89,22 @@ def transform_data(df, filename):
 
     melted_df = pd.melt(df, id_vars=['inventory_type', 'sectors_sector', 'category_full', 'category_label', 'source_full', 'source_label', 'source_units'], var_name='concept', value_name='value')
 
-    #Tipos de datos
+    melted_df.columns = ['inventory_type', 'sector', 'category_full', 'category_label', 'source_full', 'source_label', 'source_units', 'concept', 'value']
+
+    melted_df = melted_df[melted_df['inventory_type'] != 'Total']   
+
+    #add column year from concept
+    melted_df['year'] = melted_df['concept'].str.extract(r'(\d{4})')
+
+    #remove the year column value from concept column text
+    melted_df['concept'] = melted_df['concept'].map(lambda x: re.sub(r'cy_\d{4}_', '', x))
+
+    #remove values with 'change' or 'Change' in concept
+    melted_df = melted_df[~melted_df['concept'].str.contains('Change', case=False)]
+
+    #set data types
     melted_df['inventory_type'] = melted_df['inventory_type'].astype('string')
-    melted_df['sectors_sector'] = melted_df['sectors_sector'].astype('string')
+    melted_df['sector'] = melted_df['sector'].astype('string')
     melted_df['category_full'] = melted_df['category_full'].astype('string')
     melted_df['category_label'] = melted_df['category_label'].astype('string')
     melted_df['source_full'] = melted_df['source_full'].astype('string')
@@ -99,26 +112,10 @@ def transform_data(df, filename):
     melted_df['source_units'] = melted_df['source_units'].astype('string')
     melted_df['concept'] = melted_df['concept'].astype('string')
     melted_df['value'] = melted_df['value'].astype('float')
+    melted_df['year'] = melted_df['year'].astype('int')
 
-    #cambiar nombre de columnas
-    melted_df.columns = ['inventory_type', 'sector', 'category_full', 'category_label', 'source_full', 'source_label', 'source_units', 'concept', 'value']
+    melted_df.info()
 
-    #Eliminar valores con 'Total' en columna 'inventory_type'
-    melted_df = melted_df[melted_df['inventory_type'] != 'Total']
-
-    #Agregar columna year extraida de 'concept'
-    melted_df['year'] = melted_df['concept'].str.extract(r'(\d{4})')
-
-    #Elimina texto '_{year}' en columna 'concept'    
-    melted_df['concept'] = melted_df['concept'].map(lambda x: re.sub(r'cy_\d{4}_', '', x))
-
-    #eliminar valores que contengan 'Change' o 'change' en columna 'concept'
-    melted_df = melted_df[~melted_df['concept'].str.contains('Change')]
-    melted_df = melted_df[~melted_df['concept'].str.contains('change')]
-
-    #Eliminar duplicados
-    melted_df = melted_df.drop_duplicates()
-    
     return melted_df
 
 @functions_framework.http
