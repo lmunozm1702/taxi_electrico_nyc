@@ -58,13 +58,13 @@ def load_data_to_bigquery(df, client, table_id, filename):
     """
 
     table_id = 'project_data.active_vehicles_count'
-    rows_before_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", 'active_medallion_month_resume')
+    rows_before_load = get_table_count("driven-atrium-445021-m2", "project_data", 'active_vehicles_count')
     print(f'Registros en tabla {table_id} antes de la carga: {format_count(rows_before_load)}')
     
     print(f'Insertando {format_count(df.shape[0])} registros desde el Dataset {filename}')
     project_id = 'driven-atrium-445021-m2'
     pandas_gbq.to_gbq(df, table_id, project_id=project_id, if_exists='append')
-    rows_after_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", 'active_medallion_month_resume')
+    rows_after_load = get_table_count("driven-atrium-445021-m2", "project_data", 'active_vehicles_count')
     print(f'Registros en tabla {table_id} después de la carga: {format_count(rows_after_load)}')
     print(f'Diferencia cuenta de registros en tabla y registros en dataset: {format_count(rows_after_load - rows_before_load - df.shape[0])}')        
     print('-----------------------------------')
@@ -142,7 +142,7 @@ def etl_inicial_active_medallion_vehicles(request):
 
     result_json['process_type'] = process_type
     result_json['start_time'] = initial_time
-    result_json['rows_before_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_month_resume")
+    result_json['rows_before_load'] = get_table_count("driven-atrium-445021-m2", "project_data", "active_vehicles_count")
 
     if request.args and 'filename' in request.args:
         filename = request.args['filename']
@@ -171,9 +171,9 @@ def etl_inicial_active_medallion_vehicles(request):
             #Load
             result_json[blob.name] = load_data_to_bigquery(calculate_month_dataset(df), client, 'project_data.active_vehicles_count', blob.name)
 
-    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_month_resume"))}')
+    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "project_data", "active_vehicles_count"))}')
     print(f'tiempo de ejecución: {datetime.now() - initial_time}')
     result_json['end_time'] = datetime.now()
-    result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "active_medallion_month_resume")
+    result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "project_data", "active_vehicles_count")
 
     return result_json
