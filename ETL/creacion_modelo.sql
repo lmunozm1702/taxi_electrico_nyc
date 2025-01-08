@@ -33,7 +33,7 @@ CREATE TABLE `project_data.weather` (
 DROP TABLE IF EXISTS `project_data.trips`;
 
 CREATE TABLE `project_data.trips` (
-  `trip_id` INT64 NOT NULL,
+  `trip_id` STRING NOT NULL,
   `taxi_type` STRING NOT NULL,
   `motor_type` STRING NOT NULL,
   `pickup_location_id` INT64 NOT NULL,  
