@@ -90,7 +90,7 @@ def transform_data(df, filename):
     df.dropna(inplace=True)
 
     #cambiar nombre de columnas
-    df.columns = ['location_id', 'date', 'temperature', 'relative_humidity', 'dew_point', 'apparent_temperature', 'rain', 'snowfall', 'weather_code', 'pressure_msl', 'cloud_cover', 'wind_speed', 'wind_direction', 'wind_gusts_10']
+    df.columns = ['location_id', 'date', 'temperature', 'relative_humidity', 'dew_point', 'apparent_temperature', 'rain', 'snowfall', 'weather_code', 'pressure_msl', 'cloud_cover', 'wind_speed', 'wind_direction', 'wind_gusts']
     df.drop(columns=['rain', 'snowfall'], inplace=True)
 
     df['date'] = pd.to_datetime(df['date'])
@@ -130,7 +130,7 @@ def etl_inicial_weather(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/weather/weather', max_results=3))    
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/weather/raw', max_results=3))    
 
     print(f'Proceso de tipo {process_type}')
 
@@ -138,13 +138,13 @@ def etl_inicial_weather(request):
     table_id = 'project_data.weather'
     
     if process_type == 'incremental':
-        df = pd.read_parquet(f'gs://ncy-taxi-bucket/{filename}')
+        df = pd.read_csv(f'gs://ncy-taxi-bucket/{filename}', skiprows=7)
         df = transform_data(df, filename)
         result_json[filename] = load_data_to_bigquery(df, client, table_id, filename)
     else:
         for blob in blobs: 
             #Extract
-            df = pd.read_parquet(f'gs://ncy-taxi-bucket/{blob.name}')       
+            df = pd.read_csv(f'gs://ncy-taxi-bucket/{blob.name}', skiprows=7)       
             #Transform
             df = transform_data(df, blob.name)        
             #Load
