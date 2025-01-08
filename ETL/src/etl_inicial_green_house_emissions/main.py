@@ -58,13 +58,13 @@ def load_data_to_bigquery(df, client, table_id, filename):
     filename (str): The filename containing the data
     """
 
-    rows_before_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "green_house_emissions")
+    rows_before_load = get_table_count("driven-atrium-445021-m2", "project_data", "emissions")
     print(f'Registros en tabla green-house-emissions antes de la carga: {format_count(rows_before_load)}')
     print(f'Insertando {format_count(df.shape[0])} registros desde el Dataset {filename}')
     project_id = 'driven-atrium-445021-m2'
-    table_id = 'taxi_historic_data.green_house_emissions'
+    table_id = 'project_data.emissions'
     pandas_gbq.to_gbq(df, table_id, project_id=project_id, if_exists='append')
-    rows_after_load = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "green_house_emissions")
+    rows_after_load = get_table_count("driven-atrium-445021-m2", "project_data", "emissions")
     print(f'Registros en tabla green-house-emissions después de la carga: {format_count(rows_after_load)}')
     print(f'Diferencia cuenta de registros en tabla y registros en dataset: {format_count(rows_after_load - rows_before_load - df.shape[0])}')        
     print('-----------------------------------')
@@ -130,7 +130,7 @@ def etl_inicial_green_house_emissions(request):
 
     result_json['process_type'] = process_type
     result_json['start_time'] = initial_time
-    result_json['rows_before_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "green_house_emissions")
+    result_json['rows_before_load'] = get_table_count("driven-atrium-445021-m2", "project_data", "emissions")
 
     if request.args and 'filename' in request.args:
         filename = request.args['filename']
@@ -144,15 +144,7 @@ def etl_inicial_green_house_emissions(request):
     print(f'Proceso de tipo {process_type}')
 
     client = bigquery.Client('driven-atrium-445021-m2')
-    table_id = 'taxi_historic_data.green_house_emissions'
-    
-    if process_type == 'initial':
-        #Drop table if exists 
-        try:
-            client.delete_table(table_id, not_found_ok=True)
-            print(f'Tabla {table_id} eliminada')
-        except Exception:
-            print(f'Tabla {table_id} no existe')
+    table_id = 'tproject_data.emissions'
     
     if process_type == 'incremental':
         df = pd.read_csv(f'gs://ncy-taxi-bucket/{filename}')
@@ -167,10 +159,10 @@ def etl_inicial_green_house_emissions(request):
             #Load
             result_json[blob.name] = load_data_to_bigquery(df, client, table_id, blob.name)        
 
-    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "green_house_emissions"))}')
+    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "project_data", "emissions"))}')
     print(f'tiempo de ejecución: {datetime.now() - initial_time}')
 
     result_json['end_time'] = datetime.now()
-    result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "taxi_historic_data", "green_house_emissions")
+    result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "project_data", "emissions")
 
     return result_json
