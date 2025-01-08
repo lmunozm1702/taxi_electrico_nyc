@@ -135,7 +135,6 @@ def transform_data(df, filename):
 
     df.drop(columns=['pickup_datetime'], inplace=True)
 
-    df.info()
 
     #regenerar índice
     df.reset_index(drop=True, inplace=True)

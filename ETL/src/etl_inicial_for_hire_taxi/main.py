@@ -145,7 +145,6 @@ def transform_data(df, filename):
     #Eliminar duplicados
     df = df.drop_duplicates()
 
-    df.info()
     #pasar columnas tipo object a string
     df['trip_id'] = df['pickup_location_id'].astype(str)
     df['taxi_type'] = df['taxi_type'].astype(str)
@@ -154,7 +153,6 @@ def transform_data(df, filename):
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
     
-    print(df.info())
     return df
 
 @functions_framework.http
