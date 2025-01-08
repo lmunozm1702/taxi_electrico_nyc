@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "driven-atrium-445021-m2",
+  "private_key_id": "6aa68b6352dda6e41792398110da5a1121b6aa67",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC86EGqC+akIMr6\n9f1HzeP2NbO0qjIA05BMsJhtxYhKA05P+fW5LqBK3jynccIS9wZ6gjbxE9MA6mR1\nRqQg4+XtQprlmU5sSnSWzV+Zgm0RDW8evx+gZeV8anc+UTu6KO8MWFnLXXCdJDSp\n04cnPdCiK6e5ASfJbEUAF6f2I5BJAAfwIp+pYliR6PjVC8J4UNFx0dT2GB3SL5zw\nl5mRuBRgERK6LxaLPskC5HVCT+aRaOEimlGzajSVO47u6494QdrGjn9PfFXc+WpD\nEshLl7sKs0Kf36QxyNUtN3KO0AqrLlA3sHoGCsxD3xz84cKQOqKVZJsakXZKL+56\nOnE7oAwtAgMBAAECggEAEyT/mJ3lpS8MmyPoZAlF58sX+ACCmkpWlqsT+5X4ArY0\njs7gfACxbnz4zShueHEP90Twj/yIFxDqFueOlSW7hNDJ9WhUxg1CpRDRtjM9XevM\nXeOVLzJ8cCAzDv35DVv+I/RlP0KsOcS0UJy3Fv9BAFpnwExRbaybDpAXLc77XaZm\nTg0D/4CpLWYjj9G5oLbLyKE8SPvMa4Gep6HyGSIPFULM/16Z6rtn1XdikXB24TSM\nonEYBIniGH+Cklq24FHq1SWvHdMy5mktKtO/nyHbc16dovrcLfPwPLKmbxJhK8V2\n3sXoL4aVUr5zn8kh+YvDwiytuTFNtvVjISn/nmzcGQKBgQDjj+eE8OO7jZ42SlBo\nyZbcQY1LouZbovWkox2B/txLFH8g4n3EQ6hk2Poal38584u2Kywi/mWRQr6Cc4NE\nqQQfyfT0ZwAV3e0XIP9YE9fZuI8qpsNtHx1UOOdpy40nA5qS3ZBim2kWMuMkYjH5\neXci5VCWCIZyvFKrmGdJC8se6QKBgQDUg7e0rykp82g87jjmZkugH+onZTXi72fU\nxkoWEUH6QMq4QsOlz6A8mmrIGcDZaubbs3VzFrsq9p1YksEKaSVYbVSz0AvAH0Sd\nheOWfyJKIffOaHbRAX53oY2h12/Io5ebnenmbfv6QefE/A7uXSBSBmtYZed61oGc\nFyLOmBggpQKBgHXoaThbrFPQlApjRPiWgyFKodBv7lXKwOZ2UeK6UCBi1WAPmsSn\nncfrGOPQXW6Ef357LhpPoAa9A4MKIRjhTi6+cLp15/hsjd0vDr7vQSchVqTt1VJk\nDclG1rjdbByr5Fp2jMpa5f9HjKOccXJm+lDNaozii+9FHrykcdfKUYuJAoGAKIbd\n97UXsoparJP5geasMWMkslKYzig9stQFuOOdo23LuwvwZ6SKuEPybSqMHmpGkEtO\n8J27H9xb8VI7QhL/LjfbWVcphn/wA+JOnpqsHVsQ+OnvDrisN4A1lFGTXb3k4aZh\nvrHmxbjfzC8NYeOckEftHLSCSmix2uSGnMNghokCgYEAvyU7b+Renl/9mqwVLEiQ\ngQB1UUlgv+HrBw4s/VHYA0byxfNsBg+VA32jesZm/SPb9/aFDh7rMZXiEpynHEXw\nnsW9c02QNlX1R2C4vehQ/eETMMBrN+zAQ+tVsLh4XqpGBcy3HFjPGfi9sFpkqMnj\nmhRdBLJMag+ag5J+5SCsobk=\n-----END PRIVATE KEY-----\n",
+  "client_email": "bigquery-from-python@driven-atrium-445021-m2.iam.gserviceaccount.com",
+  "client_id": "104719050607538609401",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bigquery-from-python%40driven-atrium-445021-m2.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
