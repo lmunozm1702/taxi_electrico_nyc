@@ -5,7 +5,7 @@ on:
     branches:
       - development
     paths:
-      - ETL/src/etl_inicial_coordinates/**
+      - ETL/src/etl_inicial_weather/**
 jobs:
   deploy:
     runs-on: ubuntu-latest
