@@ -86,11 +86,10 @@ def transform_data(df, filename):
     pd.DataFrame: The transformed DataFrame
     """
 
-    #cambiar nombre de columnas
-    
     #remove na
     df.dropna(inplace=True)
 
+    #cambiar nombre de columnas
     df.columns = ['location_id', 'date', 'temperature', 'relative_humidity', 'dew_point', 'apparent_temperature', 'rain', 'snowfall', 'weather_code', 'pressure_msl', 'cloud_cover', 'wind_speed', 'wind_direction', 'wind_gusts_10']
     df.drop(columns=['rain', 'snowfall'], inplace=True)
 
