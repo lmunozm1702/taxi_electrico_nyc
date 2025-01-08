@@ -4,7 +4,6 @@ import pandas_gbq
 from datetime import datetime
 from google.cloud import storage
 from google.cloud import bigquery
-import uuid
 
 def format_count(count):
     """
@@ -58,14 +57,14 @@ def load_data_to_bigquery(df, client, table_id, filename):
     filename (str): The filename containing the data
     """
 
-    rows_before_load = get_table_count("driven-atrium-445021-m2", "project_data", "trips")
-    print(f'Registros en tabla green-taxi antes de la carga: {format_count(rows_before_load)}')
+    rows_before_load = get_table_count("driven-atrium-445021-m2", "project_data", "weather")
+    print(f'Registros en tabla WEATHER antes de la carga: {format_count(rows_before_load)}')
     print(f'Insertando {format_count(df.shape[0])} registros desde el Dataset {filename}')
     project_id = 'driven-atrium-445021-m2'
-    table_id = 'project_data.trips'
+    table_id = 'project_data.weather'
     pandas_gbq.to_gbq(df, table_id, project_id=project_id, if_exists='append')
-    rows_after_load = get_table_count("driven-atrium-445021-m2", "project_data", "trips")
-    print(f'Registros en tabla TRIPS después de la carga: {format_count(rows_after_load)}')
+    rows_after_load = get_table_count("driven-atrium-445021-m2", "project_data", "weather")
+    print(f'Registros en tabla weather después de la carga: {format_count(rows_after_load)}')
     print(f'Diferencia cuenta de registros en tabla y registros en dataset: {format_count(rows_after_load - rows_before_load - df.shape[0])}')        
     print('-----------------------------------')
 
@@ -88,72 +87,46 @@ def transform_data(df, filename):
     """
 
     #cambiar nombre de columnas
-    df.columns = ['vendor_id', 'pickup_datetime', 'dropoff_datetime', 'store_and_forward_flag', 'rate_code_id', 'pickup_location_id', 'end_location_id', 'passenger_count', 'trip_distance', 'fare_amount', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'ehail_fee', 'improvement_surcharge', 'total_amount', 'payment_type', 'trip_type', 'congestion_surcharge']
+    
+    #remove na
+    df.dropna(inplace=True)
 
-    df.drop(columns=['vendor_id', 'dropoff_datetime', 'store_and_forward_flag', 'rate_code_id', 'end_location_id', 'passenger_count', 'trip_distance', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'ehail_fee', 'improvement_surcharge', 'total_amount', 'payment_type', 'trip_type', 'congestion_surcharge'], inplace=True)
+    df.columns = ['location_id', 'date', 'temperature', 'relative_humidity', 'dew_point', 'apparent_temperature', 'rain', 'snowfall', 'weather_code', 'pressure_msl', 'cloud_cover', 'wind_speed', 'wind_direction', 'wind_gusts_10']
+    df.drop(columns=['rain', 'snowfall'], inplace=True)
 
-    #eliminar registros con columna 'pickup_location_id' == na
-    df = df.dropna(subset=['pickup_location_id'])
-
-    #Eliminar valores que no corresponden al mes y año del dataset
-    print(filename)
-    dataset_month = filename.split('/')[-1].split('.')[0].split('_')[-1].split('-')[1]
-    dataset_year = filename.split('/')[-1].split('.')[0].split('_')[-1].split('-')[0]
-    df = df[(df['pickup_datetime'].dt.month == int(dataset_month)) & (df['pickup_datetime'].dt.year == int(dataset_year))]
-
-    #agregar uuid integer en columna 'trip_id'
-    df['trip_id'] = uuid.uuid4()
-
-    #agregar columna taxi_type con 'high_volume'
-    df['taxi_type'] = 'green'
-
-    #agregar columna 'motor_type' con 'n/a'
-    df['motor_type'] = 'n/a'
-
-    #Eliminar duplicados
-    df = df.drop_duplicates()
+    df['date'] = pd.to_datetime(df['date'])
+    df['location_id'] = df['location_id'] + 1
 
     #Agregar columna 'year' con el año de la columna 'pickup_datetime'
-    df['pickup_year'] = df['pickup_datetime'].dt.year
-
-    #Agregar columna 'month' con el mes de la columna 'pickup_datetime'
-    df['pickup_month'] = df['pickup_datetime'].dt.month
-
-    #Agregar columna 'day' con el día de la columna 'pickup_datetime'
-    df['pickup_day_of_month'] = df['pickup_datetime'].dt.day
-
-    #Agregar columna 'weekday' con el día de la semana de la columna 'pickup_datetime'
-    df['pickup_day_of_week'] = df['pickup_datetime'].dt.weekday
-
-    #Agregar columna 'quarter' con el trimestre de la columna 'pickup_datetime'
-    df['pickup_quarter'] = df['pickup_datetime'].dt.quarter
-
+    df['year'] = df['date'].dt.year
+    #Agregar columna 'month' con el mes de la columna 'date'
+    df['month'] = df['date'].dt.month
+    #Agregar columna 'day' con el día de la columna 'date'
+    df['day_of_month'] = df['date'].dt.day
     #agregar columna 'hour_of_day' 
-    df['pickup_hour_of_day'] = df['pickup_datetime'].dt.hour
+    df['hour_of_day'] = df['date'].dt.hour
+    df.info()
 
-    #pasar columnas tipo object a string
-    df['trip_id'] = df['pickup_location_id'].astype(str)
-    df['taxi_type'] = df['taxi_type'].astype(str)
-    df['motor_type'] = df['motor_type'].astype(str)
 
-    df.drop(columns=['pickup_datetime'], inplace=True)
+    df.drop(columns=['date'], inplace=True)
+
+    df.info()
 
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
-
     
     return df
 
 @functions_framework.http
-def etl_inicial_green_taxi(request):
-    print('**** Iniciando proceso ETL para GREEN TAXI ****')
+def etl_inicial_weather(request):
+    print('**** Iniciando proceso ETL para WEATHER ****')
     initial_time = datetime.now()
     process_type = 'initial'
     result_json = {}
 
     result_json['process_type'] = process_type
     result_json['start_time'] = initial_time
-    result_json['rows_before_load'] = get_table_count("driven-atrium-445021-m2", "project_data", "trips")
+    result_json['rows_before_load'] = get_table_count("driven-atrium-445021-m2", "project_data", "weather")
 
     if request.args and 'filename' in request.args:
         filename = request.args['filename']
@@ -162,12 +135,12 @@ def etl_inicial_green_taxi(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2023/green_tripdata_', max_results=3))    
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/weather/weather', max_results=3))    
 
     print(f'Proceso de tipo {process_type}')
 
     client = bigquery.Client('driven-atrium-445021-m2')
-    table_id = 'project_data.trips'
+    table_id = 'project_data.weather'
     
     if process_type == 'incremental':
         df = pd.read_parquet(f'gs://ncy-taxi-bucket/{filename}')
@@ -182,10 +155,10 @@ def etl_inicial_green_taxi(request):
             #Load
             result_json[blob.name] = load_data_to_bigquery(df, client, table_id, blob.name)        
 
-    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "project_data", "trips"))}')
+    print(f'Proceso terminado, total registros cargados en BigQuery: {format_count(get_table_count("driven-atrium-445021-m2", "project_data", "weather"))}')
     print(f'tiempo de ejecución: {datetime.now() - initial_time}')
 
     result_json['end_time'] = datetime.now()
-    result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "project_data", "trips")
+    result_json['rows_after_load'] = get_table_count("driven-atrium-445021-m2", "project_data", "weather")
 
     return result_json

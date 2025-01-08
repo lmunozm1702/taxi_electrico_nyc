@@ -10,7 +10,7 @@ CREATE TABLE `project_data.coordinates` (
 DROP TABLE IF EXISTS `project_data.weather`;
 
 CREATE TABLE `project_data.weather` (
-  `borough` STRING NOT NULL,
+  `location_id` INT64 NOT NULL,
   `year` INT64 NOT NULL,
   `month` INT64 NOT NULL,
   `day_of_month` INT64 NOT NULL,
@@ -19,15 +19,13 @@ CREATE TABLE `project_data.weather` (
   `relative_humidity` FLOAT64 NOT NULL,
   `dew_point` FLOAT64 NOT NULL,
   `apparent_temperature` FLOAT64 NOT NULL,
-  `rain` FLOAT64 NOT NULL,
-  `snowfall` FLOAT64 NOT NULL,
   `weather_code` FLOAT64 NOT NULL,
   `pressure_msl` FLOAT64 NOT NULL,
   `cloud_cover` FLOAT64 NOT NULL,
   `wind_speed` FLOAT64 NOT NULL,
   `wind_direction` FLOAT64 NOT NULL,
   `wind_gusts` FLOAT64 NOT NULL,
-  PRIMARY KEY (`borough`, `year`, `month`, `day_of_month`, `hour_of_day`) NOT ENFORCED,  
+  PRIMARY KEY (`location_id`, `year`, `month`, `day_of_month`, `hour_of_day`) NOT ENFORCED,  
 );
 
 DROP TABLE IF EXISTS `project_data.trips`;

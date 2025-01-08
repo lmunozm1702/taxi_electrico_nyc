@@ -86,7 +86,6 @@ def transform_data(df, filename):
     pd.DataFrame: The transformed DataFrame
     """
 
-    df.info()
 
     #Cambiar nombre de columnas
     df.columns = ['unique_id', 'indicator_id', 'name', 'measure', 'measure_info', 'geo_type_name', 'geo_join_id', 'geo_place_name', 'time_period', 'start_date', 'data_value']

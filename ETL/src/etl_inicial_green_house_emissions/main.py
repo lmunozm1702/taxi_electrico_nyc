@@ -114,7 +114,6 @@ def transform_data(df, filename):
     melted_df['value'] = melted_df['value'].astype('float')
     melted_df['year'] = melted_df['year'].astype('int')
 
-    melted_df.info()
 
     return melted_df
 
