@@ -69,7 +69,7 @@ def invoke_function(**kwargs):
     request = google.auth.transport.requests.Request()  #this is a request for obtaining the the credentials
     id_token_credentials = id_token_credential_utils.get_default_id_token_credentials(url, request=request) # If your cloud function url has query parameters, remove them before passing to the audience 
 
-    resp = AuthorizedSession(id_token_credentials).request("GET", url=url, params=kwargs['params']) # the authorized session object is used to access the Cloud Function
+    resp = AuthorizedSession(id_token_credentials).request("GET", url=url, timeout=210, params=kwargs['params']) # the authorized session object is used to access the Cloud Function
 
 
 with DAG(nameDAG,
@@ -108,9 +108,9 @@ with DAG(nameDAG,
                             )
     
     transform_load_hvfhv_taxi = PythonOperator(task_id='transform_load_hvfhv_taxi',
+                                execution_timeout=datetime.timedelta(minutes=3),
                                 provide_context=True,
                                 python_callable=invoke_function,
-                                execution_timeout=datetime.timedelta(minutes=4),
                                 op_kwargs=kwargs_transform_hvfhv_taxi
                             )
 
