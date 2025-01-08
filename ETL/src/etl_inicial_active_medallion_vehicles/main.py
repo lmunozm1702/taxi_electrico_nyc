@@ -156,8 +156,7 @@ def etl_inicial_active_medallion_vehicles(request):
 
     print(f'Proceso de tipo {process_type}')
 
-    client = bigquery.Client('driven-atrium-445021-m2')
-    table_id = 'project_data.active_vehicles_count'
+    client = bigquery.Client('driven-atrium-445021-m2')    
     
     if process_type == 'incremental':
         df = pd.read_csv(f'gs://ncy-taxi-bucket/{filename}')
