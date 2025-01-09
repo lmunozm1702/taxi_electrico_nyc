@@ -86,6 +86,30 @@ def calculate_kpi(kpi_id):
 
         return value, delta, traces    
 
+def calculate_correlaciones():
+    credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
+    query_job = bigquery.Client(
+        credentials=credentials).query(
+            'SELECT pickup_day_of_week, borough FROM `driven-atrium-445021-m2.project_data.trips` AS trips INNER JOIN `driven-atrium-445021-m2.project_data.coordinates` AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE pickup_year = 2023')
+    results = query_job.result().to_dataframe()
+    viajes = results.groupby(['pickup_day_of_week', 'borough']).size().reset_index(name='amount')
+    return viajes
+
+def update_graph():
+    viajes = calculate_correlaciones()
+    # Crear el gráfico de dispersión
+    fig = px.scatter(
+        viajes,
+        x='borough',
+        y='pickup_day_of_week',
+        size='amount',
+        title='Cantidad de Viajes por Día en función de los Boroughs'
+    )
+    # Invertir el orden del eje y para que Monday esté más arriba y Sunday más abajo
+    #fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=dias_semana_en[::-1]))
+    
+    return fig
+
 # Load external stylesheets BOOTSTRAP and Google Fonts Montserrat
 external_stylesheets = [dbc.themes.BOOTSTRAP, {
                           "href": "https://fonts.googleapis.com/css2?"
@@ -97,12 +121,6 @@ external_stylesheets = [dbc.themes.BOOTSTRAP, {
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.title = 'NYC Taxi Dashboard'
-
-# Graficos
-
-# Primer Grafico: 
-
-
 
 # Define the layout with bootstrap components, 1 left sidebar using col-3 and main content using col-9
 app.layout = html.Div([
@@ -139,7 +157,7 @@ app.layout = html.Div([
             ]),
             dbc.Row([
                 dbc.Col([
-                    html.H2('Cantidad de Viajes por Borough separados por Día de la Semana', className='text-primary border border-primary'),
+                    html.H2(dcc.Graph(figure=update_graph()), className='text-primary border border-primary'),
                 ], width=5),
                 dbc.Col([
                     html.H2('Gráfico 2', className='text-primary border border-primary'),
@@ -151,6 +169,8 @@ app.layout = html.Div([
         ], width=9)
     ])
 ], className='container-fluid my-4')
+
+
 
 # Run the app
 if __name__ == '__main__':
