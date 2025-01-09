@@ -1,3 +1,6 @@
+import requests
+import json
+
 import dash
 from dash import dcc
 from dash import html
@@ -6,6 +9,8 @@ import pandas as pd
 import plotly.graph_objects as go
 from google.cloud import bigquery
 from google.oauth2 import service_account
+import plotly.express as px
+from dash.dependencies import Input, Output
 
 #funcion para calcular el kpi1
 def render_kpi(kpi_id):
@@ -32,7 +37,7 @@ def render_kpi(kpi_id):
 
 
 def calculate_kpi(kpi_id):
-    credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-6aa68b6352dd.json')
+    credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
 
     if kpi_id == 1:
         query_job = bigquery.Client(credentials=credentials).query('SELECT year, quarter, month, count FROM `driven-atrium-445021-m2.project_data.active_vehicles_count` WHERE vehicle_type = \'HYB\' or vehicle_type = \'BEV\'')
@@ -93,11 +98,23 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.title = 'NYC Taxi Dashboard'
 
+# Graficos
+
+# Primer Grafico: 
+
+
+
 # Define the layout with bootstrap components, 1 left sidebar using col-3 and main content using col-9
 app.layout = html.Div([
     dbc.Row([
         dbc.Col([
-            html.H2('Filtros', className='text-secondary text-center'),            
+            html.H2('Filtros', className='text-secondary text-center'), 
+            html.Label('Año: '), 
+            dcc.Dropdown(
+                id='year-dropdown',  
+                multi=True, 
+                placeholder="Selecciona un año"
+            )
         ], width=3),
         dbc.Col([
             dbc.Row([
@@ -116,7 +133,7 @@ app.layout = html.Div([
             ]),
             dbc.Row([
                 dbc.Col([
-                    html.H2('Gráfico 1', className='text-primary border border-primary'),
+                    html.H2('Cantidad de Viajes por Borough separados por Día de la Semana', className='text-primary border border-primary'),
                 ], width=5),
                 dbc.Col([
                     html.H2('Gráfico 2', className='text-primary border border-primary'),
