@@ -1,6 +1,3 @@
-import requests
-import json
-
 import dash
 from dash import dcc
 from dash import html
@@ -10,7 +7,6 @@ import plotly.graph_objects as go
 from google.cloud import bigquery
 from google.oauth2 import service_account
 import plotly.express as px
-from dash.dependencies import Input, Output
 
 #funcion para calcular el kpi1
 def render_kpi(kpi_id):
@@ -90,9 +86,14 @@ def calculate_correlaciones():
     credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
     query_job = bigquery.Client(
         credentials=credentials).query(
-            'SELECT pickup_day_of_week, borough FROM `driven-atrium-445021-m2.project_data.trips` AS trips INNER JOIN `driven-atrium-445021-m2.project_data.coordinates` AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE pickup_year = 2023')
+            '''
+            SELECT coordinates.borough, pickup_day_of_week, count(*) as cantidad  FROM project_data.trips as trips
+            INNER JOIN project_data.coordinates as coordinates ON trips.pickup_location_id = coordinates.location_id
+            group by coordinates.borough, pickup_day_of_week
+            ''')
     results = query_job.result().to_dataframe()
     viajes = results.groupby(['pickup_day_of_week', 'borough']).size().reset_index(name='amount')
+
     return viajes
 
 def update_graph():
