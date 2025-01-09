@@ -114,7 +114,13 @@ app.layout = html.Div([
                 id='year-dropdown',  
                 multi=True, 
                 placeholder="Selecciona un año"
-            )
+            ), 
+            html.Label('Tipo de Taxi: '), 
+            dcc.Dropdown(
+                id='taxi-type-dropdown', 
+                multi=True, 
+                placeholder="Selecciona un tipo de taxi"
+            ), 
         ], width=3),
         dbc.Col([
             dbc.Row([
