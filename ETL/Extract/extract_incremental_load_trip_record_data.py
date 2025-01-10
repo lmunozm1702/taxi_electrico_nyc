@@ -1,3 +1,4 @@
+import functions_framework
 import requests
 
 from bs4 import BeautifulSoup
@@ -11,9 +12,10 @@ HEADERS = {
 TRIP_DATA_URL = 'https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page'
 
 def get_current_year():
-    """Retorna el año en curso
+    """Retorna el año en curso como string
     """
-    return datetime.now().year
+    # return str(datetime.now().year)
+    return '2024'
 
 def make_request(url: str):
     """Llama una HTTP request por medio de una URL & retorna su response
@@ -66,13 +68,12 @@ def extract_last_month(soup: object):
 
     year = get_current_year()
 
-    div_id = ''.join(['faq',str(year)])
+    div_id = ''.join(['faq',year])
 
     div_year = soup.find('div', id=div_id)
     a_labels_datasets = div_year('a')[-4:]
-
-    print(a_labels_datasets)
-
+    
+    
     for a_label in a_labels_datasets:
         url_dataset = a_label['href'].strip()
 
@@ -86,15 +87,13 @@ def extract_last_month(soup: object):
             print(f'ERROR: El Dataset {name_dataset} No esta disponible')
     return print(f'La extraccion de datasets corresponidente al ultimo mes del año {year} termino')
 
-if __name__ == '__main__':
 
+@functions_framework.http
+def hello_http(request):
+    
     trip_data_response = make_request(TRIP_DATA_URL)
 
     if trip_data_response.status_code == 200:
         soup = BeautifulSoup(trip_data_response.text, 'html.parser')
-
         extract_last_month(soup)
-
-
-    else:
-        print(f"No se logro acceder al sitio! Respuesta del Server:{trip_data_response.status_code}")
+    return f'check the results in the logs'
