@@ -129,6 +129,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+dashboard/
 
 # Spyder project settings
 .spyderproject
@@ -164,13 +165,17 @@ cython_debug/
 
 # Samuel gitignore
 
-Samuel-notebook.ipynb
-yellow_tripdata_2024-09.parquet
-fhv_tripdata_2024-09.parquet
-fhvhv_tripdata_2024-09.parquet
-green_tripdata_2024-09.parquet
+/SamuelGitIgnore
 
-data_reports_monthly.csv
 
-2022_Yellow_Taxi_Trip_Data_20241210.csv
-/Análisis Preliminar
+# Francisco gitignore
+
+requirements_francisco.txt
+
+#Archivos de prueba para ETLS
+assets/Datasets/yellow_tripdata_2024-09.parquet
+assets/Datasets/yellow_tripdata_2022-02.parquet
+keys
+assets/Datasets/raw_datasets_active_medallion_vehicles_2024_2024-12_active_medallion_vehicles.csv
+/driven-atrium-445021-m2-6aa68b6352dd.json
+/driven-atrium-445021-m2-a773215c2f46.json

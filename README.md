@@ -54,7 +54,7 @@ El flujo de trabajo en la figura anterior, presenta el flujo que seguirán los d
 
 Adoptamos la metodología ágil SCRUM para gestionar el proyecto, centrada en colaboración, adaptabilidad y entregas continuas mediante Sprints. El proyecto se divide en 3 Sprints para un seguimiento detallado:
 
-- Sprint 1: Establecimiento de base, configuración de herramientas de gestión, definición de roles, análisis preliminar de datos y acoplamiento a la metodología. (Semanas 1 y 2)
+- Sprint 1: Establecimiento de base, configuración de herramientas de gestión, definición de roles, análisis preliminar de datos y acoplamiento a la metodología. (Semanas 1 y 2). [Presentación Demo 1](https://www.canva.com/design/DAGY7ya-EPw/MruL2JRRQEAlhUUPdKEfhw/edit?utm_content=DAGY7ya-EPw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 - Sprint 2: Implementación de procesos ETL, diseño DataWarehouse y MVP visualización de datos. (Semanas 3 y 4)
 - Sprint 3: Desarrollo de Producto ML y Dashboard interactivo y finalización de la documentación técnica. (Semanas 5 y 6)
 
@@ -62,7 +62,7 @@ Adoptamos la metodología ágil SCRUM para gestionar el proyecto, centrada en co
 
 ![Entregables](/assets/img/cronograma_entregables.jpg)
 
-Puedes consultar el [diagrama detallado](https://github.com/users/lmunozm1702/projects/12/views/4) y la [asignación de tareas](https://github.com/users/lmunozm1702/projects/12/views/1)
+Puedes consultar el [plan detallado](https://github.com/users/lmunozm1702/projects/12/views/4) y la [asignación de tareas](https://github.com/users/lmunozm1702/projects/12/views/1)
 
 ## Análisis Exploratorio de Datos (EDA1)
 
@@ -78,10 +78,10 @@ Basados en los objetivos planteados y en el producto a desarrollar, se requieren
 
 - [Taxis Verdes](/EDA/EDA%20green_tripdata_09_2024.ipynb): 95%
 - [Taxis Amarillos](/EDA/EDA%20yellow_tripdata_09_2024.ipynb): 93%
-- [For Hire](/EDA/EDA%20For-Hire_tripdata_09_2024.ipynb):
-- [High Values]:
-- [Calidad del Aire](/EDA/EDA-Calidad_de_Air_Quality.ipynb):
-- [Calidad de Emisiones de Gas](/EDA/EDA-Calidad_de_Gas_Emissions.ipynb):
+- [For Hire](/EDA/EDA%20For-Hire_tripdata_09_2024.ipynb): 25%
+- [High Volumes](/EDA/EDA%20High_Volumes_09_2024.ipynb): 76%
+- [Calidad del Aire](/EDA/EDA-Calidad_de_Air_Quality.ipynb): 99%
+- [Calidad de Emisiones de Gas](/EDA/EDA-Calidad_de_Gas_Emissions.ipynb): 100%
 
 ### Se agregarán a las fuentes de datos originales, 2 adicionales que se requieren para asegurar la calidad del prducto ML:
 
@@ -141,3 +141,5 @@ Responsable de implementar, desplegar y mantener modelos de machine learning en 
 | ![Imagen usuario](assets/img/user-image.png) | ![Imagen usuario](assets/img/user-image.png) |
 | :------------------------------------------: | :------------------------------------------: |
 |               **Jose Quispe**                |              **Sebastian Diaz**              |
+
+## End

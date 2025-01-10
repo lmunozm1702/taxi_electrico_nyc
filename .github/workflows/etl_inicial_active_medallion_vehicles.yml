@@ -1,0 +1,34 @@
+name: Deploy Cloud Functions - Medallion Vehicles
+run-name: 🚀 ${{ github.actor }} is deploying all cloud functions
+on:
+  push:
+    branches:
+      - development
+    paths:
+      - ETL/src/etl_inicial_active_medallion_vehicles/**
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: ls
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_DEPLOY_KEY }}'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+        with:
+          version: '>= 363.0.0'
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
+      - name: 'Deploy to gen2 cloud function'
+        run: |
+          gcloud functions deploy etl_inicial_active_medallion_vehicles \
+          --gen2 \
+          --region=us-central1 \
+          --runtime=python312 \
+          --source=./ETL/src/etl_inicial_active_medallion_vehicles \
+          --entry-point=etl_inicial_active_medallion_vehicles \
+          --trigger-http

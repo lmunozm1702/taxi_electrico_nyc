@@ -1,0 +1,311 @@
+{
+  "coordinates": {
+    "nombre": "coordinates",
+    "campos": [
+      {
+        "nombre": "location_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Código del sector del TLC Taxi Zone donde el taximetro indica el comienzo del viaje"
+      },
+      {
+        "nombre": "zone",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "barrio dentro de un distrito"
+      },
+      {
+        "nombre": "borough",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "distrito dento de la ciudad de Nueva York"
+      }
+    ]
+  },
+  "green_taxi": {
+    "nombre": "green_taxi",
+    "campos": [
+      {
+        "nombre": "vendor_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Código del proveedor tecnológico que generó el viaje y suministró la data",
+        "valores": {
+          "1": "Creative Mobile Technologies, LLC",
+          "2": "VeriFone Inc."
+        }
+      },
+      {
+        "nombre": "pickup_datetime",
+        "tipo": "fecha",
+        "longitud": "n/a",
+        "descripcion": "Fecha y hora donde se activó el taximetro indicando el comienzo del viaje"
+      },
+      {
+        "nombre": "dropoff_datetime",
+        "tipo": "fecha",
+        "longitud": "n/a",
+        "descripcion": "Fecha y hora donde se activó el taximetro indicando el fin del viaje"
+      },
+      {
+        "nombre": "passenger_count",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Numero de pasajeros en el Taxi (este valor es suministrado por el conductor)"
+      },
+      {
+        "nombre": "trip_distance",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Distancia en millas reportada por el taximetro"
+      },
+      {
+        "nombre": "start_location_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "TLC Taxi Zone donde el taximetro fue activado y comenzó el viaje"
+      },
+      {
+        "nombre": "end_location_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "TLC Taxi Zone donde el taximetro indica el fin del viaje"
+      },
+      {
+        "nombre": "rate_code_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Tipo de tarifa aplicada al terminar el viaje",
+        "valores": {
+          "1": "Standard rate",
+          "2": "JFK",
+          "3": "Newark",
+          "4": "Nassau or Westchester",
+          "5": "Negotiated fare",
+          "6": "Group ride"
+        }
+      },
+      {
+        "nombre": "store_and_forward_flag",
+        "tipo": "alfanumérico",
+        "longitud": "1",
+        "descripcion": "Si la informacion del viaje fue suministrada al momento, o si fue almacenada en memoria del vehiculo por no tener conexion con el servidor.",
+        "valores": {
+          "Y": "store and forward trip",
+          "N": "NOT a store and forward trip"
+        }
+      },
+      {
+        "nombre": "payment_type",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Código numérico que indica el medio de pago del pasajero",
+        "valores": {
+          "1": "Credit card",
+          "2": "Cash",
+          "3": "No charge",
+          "4": "Dispute",
+          "5": "Unknown",
+          "6": "Voided trip"
+        }
+      },
+      {
+        "nombre": "fare_amount",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Tarifa base del viaje de acuerdo al tiempo y distancia"
+      },
+      {
+        "nombre": "extra",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Recargos y extras. Actualmente, esto incluye solo el $0.50 de hora pico y el $1 de recargo nocturno"
+      },
+      {
+        "nombre": "mta_tax",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "$0.50 impuesto MTA (Metropolitan Transportation Authority) que se activa automaticamente basado en el tipo de tarifa aplicada"
+      },
+      {
+        "nombre": "improvement_surcharge",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "$0.30 de recargo por mejora. Este recargo comenzó a cobrarse en 2015"
+      },
+      {
+        "nombre": "tip_amount",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Propina (este campo es llenado automaticamente con propinas mediante tarjetas de crédito. Propinas en efectivo no están incluidas)"
+      },
+      {
+        "nombre": "tolls_amount",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Monto total de todos los peajes pagados durante el viaje"
+      },
+      {
+        "nombre": "total_amount",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Monto total del viaje pagado por el pasajero. No incluye propinas en efectivo."
+      },
+      {
+        "nombre": "trip_type",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Código numérico indicando si el viaje fue tomado parando el taxi en la calle o mediante asignación",
+        "valores": {
+          "1": "Street-hail",
+          "2": "Dispatch"
+        }
+      }
+    ],
+    "descripcion": "El dataset contiene datos de viajes en taxi verde en la ciudad de Nueva York. Los datos fueron recolectados y proporcionados por la Comisión de Taxis y Limusinas de la Ciudad de Nueva York (TLC)."
+  },
+  "yellow_taxi": {
+    "nombre": "yellow_taxi",
+    "campos": [
+      {
+        "nombre": "vendor_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Código del proveedor tecnológico que generó el viaje y suministró la data",
+        "valores": {
+          "1": "Creative Mobile Technologies, LLC",
+          "2": "VeriFone Inc."
+        }
+      },
+      {
+        "nombre": "pickup_datetime",
+        "tipo": "fecha",
+        "longitud": "n/a",
+        "descripcion": "Fecha y hora donde se activó el taximetro indicando el comienzo del viaje"
+      },
+      {
+        "nombre": "dropoff_datetime",
+        "tipo": "fecha",
+        "longitud": "n/a",
+        "descripcion": "Fecha y hora donde se activó el taximetro indicando el fin del viaje"
+      },
+      {
+        "nombre": "passenger_count",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Numero de pasajeros en el Taxi (este valor es suministrado por el conductor)"
+      },
+      {
+        "nombre": "trip_distance",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Distancia en millas reportada por el taximetro"
+      },
+      {
+        "nombre": "start_location_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "TLC Taxi Zone donde el taximetro fue activado y comenzó el viaje"
+      },
+      {
+        "nombre": "end_location_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "TLC Taxi Zone donde el taximetro indica el fin del viaje"
+      },
+      {
+        "nombre": "rate_code_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Tipo de tarifa aplicada al terminar el viaje",
+        "valores": {
+          "1": "Standard rate",
+          "2": "JFK",
+          "3": "Newark",
+          "4": "Nassau or Westchester",
+          "5": "Negotiated fare",
+          "6": "Group ride"
+        }
+      },
+      {
+        "nombre": "store_and_forward_flag",
+        "tipo": "alfanumérico",
+        "longitud": "1",
+        "descripcion": "Si la informacion del viaje fue suministrada al momento, o si fue almacenada en memoria del vehiculo por no tener conexion con el servidor.",
+        "valores": {
+          "Y": "store and forward trip",
+          "N": "NOT a store and forward trip"
+        }
+      },
+      {
+        "nombre": "payment_type",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Código numérico que indica el medio de pago del pasajero",
+        "valores": {
+          "1": "Credit card",
+          "2": "Cash",
+          "3": "No charge",
+          "4": "Dispute",
+          "5": "Unknown",
+          "6": "Voided trip"
+        }
+      },
+      {
+        "nombre": "fare_amount",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Tarifa base del viaje de acuerdo al tiempo y distancia"
+      },
+      {
+        "nombre": "extra",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Recargos y extras. Actualmente, esto incluye solo el $0.50 de hora pico y el $1 de recargo nocturno"
+      },
+      {
+        "nombre": "mta_tax",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "$0.50 impuesto MTA (Metropolitan Transportation Authority) que se activa automaticamente basado en el tipo de tarifa aplicada"
+      },
+      {
+        "nombre": "improvement_surcharge",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "$0.30 de recargo por mejora. Este recargo comenzó a cobrarse en 2015"
+      },
+      {
+        "nombre": "tip_amount",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Propina (este campo es llenado automaticamente con propinas mediante tarjetas de crédito. Propinas en efectivo no están incluidas)"
+      },
+      {
+        "nombre": "tolls_amount",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Monto total de todos los peajes pagados durante el viaje"
+      },
+      {
+        "nombre": "total_amount",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Monto total del viaje pagado por el pasajero. No incluye propinas en efectivo."
+      },
+      {
+        "nombre": "congestion_surcharge",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Monto cobrado en el viaje como recargo por congestion de trafico"
+      },
+      {
+        "nombre": "airport_fee",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "$1.25 de recargo aplicado por buscar en los aeropuertos de LaGuardia y John F. Kennedy"
+      }
+    ],
+    "descripcion": "El dataset contiene datos de viajes en taxi amarillo en la ciudad de Nueva York. Los datos fueron recolectados y proporcionados por la Comisión de Taxis y Limusinas de la Ciudad de Nueva York (TLC)."
+  }
+}

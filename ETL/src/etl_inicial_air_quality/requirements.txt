@@ -1,0 +1,8 @@
+functions-framework==3.*
+pandas
+pandas_gbq
+google-cloud-storage
+google-cloud-bigquery
+datetime
+fsspec
+gcsfs
