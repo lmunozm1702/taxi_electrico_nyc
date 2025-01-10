@@ -1,3 +1,4 @@
+import functions_framework
 import csv
 
 from datetime import datetime
@@ -12,7 +13,8 @@ def get_current_year():
     """
     return str(datetime.now().year)
 
-if __name__ == '__main__':
+@functions_framework.http
+def hello_http(request):
     client_soda = Socrata(DATASET_URL, None)
     results = client_soda.get(DATASET_ID)
     field_names = results[0].keys()
@@ -28,3 +30,5 @@ if __name__ == '__main__':
         writer.writeheader()
         writer.writerows(results)
     print("El archivo se guardo")
+    
+    return f'check the results in the logs'
