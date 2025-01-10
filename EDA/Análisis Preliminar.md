@@ -7,9 +7,10 @@ Basados en los objetivos planteados y en el producto a desarrollar, se requieren
 - Información sobre los taxis activos en circulación, que incluya todo lo relacionado al vehiculo, principalmente el modelo.
 - Información sobre los modelos de carros, donde se pueda obtener información relacionada a sus costos de compra, costos de uso y características, principalmente del motor.
 - Información sobre la concentracion de $\text{CO}_2$ en la ciudad de Nueva York a través del tiempo.
+- Información sobre la predicción del clima en la ciudad de Nueva York a través del tiempo.
 - Información sobre los viajes en taxi en la ciudad de Nueva York a través del tiempo.
 
-Para ello se buscó en línea y la principal fuente de datos para conseguir la mayoría de esta información se encuentra en la pagina del [NYC OpenData](https://opendata.cityofnewyork.us), a excepcion de la informacion de los modelos de carros y sus costos, la cual podemos obtener la página del [gobierno de Canadá](https://open.canada.ca/data/en/dataset/98f1a129-f628-4ce4-b24d-6f16bf24dd64#wb-auto-6)
+Para ello se buscó en línea y la principal fuente de datos para conseguir la mayoría de esta información se encuentra en la pagina del [NYC OpenData](https://opendata.cityofnewyork.us), a excepcion de la informacion de los modelos de carros y sus costos, la cual podemos obtener la página del [gobierno de Canadá](https://open.canada.ca/data/en/dataset/98f1a129-f628-4ce4-b24d-6f16bf24dd64#wb-auto-6), y la información histórica del clima que será descargada de la página [Open-Meteo](https://open-meteo.com/en/docs/historical-weather-api) 
 
 Para el análisis de viabilidad económico se cruzará la data del [consumo de energia de los vehiculos](https://open.canada.ca/data/en/dataset/98f1a129-f628-4ce4-b24d-6f16bf24dd64#wb-auto-6) con la data de los vehiculos activos funcionando en la ciudad de Nueva York como taxi. [URL-1](https://data.cityofnewyork.us/Transportation/For-Hire-Vehicles-FHV-Active/8wbx-tsch/about_data)|[URL-2](https://data.cityofnewyork.us/Transportation/Medallion-Vehicles-Authorized/rhe8-mgbb/about_data)
 
