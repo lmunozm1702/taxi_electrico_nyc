@@ -100,22 +100,38 @@ def calculate_kpi(kpi_id, year, borough):
         return value, delta, traces  
 
 
-def calculate_correlaciones():
+def calculate_correlaciones(year, borough):
+    print(year, borough)
     credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
-    query_job = bigquery.Client(
-        credentials=credentials).query(
-            '''
-            SELECT borough AS Distrito, pickup_day_of_week AS Dia_de_la_Semana, count(*) as Cantidad  FROM project_data.trips as trips
-            INNER JOIN project_data.coordinates as coordinates ON trips.pickup_location_id = coordinates.location_id
-            group by coordinates.borough, pickup_day_of_week
-            ''')
+    
+    if year == 'Todos':
+        if borough == 'Todos':
+            query_job = bigquery.Client(credentials=credentials).query(
+                '''
+                SELECT borough AS Distrito, 
+                pickup_day_of_week AS Dia_de_la_Semana, 
+                count(*) AS Cantidad 
+                FROM project_data.trips AS trips
+                INNER JOIN project_data.coordinates AS coordinates 
+                ON trips.pickup_location_id = coordinates.location_id
+                GROUP BY coordinates.borough, pickup_day_of_week
+                ''')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough AS Distrito, pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE borough = {borough} GROUP BY coordinates.borough, pickup_day_of_week;')
+    else:
+        if borough == 'Todos':
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough AS Distrito, pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE pickup_year = {year} GROUP BY coordinates.borough, pickup_day_of_week;')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough AS Distrito, pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE borough = {borough} AND pickup_year = {year} GROUP BY coordinates.borough, pickup_day_of_week;')
+        
     results = query_job.result().to_dataframe()
     dias_semana = { 0: 'Domingo', 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado' }
     results['Dia_de_la_Semana'] = results['Dia_de_la_Semana'].map(dias_semana)
     return results
 
-def render_correlaciones():
-    viajes = calculate_correlaciones()
+
+def render_correlaciones(year, borough):
+    viajes = calculate_correlaciones(year, borough)
     # Crear el gráfico de dispersión
     fig = px.scatter(
         viajes,
@@ -129,7 +145,7 @@ def render_correlaciones():
     return fig
 
 
-def calculate_mapa():
+def calculate_mapa(year, borough):
     credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
     query_job = bigquery.Client(
         credentials=credentials).query(
@@ -143,11 +159,11 @@ def calculate_mapa():
     results = query_job.result().to_dataframe()
     return results
 
-def render_mapa():
+def render_mapa(year, borough):
     url = "https://raw.githubusercontent.com/dwillis/nyc-maps/master/boroughs.geojson"
     response = requests.get(url)
     geojson = response.json()
-    viajes = calculate_mapa()
+    viajes = calculate_mapa(year, borough)
     fig = px.choropleth_mapbox(viajes, geojson=geojson, locations='Distrito', featureidkey="properties.BoroName",
                                color='Cantidad', color_continuous_scale="Viridis",
                                center=dict(lat=40.7128, lon=-74.0060), mapbox_style="carto-positron", zoom=8)
@@ -155,7 +171,7 @@ def render_mapa():
     return fig
 
 
-def calculate_torta():
+def calculate_torta(year, borough):
     credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
     query_job = bigquery.Client(
         credentials=credentials).query(
@@ -167,8 +183,8 @@ def calculate_torta():
     results = query_job.result().to_dataframe()
     return results
 
-def render_torta():
-    viajes = calculate_torta()
+def render_torta(year, borough):
+    viajes = calculate_torta(year, borough)
     fig = px.pie(viajes, names='Tipo_de_Motor', values='Cantidad', title='Distribución por Tipo de Motor')
     return fig
 
@@ -218,14 +234,14 @@ layout = html.Div([
             ]),
             dbc.Row([
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_correlaciones()), className='text-primary border border-primary'),
-                ], width=5),
+                    html.H2(dcc.Graph(figure=render_correlaciones('Todos', 'Todos'), id='correlations'), className='text-primary border border-primary'),
+                ], width=6),
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_mapa()), className='text-primary border border-primary'),
-                ], width=5),
+                    html.H2(dcc.Graph(figure=render_mapa('Todos', 'Todos'), id='mapa'), className='text-primary border border-primary'),
+                ], width=6),
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_torta()), className='text-primary border border-primary'),
-                ], width=2),                           
+                    html.H2(dcc.Graph(figure=render_torta('Todos', 'Todos'), id='cake'), className='text-primary border border-primary'),
+                ], width=6),                           
             ])
         ], width=9)
     ], className='container-fluid'),
@@ -244,3 +260,19 @@ def update_kpis(selected_year, selected_borough):
     kpi1 = render_kpi(1, selected_year, selected_borough)
     kpi2 = render_kpi(2, selected_year, selected_borough)
     return kpi1, kpi2
+
+
+#define callbacks
+@callback(    
+        [Output('correlations', 'figure'),        
+        Output('mapa', 'figure'),
+        Output('cake', 'figure'),
+        Input('year-dropdown', 'value'),
+        Input('borough-dropdown', 'value')
+        ]    
+)
+def update_graphics(selected_year, selected_borough):
+    correlations = render_correlaciones(selected_year, selected_borough)
+    mapa = render_mapa(selected_year, selected_borough)
+    cake = render_torta(selected_year, selected_borough)
+    return correlations, mapa, cake
