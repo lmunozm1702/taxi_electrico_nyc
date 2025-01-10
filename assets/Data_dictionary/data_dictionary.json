@@ -1,4 +1,27 @@
 {
+  "coordinates": {
+    "nombre": "coordinates",
+    "campos": [
+      {
+        "nombre": "location_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Código del sector del TLC Taxi Zone donde el taximetro indica el comienzo del viaje"
+      },
+      {
+        "nombre": "zone",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "barrio dentro de un distrito"
+      },
+      {
+        "nombre": "borough",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "distrito dento de la ciudad de Nueva York"
+      }
+    ]
+  },
   "green_taxi": {
     "nombre": "green_taxi",
     "campos": [
