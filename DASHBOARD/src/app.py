@@ -87,27 +87,26 @@ def calculate_correlaciones():
     query_job = bigquery.Client(
         credentials=credentials).query(
             '''
-            SELECT coordinates.borough, pickup_day_of_week, count(*) as cantidad  FROM project_data.trips as trips
+            SELECT borough AS Distrito, pickup_day_of_week AS Dia_de_la_Semana, count(*) as Cantidad  FROM project_data.trips as trips
             INNER JOIN project_data.coordinates as coordinates ON trips.pickup_location_id = coordinates.location_id
             group by coordinates.borough, pickup_day_of_week
             ''')
     results = query_job.result().to_dataframe()
-    viajes = results.groupby(['pickup_day_of_week', 'borough']).size().reset_index(name='amount')
-
-    return viajes
+    dias_semana = { 0: 'Domingo', 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado' }
+    results['Dia_de_la_Semana'] = results['Dia_de_la_Semana'].map(dias_semana)
+    return results
 
 def update_graph():
     viajes = calculate_correlaciones()
     # Crear el gráfico de dispersión
     fig = px.scatter(
         viajes,
-        x='borough',
-        y='pickup_day_of_week',
-        size='amount',
-        title='Cantidad de Viajes por Día en función de los Boroughs'
+        x='Distrito',
+        y='Dia_de_la_Semana',
+        size='Cantidad',
+        title='Cantidad de Viajes por Distrito por Día'
     )
-    # Invertir el orden del eje y para que Monday esté más arriba y Sunday más abajo
-    #fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=dias_semana_en[::-1]))
+    fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']))
     
     return fig
 
