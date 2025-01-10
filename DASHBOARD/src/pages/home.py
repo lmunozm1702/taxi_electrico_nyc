@@ -38,7 +38,7 @@ def render_kpi(kpi_id, year, borough):
 
 def calculate_kpi(kpi_id, year, borough):
     print(kpi_id, year, borough)
-    credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
 
     if kpi_id == 1:
         if year == 'Todos':
@@ -101,7 +101,7 @@ def calculate_kpi(kpi_id, year, borough):
 
 
 def calculate_correlaciones(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     
     if year == 'Todos':
         if borough == 'Todos':
@@ -140,7 +140,7 @@ def render_correlaciones(year, borough):
 
 
 def calculate_mapa(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     if year == 'Todos':
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query('SELECT coordinates.borough AS Distrito, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id GROUP BY coordinates.borough;')
