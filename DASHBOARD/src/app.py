@@ -1,8 +1,10 @@
+import requests
+
 import dash
 from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
-import pandas as pd
+#import pandas as pd
 import plotly.graph_objects as go
 from google.cloud import bigquery
 from google.oauth2 import service_account
@@ -96,7 +98,7 @@ def calculate_correlaciones():
     results['Dia_de_la_Semana'] = results['Dia_de_la_Semana'].map(dias_semana)
     return results
 
-def update_graph():
+def render_correlaciones():
     viajes = calculate_correlaciones()
     # Crear el gráfico de dispersión
     fig = px.scatter(
@@ -108,6 +110,32 @@ def update_graph():
     )
     fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']))
     
+    return fig
+
+
+def calculate_mapa():
+    credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
+    query_job = bigquery.Client(
+        credentials=credentials).query(
+            '''
+            SELECT borough AS Distrito, count(*) AS Cantidad 
+            FROM project_data.trips AS trips
+            INNER JOIN project_data.coordinates AS coordinates 
+            ON trips.pickup_location_id = coordinates.location_id
+            GROUP BY coordinates.borough
+            ''')
+    results = query_job.result().to_dataframe()
+    return results
+
+def render_mapa():
+    url = "https://raw.githubusercontent.com/dwillis/nyc-maps/master/boroughs.geojson"
+    response = requests.get(url)
+    geojson = response.json()
+    viajes = calculate_mapa()
+    fig = px.choropleth_mapbox(viajes, geojson=geojson, locations='Distrito', featureidkey="properties.BoroName",
+                               color='Cantidad', color_continuous_scale="Viridis",
+                               center=dict(lat=40.7128, lon=-74.0060), mapbox_style="carto-positron", zoom=8)
+    fig.update_layout(title='Cantidad de Inicios de Viaje por Distrito', margin={"r":0,"t":40,"l":0,"b":0})
     return fig
 
 # Load external stylesheets BOOTSTRAP and Google Fonts Montserrat
@@ -157,10 +185,10 @@ app.layout = html.Div([
             ]),
             dbc.Row([
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=update_graph()), className='text-primary border border-primary'),
+                    html.H2(dcc.Graph(figure=render_correlaciones()), className='text-primary border border-primary'),
                 ], width=5),
                 dbc.Col([
-                    html.H2('Gráfico 2', className='text-primary border border-primary'),
+                    html.H2(dcc.Graph(figure=render_mapa()), className='text-primary border border-primary'),
                 ], width=5),
                 dbc.Col([
                     html.H2('Gráfico 3', className='text-primary border border-primary'),
