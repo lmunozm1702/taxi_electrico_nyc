@@ -1,0 +1,302 @@
+{
+  "active_vehicles_count": {
+    "nombre": "active_vehicles_count",
+    "campos": [
+      {
+        "nombre": "vehicle_type",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Tipo de vehículo activo."
+      },
+      {
+        "nombre": "quarter",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Trimestre del año."
+      },
+      {
+        "nombre": "month",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Mes del año."
+      },
+      {
+        "nombre": "year",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Año de los datos."
+      },
+      {
+        "nombre": "count",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Cantidad de vehículos activos registrados."
+      }
+    ],
+    "descripcion": "El dataset contiene datos sobre el conteo de vehículos activos en Nueva York clasificados por tipo y período de tiempo."
+  },
+  "emissions": {
+    "nombre": "emissions",
+    "campos": [
+      {
+        "nombre": "sector",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Sector asociado a las emisiones."
+      },
+      {
+        "nombre": "inventory_type",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Tipo de inventario de emisiones."
+      },
+      {
+        "nombre": "category_full",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Descripción completa de la categoría de emisiones."
+      },
+      {
+        "nombre": "category_label",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Etiqueta de la categoría de emisiones."
+      },
+      {
+        "nombre": "source_full",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Descripción completa de la fuente de emisiones."
+      },
+      {
+        "nombre": "source_label",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Etiqueta de la fuente de emisiones."
+      },
+      {
+        "nombre": "source_units",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Unidades en que se mide la fuente de emisiones."
+      },
+      {
+        "nombre": "concept",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Concepto asociado a las emisiones."
+      },
+      {
+        "nombre": "year",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Año en que se registraron las emisiones."
+      },
+      {
+        "nombre": "value",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Valor cuantitativo de las emisiones."
+      }
+    ],
+    "descripcion": "El dataset detalla las emisiones relacionadas con el sector del transporte y otras fuentes en Nueva York."
+  },
+  "trips": {
+    "nombre": "trips",
+    "campos": [
+      {
+        "nombre": "trip_id",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Identificador único del viaje."
+      },
+      {
+        "nombre": "taxi_type",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Tipo de taxi (amarillo, verde u otro)."
+      },
+      {
+        "nombre": "motor_type",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "Tipo de motor del taxi."
+      },
+      {
+        "nombre": "pickup_location_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Identificador único de la ubicación de recogida."
+      },
+      {
+        "nombre": "pickup_quarter",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Trimestre del año en que ocurrió la recogida."
+      },
+      {
+        "nombre": "pickup_year",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Año de la recogida."
+      },
+      {
+        "nombre": "pickup_month",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Mes de la recogida."
+      },
+      {
+        "nombre": "pickup_day_of_month",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Día del mes de la recogida."
+      },
+      {
+        "nombre": "pickup_day_of_week",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Día de la semana de la recogida."
+      },
+      {
+        "nombre": "pickup_hour_of_day",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Hora del día de la recogida."
+      },
+      {
+        "nombre": "fare_amount",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Monto de la tarifa del viaje."
+      }
+    ],
+    "descripcion": "El dataset contiene información detallada de los viajes en taxis, incluyendo ubicación, tiempo y costos en Nueva York."
+  },
+  "weather": {
+    "nombre": "weather",
+    "campos": [
+      {
+        "nombre": "location_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Identificador único de la ubicación."
+      },
+      {
+        "nombre": "year",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Año en que se registraron los datos climáticos."
+      },
+      {
+        "nombre": "month",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Mes en que se registraron los datos climáticos."
+      },
+      {
+        "nombre": "day_of_month",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Día del mes en que se registraron los datos climáticos."
+      },
+      {
+        "nombre": "hour_of_day",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Hora del día en que se registraron los datos climáticos."
+      },
+      {
+        "nombre": "temperature",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Temperatura registrada"
+      },
+      {
+        "nombre": "relative_humidity",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Humedad relativa registrada"
+      },
+      {
+        "nombre": "dew_point",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Punto de rocío registrado"
+      },
+      {
+        "nombre": "apparent_temperature",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Temperatura aparente percibida"
+      },
+      {
+        "nombre": "Temperatura aparente percibida",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Año en que se registraron los datos climáticos."
+      },
+      {
+        "nombre": "weather_code",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Código del estado climático reportado."
+      },
+      {
+        "nombre": "pressure_msl",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Presión atmosférica a nivel del mar"
+      },
+      {
+        "nombre": "cloud_cover",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Porcentaje de cobertura nubosa."
+      },
+      {
+        "nombre": "wind_speed",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Velocidad del viento"
+      },
+      {
+        "nombre": "wind_direction",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Dirección del viento (en grados)."
+      },
+      {
+        "nombre": "wind_gusts",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Ráfagas de viento registradas (en mph)."
+      }
+    ],
+    "descripcion": "El dataset contiene datos climáticos relevantes para el análisis de viajes en taxis en Nueva York."
+  },
+  "coordinates": {
+    "nombre": "coordinates",
+    "campos": [
+      {
+        "nombre": "location_id",
+        "tipo": "numérico",
+        "longitud": "n/a",
+        "descripcion": "Código del sector del TLC Taxi Zone donde el taximetro indica el comienzo del viaje"
+      },
+      {
+        "nombre": "zone",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "barrio dentro de un distrito"
+      },
+      {
+        "nombre": "borough",
+        "tipo": "alfanumérico",
+        "longitud": "n/a",
+        "descripcion": "distrito dento de la ciudad de Nueva York"
+      }
+    ],
+    "descripcion": "El dataset contiene datos de las coordenadas, zonas y boroughts de la ciudad de New York"
+  }
+}
