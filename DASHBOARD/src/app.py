@@ -138,6 +138,25 @@ def render_mapa():
     fig.update_layout(title='Cantidad de Inicios de Viaje por Distrito', margin={"r":0,"t":40,"l":0,"b":0})
     return fig
 
+
+def calculate_torta():
+    credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
+    query_job = bigquery.Client(
+        credentials=credentials).query(
+            '''
+            SELECT vehicle_type AS Tipo_de_Motor, count(*) AS Cantidad 
+            FROM project_data.active_vehicles_count AS actives
+            GROUP BY actives.vehicle_type
+            ''')
+    results = query_job.result().to_dataframe()
+    return results
+
+def render_torta():
+    viajes = calculate_torta()
+    fig = px.pie(viajes, names='Tipo_de_Motor', values='Cantidad', title='Distribución por Tipo de Motor')
+    return fig
+
+
 # Load external stylesheets BOOTSTRAP and Google Fonts Montserrat
 external_stylesheets = [dbc.themes.BOOTSTRAP, {
                           "href": "https://fonts.googleapis.com/css2?"
@@ -191,8 +210,8 @@ app.layout = html.Div([
                     html.H2(dcc.Graph(figure=render_mapa()), className='text-primary border border-primary'),
                 ], width=5),
                 dbc.Col([
-                    html.H2('Gráfico 3', className='text-primary border border-primary'),
-                ], width=2),                           
+                    html.H2(dcc.Graph(figure=render_torta()), className='text-primary border border-primary'),
+                ], width=5),                           
             ])
         ], width=9)
     ])
