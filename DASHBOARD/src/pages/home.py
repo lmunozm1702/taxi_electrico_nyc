@@ -1,12 +1,10 @@
 import requests
 
-import dash
 from dash import dcc
 from dash import html
 from dash import register_page, callback
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
-import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 from google.cloud import bigquery
