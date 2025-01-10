@@ -1,12 +1,6 @@
 import dash
-from dash import dcc
 from dash import html, page_container
-from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
-import pandas as pd
-import plotly.graph_objects as go
-from google.cloud import bigquery
-from google.oauth2 import service_account
 
 
 # Load external stylesheets BOOTSTRAP and Google Fonts Montserrat
@@ -45,5 +39,3 @@ app.layout = html.Div([
 # Run the app
 if __name__ == '__main__':
     app.run_server(debug=True)
-
-
