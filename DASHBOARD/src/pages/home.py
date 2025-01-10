@@ -166,25 +166,7 @@ def render_mapa(year, borough):
     fig = px.choropleth_mapbox(viajes, geojson=geojson, locations='Distrito', featureidkey="properties.BoroName",
                                color='Cantidad', color_continuous_scale="Viridis",
                                center=dict(lat=40.7128, lon=-74.0060), mapbox_style="carto-positron", zoom=8)
-    fig.update_layout(title='Cantidad de Inicios de Viaje por Distrito', margin={"r":0,"t":40,"l":0,"b":0})
-    return fig
-
-
-def calculate_torta(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
-    query_job = bigquery.Client(
-        credentials=credentials).query(
-            '''
-            SELECT vehicle_type AS Tipo_de_Motor, count(*) AS Cantidad 
-            FROM project_data.active_vehicles_count AS actives
-            GROUP BY actives.vehicle_type
-            ''')
-    results = query_job.result().to_dataframe()
-    return results
-
-def render_torta(year, borough):
-    viajes = calculate_torta(year, borough)
-    fig = px.pie(viajes, names='Tipo_de_Motor', values='Cantidad', title='Distribución por Tipo de Motor')
+    fig.update_layout(title=f'Cantidad de Inicios de Viaje por Distrito {borough}', margin={"r":0,"t":40,"l":0,"b":0})
     return fig
 
 
@@ -239,8 +221,11 @@ layout = html.Div([
                     html.H2(dcc.Graph(figure=render_mapa('Todos', 'Todos'), id='mapa'), className='text-primary border border-primary'),
                 ], width=6),
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_torta('Todos', 'Todos'), id='cake'), className='text-primary border border-primary'),
+                    html.H2('Gráfico 3', className='text-primary border border-primary'),
                 ], width=6),                           
+                dbc.Col([
+                    html.H2('Gráfico 4', className='text-primary border border-primary'),
+                ], width=6),
             ])
         ], width=9)
     ], className='container-fluid'),
@@ -265,7 +250,6 @@ def update_kpis(selected_year, selected_borough):
 @callback(    
         [Output('correlations', 'figure'),        
         Output('mapa', 'figure'),
-        Output('cake', 'figure'),
         Input('year-dropdown', 'value'),
         Input('borough-dropdown', 'value')
         ]    
@@ -273,5 +257,4 @@ def update_kpis(selected_year, selected_borough):
 def update_graphics(selected_year, selected_borough):
     correlations = render_correlaciones(selected_year, selected_borough)
     mapa = render_mapa(selected_year, selected_borough)
-    cake = render_torta(selected_year, selected_borough)
-    return correlations, mapa, cake
+    return correlations, mapa
