@@ -101,62 +101,61 @@ def calculate_kpi(kpi_id, year, borough):
 
 
 def calculate_correlaciones(year, borough):
-    print(year, borough)
     credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
     
     if year == 'Todos':
         if borough == 'Todos':
-            query_job = bigquery.Client(credentials=credentials).query(
-                '''
-                SELECT borough AS Distrito, 
-                pickup_day_of_week AS Dia_de_la_Semana, 
-                count(*) AS Cantidad 
-                FROM project_data.trips AS trips
-                INNER JOIN project_data.coordinates AS coordinates 
-                ON trips.pickup_location_id = coordinates.location_id
-                GROUP BY coordinates.borough, pickup_day_of_week
-                ''')
+            query_job = bigquery.Client(credentials=credentials).query('SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id GROUP BY coordinates.borough, trips.pickup_day_of_week;')
         else:
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough AS Distrito, pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE borough = {borough} GROUP BY coordinates.borough, pickup_day_of_week;')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE coordinates.borough = \'{borough}\' GROUP BY coordinates.borough, trips.pickup_day_of_week;')
     else:
         if borough == 'Todos':
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough AS Distrito, pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE pickup_year = {year} GROUP BY coordinates.borough, pickup_day_of_week;')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE trips.pickup_year = {year} GROUP BY coordinates.borough, trips.pickup_day_of_week;')
         else:
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough AS Distrito, pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE borough = {borough} AND pickup_year = {year} GROUP BY coordinates.borough, pickup_day_of_week;')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE coordinates.borough = \'{borough}\' AND trips.pickup_year = {year} GROUP BY coordinates.borough, trips.pickup_day_of_week;')
         
     results = query_job.result().to_dataframe()
+    
+    results = results[results['Distrito'] != 'EWR']
+    
     dias_semana = { 0: 'Domingo', 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado' }
     results['Dia_de_la_Semana'] = results['Dia_de_la_Semana'].map(dias_semana)
+    
     return results
 
 
 def render_correlaciones(year, borough):
     viajes = calculate_correlaciones(year, borough)
-    # Crear el gráfico de dispersión
     fig = px.scatter(
         viajes,
         x='Distrito',
         y='Dia_de_la_Semana',
         size='Cantidad',
-        title='Cantidad de Viajes por Distrito por Día'
+        title= f'Cantidad de Viajes por Día de Año {year} y Distrito {borough}'
     )
-    fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']))
+    dias_de_semana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=dias_de_semana[::-1]))
     
     return fig
 
 
 def calculate_mapa(year, borough):
     credentials = service_account.Credentials.from_service_account_file('../../driven-atrium-445021-m2-a773215c2f46.json')
-    query_job = bigquery.Client(
-        credentials=credentials).query(
-            '''
-            SELECT borough AS Distrito, count(*) AS Cantidad 
-            FROM project_data.trips AS trips
-            INNER JOIN project_data.coordinates AS coordinates 
-            ON trips.pickup_location_id = coordinates.location_id
-            GROUP BY coordinates.borough
-            ''')
+    if year == 'Todos':
+        if borough == 'Todos':
+            query_job = bigquery.Client(credentials=credentials).query('SELECT coordinates.borough AS Distrito, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id GROUP BY coordinates.borough;')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE coordinates.borough = \'{borough}\' GROUP BY coordinates.borough;')
+    else:
+        if borough == 'Todos':
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE trips.pickup_year = {year} GROUP BY coordinates.borough;')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE coordinates.borough = \'{borough}\' AND trips.pickup_year = {year} GROUP BY coordinates.borough;')
+        
     results = query_job.result().to_dataframe()
+    
+    results = results[results['Distrito'] != 'EWR']
+    
     return results
 
 def render_mapa(year, borough):
@@ -191,7 +190,7 @@ def render_torta(year, borough):
 
 dropdown_options = {
     'years': ['Todos',2023, 2024],
-    'boroughs': ['Todos', 'Manhattan', 'Brooklyn', 'Queens', 'The Bronx', 'Staten Island'],
+    'boroughs': ['Todos', 'Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'],
 }
 
 layout = html.Div([
