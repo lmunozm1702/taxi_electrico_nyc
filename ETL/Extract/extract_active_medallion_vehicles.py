@@ -1,3 +1,4 @@
+import functions_framework
 import csv
 
 from datetime import datetime
@@ -22,16 +23,17 @@ def get_prev_month():
     """
     return str(datetime.now().month-1)
 
-if __name__ == '__main__':
+@functions_framework.http
+def hello_http(request):
     client_soda = Socrata(DATASET_URL, None)
-    year_prev_month = get_current_year() + '-' + get_prev_month
+    year_prev_month = get_current_year() + '-' + get_prev_month()
     where_query = "".join(["last_updated_date > '",year_prev_month,"-30T00:00:00.000'"])
     results = client_soda.get(DATASET_ID, where=where_query, limit=250000, order="last_updated_date DESC")
     field_names = results[0].keys()
 
     client_gcs = storage.Client()
     bucket = client_gcs.get_bucket('ncy-taxi-bucket')
-    year_month = get_current_year() + '-' + get_current_month
+    year_month = get_current_year() + '-' + get_current_month()
     csv_name = "_".join([year_month,"active_medallion_vehicles.csv"])
     blob = bucket.blob('/'.join(['raw_datasets/active_medallion_vehicles',csv_name])) 
 
@@ -40,3 +42,5 @@ if __name__ == '__main__':
         writer.writeheader()
         writer.writerows(results)
     print("El archivo se guardo")
+
+    return f'check the results in the logs'
