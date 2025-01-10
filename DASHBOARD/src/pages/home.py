@@ -135,10 +135,10 @@ layout = html.Div([
                     html.Div(dcc.Graph(figure=render_kpi(2, 'Todos', 'Todos'), id='kpi2'), className='kpi_card_border'),
                 ], width=3),
                 dbc.Col([
-                    html.H2('KPI 3', className='text-primary border border-primary'),
+                    html.H2('', className='border-0'),
                 ], width=3),
                 dbc.Col([
-                    html.H2('KPI 4', className='text-primary border border-primary'),
+                    html.H2('', className='border-0'),
                 ], width=3),            
             ]),
             dbc.Row([
