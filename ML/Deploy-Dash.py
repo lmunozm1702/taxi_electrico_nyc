@@ -12,7 +12,7 @@ import pickle
 import requests
 import joblib
 import matplotlib
-matplotlib.use('Agg')  # Utiliza el backend Agg para evitar problemas con GUI
+matplotlib.use('Agg')  
 
 
 # Función para cargar el modelo de ML
