@@ -108,4 +108,4 @@ def hello_http(request):
   else:
     print(f"No se logro acceder al sitio! Respuesta del Server:{trip_data_response.status_code}")
 
-  return f'check the results in the logs'
+  return 'check the results in the logs'

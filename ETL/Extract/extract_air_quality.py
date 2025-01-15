@@ -31,4 +31,4 @@ def hello_http(request):
         writer.writerows(results)
     print("El archivo se guardo")
 
-    return f'check the results in the logs'
+    return 'check the results in the logs'

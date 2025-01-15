@@ -104,6 +104,8 @@ def transform_data(df, filename):
     df['day_of_month'] = df['date'].dt.day
     #agregar columna 'hour_of_day' 
     df['hour_of_day'] = df['date'].dt.hour
+    #agregar columna 'day_of_week' 
+    df['day_of_week'] = df['date'].dt.dayofweek
 
     df.drop(columns=['date'], inplace=True)
 

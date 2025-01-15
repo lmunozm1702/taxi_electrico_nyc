@@ -2,11 +2,9 @@ import functions_framework
 import openmeteo_requests
 import requests_cache
 import pandas as pd
-import csv
 import calendar
 
 from retry_requests import retry
-from io import StringIO
 from google.cloud import storage
 from datetime import datetime
 
@@ -108,4 +106,4 @@ def hello_http(request):
 
     print(f"Archivo Guardado en: gs://{bucket}/{blob}")
 
-    return f'check the results in the logs'
+    return 'check the results in the logs'
