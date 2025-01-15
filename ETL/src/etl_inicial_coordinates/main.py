@@ -87,10 +87,10 @@ def transform_data(df):
     pd.DataFrame: The transformed DataFrame
     """
     #Eliminar columnas con información que no será utilizada
-    df.drop(columns=['OBJECTID', 'Shape_Leng', 'the_geom', 'Shape_Area'], inplace=True)    
+    df.drop(columns=['location_id', 'Shape_Leng', 'the_geom', 'Shape_Area'], inplace=True)    
 
     #cambiar nombre de columnas
-    df.columns = ['zone', 'location_id', 'borough']
+    df.columns = ['location_id', 'zone', 'borough']
 
     #datatypes
     df['location_id'] = df['location_id'].astype(int)
