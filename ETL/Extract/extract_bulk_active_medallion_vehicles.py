@@ -48,4 +48,4 @@ def hello_http(request):
                 writer.writerows(results)
             print(f"El archivo {year_month}-active_medallion_vehicles.csv se guardo")
 
-    return f'check the results in the logs'
+    return 'check the results in the logs'

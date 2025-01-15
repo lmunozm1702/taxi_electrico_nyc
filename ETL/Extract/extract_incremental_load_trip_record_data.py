@@ -2,7 +2,6 @@ import functions_framework
 import requests
 
 from bs4 import BeautifulSoup
-from datetime import datetime
 from google.cloud import storage
 
 HEADERS = {
@@ -96,4 +95,4 @@ def hello_http(request):
     if trip_data_response.status_code == 200:
         soup = BeautifulSoup(trip_data_response.text, 'html.parser')
         extract_last_month(soup)
-    return f'check the results in the logs'
+    return 'check the results in the logs'

@@ -15,6 +15,7 @@ CREATE TABLE `project_data.weather` (
   `month` INT64 NOT NULL,
   `day_of_month` INT64 NOT NULL,
   `hour_of_day` INT64 NOT NULL,
+  'day_of_week' INT64 NOT NULL,
   `temperature` FLOAT64 NOT NULL,
   `relative_humidity` FLOAT64 NOT NULL,
   `dew_point` FLOAT64 NOT NULL,
