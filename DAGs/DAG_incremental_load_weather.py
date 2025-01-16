@@ -77,7 +77,7 @@ def invoke_function(**kwargs):
     if kwargs['params']:
         json_resp= json.loads(resp.content.decode("utf-8"))
 
-        if not json_resp["duplicated"]:
+        if json_resp["duplicated"]:
             raise ValueError("Se encontraron datos duplicados. Marcando tarea como fallida")
         else:
             return True
