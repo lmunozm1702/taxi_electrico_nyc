@@ -1,5 +1,6 @@
 import datetime
 import google.auth.transport.requests
+import json
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
@@ -71,12 +72,19 @@ def invoke_function(**kwargs):
 
     resp = AuthorizedSession(id_token_credentials).request("GET", url=url, timeout=210, params=kwargs['params']) # the authorized session object is used to access the Cloud Function
 
+    if kwargs['params']:
+        json_resp= json.loads(resp.content.decode("utf-8"))
+
+        if not json_resp["duplicated"]:
+            raise ValueError("Se encontraron datos duplicados. Marcando tarea como fallida")
+        else:
+            return True
 
 with DAG(nameDAG,
          default_args = default_args,
          catchup = False,  # Ver caso catchup = True
          max_active_runs = 3,
-         schedule_interval = None) as dag: # schedule_interval = None # Caso sin trigger automático | schedule_interval = "0 12 * * *" | "0,2 12 * * *"
+         schedule_interval = '0 2 18 * *') as dag: # schedule_interval = None # Caso sin trigger automático | schedule_interval = "0 12 * * *" | "0,2 12 * * *"
 
     # FUENTE: CRONTRAB: https://crontab.guru/
     #############################################################
@@ -113,12 +121,15 @@ with DAG(nameDAG,
                                 python_callable=invoke_function,
                                 op_kwargs=kwargs_transform_hvfhv_taxi
                             )
+    
+    Dummy_Reentrenar_ML = DummyOperator(task_id="Dummy_Reentrenar_ML", trigger_rule='all_success')
 
     t_end = DummyOperator(task_id="end", trigger_rule='all_success')
 
     #############################################################
     t_begin >> extract_cf
-    extract_cf >> transform_load_yellow_taxi >> t_end
-    extract_cf >> transform_load_green_taxi >> t_end
-    extract_cf >> transform_load_for_hire_taxi >> t_end
-    extract_cf >> transform_load_hvfhv_taxi >> t_end
+    extract_cf >> transform_load_yellow_taxi >> Dummy_Reentrenar_ML
+    extract_cf >> transform_load_green_taxi >> Dummy_Reentrenar_ML
+    extract_cf >> transform_load_for_hire_taxi >> Dummy_Reentrenar_ML
+    extract_cf >> transform_load_hvfhv_taxi >> Dummy_Reentrenar_ML
+    Dummy_Reentrenar_ML >> t_end

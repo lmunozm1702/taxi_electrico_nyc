@@ -1,5 +1,6 @@
 import datetime
 import google.auth.transport.requests
+import json
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
@@ -40,7 +41,7 @@ default_args = {
     'email': email,
     #'email_on_failure': True,
     #'email_on_retry': True,
-    'retries': 1,  # Retry once before failing the task.
+    'retries': 0,  # Retry once before failing the task.
     'retry_delay': datetime.timedelta(minutes=1),  # Time between retries
     'dagrun_timeout': datetime.timedelta(minutes=3)
 }
@@ -52,12 +53,19 @@ def invoke_function(**kwargs):
 
     resp = AuthorizedSession(id_token_credentials).request("GET", url=url, params=kwargs['params']) # the authorized session object is used to access the Cloud Function
 
+    if kwargs['params']:
+        json_resp= json.loads(resp.content.decode("utf-8"))
+
+        if not json_resp["duplicated"]:
+            raise ValueError("Se encontraron datos duplicados. Marcando tarea como fallida")
+        else:
+            return True
 
 with DAG(nameDAG,
          default_args = default_args,
          catchup = False,  # Ver caso catchup = True
          max_active_runs = 3,
-         schedule_interval = None) as dag: # schedule_interval = None # Caso sin trigger automático | schedule_interval = "0 12 * * *" | "0,2 12 * * *"
+         schedule_interval = '0 2 1 5 *') as dag: # schedule_interval = None # Caso sin trigger automático | schedule_interval = "0 12 * * *" | "0,2 12 * * *"
 
     # FUENTE: CRONTRAB: https://crontab.guru/
     #############################################################
