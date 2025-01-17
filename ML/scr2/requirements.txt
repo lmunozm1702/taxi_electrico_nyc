@@ -3,9 +3,6 @@ dash_bootstrap_components
 pandas
 geopandas
 matplotlib
-datetime
-pickle
-request
 joblib
 google.oauth2 
 xgboost
