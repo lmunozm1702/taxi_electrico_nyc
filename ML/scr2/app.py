@@ -15,6 +15,7 @@ matplotlib.use('Agg')
 from google.cloud import storage
 from google.oauth2 import service_account
 import xgboost as xgb
+import os
 
 def load_model():
     credentials_path = '/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json'
@@ -303,5 +304,5 @@ def process_and_generate(n_clicks, selected_date, selected_hour, selected_boroug
     return 'Por favor selecciona todos los campos.', None
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8050)))
 
