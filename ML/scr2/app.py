@@ -302,6 +302,11 @@ def process_and_generate(n_clicks, selected_date, selected_hour, selected_boroug
 
     return 'Por favor selecciona todos los campos.', None
 
+server = app.server
 if __name__ == "__main__":
+    app.run_server()
+    
+"""if __name__ == "__main__":
     app.run_server(debug=True)
 
+"""
