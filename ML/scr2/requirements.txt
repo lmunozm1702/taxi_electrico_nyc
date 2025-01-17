@@ -5,5 +5,8 @@ geopandas
 matplotlib
 joblib
 google.oauth 
+google-auth
+google-cloud-storage
 xgboost
 gunicorn
+requests
