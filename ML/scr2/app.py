@@ -8,18 +8,32 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import io
 import base64
-import pickle
 import requests
-import joblib
 import matplotlib
+from google.oauth2 import service_account
 matplotlib.use('Agg')  
+from google.cloud import storage
+from google.oauth2 import service_account
+import xgboost as xgb
 
-
-# Función para cargar el modelo de ML
 def load_model():
-    """with open('model.pkl', 'rb') as file:
-        return pickle.load(file)"""
-    return joblib.load('XGbost_model.pkl')
+    credentials_path = '/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json'
+    credentials = service_account.Credentials.from_service_account_file(credentials_path)
+    client = storage.Client(credentials=credentials)
+
+    bucket_name = 'modelo_entrenado'
+    source_blob_name = ''
+
+    # Cargar el modelo desde el bucket
+    bucket = client.bucket(bucket_name)
+    blob = bucket.blob(source_blob_name)
+    model_json_string = blob.download_as_text()
+    
+    # Crear el modelo XGBoost y cargar los datos del JSON
+    model = xgb.Booster()
+    model.load_model(model_json_string)
+    
+    return model
 
 def call_api(date):
     # Coordenadas y boroughs
@@ -94,7 +108,7 @@ def call_api(date):
         print(f"Filtrado datos del clima: {len(clima_filtrado)} filas.")
 
         # importar dataset de locaciones
-        locaciones = pd.read_csv('dataset.csv')
+        locaciones = pd.read_csv('../LOCAL/recursos/dataset.csv')
         data = clima_filtrado.merge(locaciones, on='borough', how='left')
         data = data.drop_duplicates()
         data = data.dropna(subset=['LocationID'])
@@ -104,13 +118,29 @@ def call_api(date):
 # Función para predecir los datos usando el modelo de ML
 def predict_data(dataframe, model):
     predictors = [
-        'LocationID', 'Day', 'Month', 'Hour', 'Day_of_week',
-        'temperature_2m', 'relative_humidity_2m', 'dew_point_2m',
+        'LocationID', 'Day', 'Hour', 'Day_of_week',
+        'temperature_2m', 'relative_humidity_2m', 
         'apparent_temperature', 'weather_code',
-        'pressure_msl', 'cloud_cover', 'wind_speed_10m',
-        'wind_direction_10m', 'wind_gusts_10m'
+        'cloud_cover', 'wind_speed_10m', 'wind_gusts_10m'
     ]
+
+    predictors = [
+    'location_id', 'day_of_month','hour_of_day', 'day_of_week',
+    'relative_humidity', 'apparent_temperature','temperature', 'weather_code',
+    'cloud_cover','wind_speed', 'wind_gusts'
+]
     input_data = dataframe[predictors]
+    input_data = input_data.rename(columns={
+        'LocationID':'location_id',
+        'Day': 'day_of_month',
+        'Hour': 'hour_of_day',
+        'Day_of_week': 'day_of_week',
+        'temperature_2m': 'temperature',
+        'relative_humidity_2m' : 'relative_humidity',
+        'apparent_temperature': 'apparent_temperature',
+        'wind_speed_10m': 'wind_speed',
+        'wind_gusts_10m':'wind_gusts'
+    })
     predictions = model.predict(input_data)
     dataframe['predicted_trips'] = predictions
     dataframe['predicted_trips'] = dataframe['predicted_trips'].round().astype(int)
@@ -160,10 +190,8 @@ def generate_heatmap(dataframe, shp_file, borough):
     return base64.b64encode(buffer.getvalue()).decode('utf-8')
 
 
-
 # Inicializar la aplicación Dash
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP, "/assets/style2.css"])
-
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.layout = dbc.Container(fluid=True, children=[
     dbc.Row([
         dbc.Col([
@@ -243,6 +271,8 @@ app.layout = dbc.Container(fluid=True, children=[
      Input('hour-dropdown', 'value'),
      Input('borough-dropdown', 'value')]
 )
+
+
 def process_and_generate(n_clicks, selected_date, selected_hour, selected_borough):
     if selected_date and selected_hour is not None:
         selected_date = datetime.strptime(selected_date, '%Y-%m-%d')
@@ -252,7 +282,7 @@ def process_and_generate(n_clicks, selected_date, selected_hour, selected_boroug
         if (selected_date - current_time).total_seconds() < 48 * 3600:
             dataframe = call_api(selected_date.strftime('%Y-%m-%d %H:%M:%S'))
         else:
-            dataframe = pd.read_csv('dataset.csv')  # Leer datos locales si es fuera de las 48 horas
+            dataframe = pd.read_csv('../LOCAL/recursos/dataset.csv')  # Leer datos locales si es fuera de las 48 horas
 
         dataframe['date'] = pd.to_datetime(dataframe['date'])
         dataframe['date'] = selected_date
@@ -265,7 +295,7 @@ def process_and_generate(n_clicks, selected_date, selected_hour, selected_boroug
         model = load_model()
         predicted_data = predict_data(dataframe, model)
 
-        heatmap_image = generate_heatmap(predicted_data, 'C:/Users/NoxiePC/Desktop/taximap/taxi_zones.shp', selected_borough)
+        heatmap_image = generate_heatmap(predicted_data, '../LOCAL/recursos/taxi_zones.shp', selected_borough)
         image_src = f"data:image/png;base64,{heatmap_image}"
 
         return f'Predicciones generadas para: {selected_date.strftime("%Y-%m-%d %H:%M")}', image_src
