@@ -4,7 +4,6 @@ pandas
 geopandas
 matplotlib
 datetime
-io 
 base64
 pickle
 request
