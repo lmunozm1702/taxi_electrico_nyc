@@ -4,6 +4,6 @@ pandas
 geopandas
 matplotlib
 joblib
-google.oauth2 
+google.oauth 
 xgboost
 gunicorn
