@@ -19,24 +19,33 @@ from datetime import date, datetime
 import base64
 from io import BytesIO
 
-
+import os
 def load():
-    
-    model_1_path = 'models/xgboost_model_1.pkl'
-    model_2_path = 'models/xgboost_model_2.pkl'
-    model_3_path = 'models/xgboost_model_3.pkl'
-    coordinates_path = 'data/coordinates.csv'
+    # Obtiene el directorio base del archivo actual
+    base_dir = os.path.dirname(os.path.abspath(_file_))
+
+    # Construye las rutas absolutas de los archivos
+    model_1_path = os.path.join(base_dir, 'models', 'xgboost_model_1.pkl')
+    model_2_path = os.path.join(base_dir, 'models', 'xgboost_model_2.pkl')
+    model_3_path = os.path.join(base_dir, 'models', 'xgboost_model_3.pkl')
+    coordinates_path = os.path.join(base_dir, 'data', 'coordinates.csv')
 
     print('antes de la carga')
-    # Carga los modelos y los datos
-    coordinates = pd.read_csv(coordinates_path)
-    print('se cargo coordinates')
-    model_1 = joblib.load(model_1_path)
-    model_2 = joblib.load(model_2_path)
-    model_3 = joblib.load(model_3_path)
-    print('se cargaron bien')
 
-    return model_1, model_2, model_3, coordinates
+    # Carga los modelos y los datos
+    try:
+        coordinates = pd.read_csv(coordinates_path)
+        print('se cargo coordinates')
+
+        model_1 = joblib.load(model_1_path)
+        model_2 = joblib.load(model_2_path)
+        model_3 = joblib.load(model_3_path)
+        print('se cargaron bien los modelos')
+
+        return model_1, model_2, model_3, coordinates
+    except Exception as e:
+        print(f'Error al cargar los archivos: {e}')
+        raise
 
 def get_clima(date):
     # Coordenadas y boroughs
