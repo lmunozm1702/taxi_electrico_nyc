@@ -21,7 +21,7 @@ from io import BytesIO
 
 def load():
     
-    model_1_path = 'models/xgboost_model_2.pkl'
+    model_1_path = 'models/xgboost_model_1.pkl'
     model_2_path = 'models/xgboost_model_2.pkl'
     model_3_path = 'models/xgboost_model_3.pkl'
     coordinates_path = 'data/coordinates.csv'
