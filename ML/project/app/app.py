@@ -22,7 +22,7 @@ from io import BytesIO
 import os
 def load():
     # Obtiene el directorio base del archivo actual
-    base_dir = os.path.dirname(os.path.abspath(_file_))
+    base_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Construye las rutas absolutas de los archivos
     model_1_path = os.path.join(base_dir, 'models', 'xgboost_model_1.pkl')
