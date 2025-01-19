@@ -20,10 +20,23 @@ import base64
 from io import BytesIO
 
 def load():
-    model_1 = joblib.load('../LOCAL/xgboost_model_1.pkl')
-    model_2 = joblib.load('../LOCAL/xgboost_model_2.pkl')
-    model_3 = joblib.load('../LOCAL/xgboost_model_3.pkl')
-    coordinates = pd.read_csv('../LOCAL/coordinates.csv')
+    # Rutas relativas al directorio de trabajo del contenedor
+    try:
+        model_1_path = '../models/xgboost_model_2.pkl'
+        model_1 = joblib.load(model_1_path)
+    except Exception as e:
+        print(f"Error loading model_1: {e}")
+
+    model_2_path = '../models/xgboost_model_2.pkl'
+    model_3_path = '../models/xgboost_model_3.pkl'
+    coordinates_path = '../data/coordinates.csv'
+
+    # Carga los modelos y los datos
+    
+    model_2 = joblib.load(model_2_path)
+    model_3 = joblib.load(model_3_path)
+    coordinates = pd.read_csv(coordinates_path)
+
     return model_1, model_2, model_3, coordinates
 
 def get_clima(date):
