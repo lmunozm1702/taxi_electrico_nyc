@@ -1,0 +1,12 @@
+pandas
+xgboost
+numpy
+geopandas
+shapely
+matplotlib
+requests
+datetime
+joblib
+dash
+dash_bootstrap_components
+tabulate
