@@ -18,15 +18,16 @@ from datetime import date, datetime
 
 import base64
 from io import BytesIO
+import os
 
 def load():
-    
-    model_1_path = 'models/xgboost_model_1.pkl'
-    model_2_path = 'models/xgboost_model_2.pkl'
-    model_3_path = 'models/xgboost_model_3.pkl'
-    coordinates_path = 'data/coordinates.csv'
+    # Construir las rutas absolutas a los archivos
+    model_1_path = os.path.join(os.getcwd(), 'app', 'models', 'xgboost_model_1.pkl')
+    model_2_path = os.path.join(os.getcwd(), 'app', 'models', 'xgboost_model_2.pkl')
+    model_3_path = os.path.join(os.getcwd(), 'app', 'models', 'xgboost_model_3.pkl')
+    coordinates_path = os.path.join(os.getcwd(), 'app', 'data', 'coordinates.csv')
 
-    # Carga los modelos y los datos
+    # Cargar los modelos y los datos
     model_1 = joblib.load(model_1_path)
     model_2 = joblib.load(model_2_path)
     model_3 = joblib.load(model_3_path)
