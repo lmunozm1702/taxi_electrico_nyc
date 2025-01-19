@@ -86,3 +86,32 @@ FROM `driven-atrium-445021-m2.project_data.trips` as trips
 JOIN `driven-atrium-445021-m2.project_data.polygons` as polygons
 ON trips.pickup_location_id = polygons.location_id
 GROUP BY trips.pickup_year, trips.pickup_quarter, polygons.location_id, polygons.borough;
+
+-- Vista KPI1
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.kpi1` AS
+SELECT year, quarter, month, count FROM `driven-atrium-445021-m2.project_data.active_vehicles_count` WHERE vehicle_type = \'HYB\' or vehicle_type = \'BEV\'
+
+
+-- kpi3_no_borough
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.kpi3_nb` AS
+SELECT trips.pickup_year, trips.pickup_quarter, avg(trips.fare_amount) as avg_fare_amount FROM `driven-atrium-445021-m2.project_data.trips` as trips
+GROUP BY pickup_year, pickup_quarter;
+
+-- kpi3_borough
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.kpi3_sb` AS
+SELECT trips.pickup_year, trips.pickup_quarter, coordinates.borough as borough, avg(trips.fare_amount) as avg_fare_amount FROM `driven-atrium-445021-m2.project_data.trips` as trips
+INNER JOIN `driven-atrium-445021-m2.project_data.coordinates` as coordinates
+ON coordinates.location_id = trips.pickup_location_id
+GROUP BY pickup_year, pickup_quarter, coordinates.borough
+
+-- kpi4_no_borough
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.kpi4_nb` AS
+SELECT trips.taxi_type, trips.pickup_year, ANY_VALUE(trips.pickup_quarter) as pickup_quarter, trips.pickup_month, count(*) as cantidad FROM `driven-atrium-445021-m2.project_data.trips` as trips
+GROUP BY trips.taxi_type, pickup_year, pickup_month;
+
+-- kpi4_borough
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.kpi4_sb` AS
+SELECT trips.taxi_type, trips.pickup_year, ANY_VALUE(trips.pickup_quarter) as pickup_quarter, trips.pickup_month, coordinates.borough as borough, count(*) as cantidad FROM `driven-atrium-445021-m2.project_data.trips` as trips
+INNER JOIN `driven-atrium-445021-m2.project_data.coordinates` as coordinates
+ON coordinates.location_id = trips.pickup_location_id
+GROUP BY trips.taxi_type, trips.pickup_year, trips.pickup_month, coordinates.borough

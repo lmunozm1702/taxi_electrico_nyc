@@ -14,32 +14,21 @@ from google.cloud import bigquery
 from google.oauth2 import service_account
 import textwrap
 
-#Load data from BigQuery
-#start_time = datetime.now()
-#credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-#query_job = bigquery.Client(credentials=credentials).query('SELECT * FROM project_data.trips_year_qtr_map where pickup_year=2024;')
-#df_trips_by_borough = query_job.result().to_dataframe()
-#print(f'El tiempo fu de cargar los datos fue de: {datetime.now() - start_time}')
-#print(df_trips_by_borough.info())
-
-#query_job = bigquery.Client(credentials=credentials).query('SELECT * FROM project_data.vehicle_types_hev_hyb;')
-#df_trips_by_borough = query_job.result().to_dataframe()
-#print(df_trips_by_borough.info())
-
 register_page(__name__, name='Home', path='/')
 
 #funcion para calcular el kpi1
 def render_kpi(kpi_id, year, borough):
-    kpi_titles = ['Taxi EV/HYB activo (+5%)', 'Aumento de Viajes (+5%)', 'KPI 3', 'KPI 4']
-    kpi_subtitles = ['Trimestre actual:', 'Trimestre actual:', 'KPI 3', 'KPI 4']
-    kpi_prefixes = ['', '', '', '']
-    kpi_suffixes = ['', '', '', '']
+    kpi_titles = ['Taxi EV/HYB activo (+5%)', 'Cantidad Viajes (+5%)', 'Ticket Promedio (+2%)', 'Cuota vs Taxi (+0.01%)']
+    kpi_subtitles = ['Trimestre actual:', 'Trimestre actual:', 'Trimestre actual:', 'Mes Actual:']
+    kpi_prefixes = ['', '', 'USD$', '']
+    kpi_suffixes = ['', '', '', '%']
+    delta_format = [',.0f', ',.0f', ',.2f', ',.2f']
     value, delta, traces = calculate_kpi(kpi_id, year, borough)
     fig = go.Figure(go.Indicator(
         mode = "number+delta",
         value = value,
         number = {"prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1]},
-        delta = {"reference": delta, "valueformat": ",.0f", "prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1]},
+        delta = {"reference": delta, "valueformat": delta_format[kpi_id-1], "prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1]},
         #delta = {"reference": delta, "prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1], 'relative': True},
         title = {"text": f"{kpi_titles[kpi_id-1]}<br><span style='font-size:0.7em;color:gray'>{kpi_subtitles[kpi_id-1]}</span>"},
         domain = {'y': [0.15, 0.5], 'x': [0.25, 0.75]}))
@@ -56,9 +45,9 @@ def calculate_kpi(kpi_id, year, borough):
 
     if kpi_id == 1:
         if year == 'Todos':
-            query_job = bigquery.Client(credentials=credentials).query('SELECT year, quarter, month, count FROM `driven-atrium-445021-m2.project_data.active_vehicles_count` WHERE vehicle_type = \'HYB\' or vehicle_type = \'BEV\'')
+            query_job = bigquery.Client(credentials=credentials).query('SELECT year, quarter, month, count FROM `driven-atrium-445021-m2.project_data.kpi1`;')
         else:
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT year, quarter, month, count FROM `driven-atrium-445021-m2.project_data.active_vehicles_count` WHERE vehicle_type = \'HYB\' or vehicle_type = \'BEV\' and year = {year}')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT year, quarter, month, count FROM `driven-atrium-445021-m2.project_data.kpi1` WHERE year = {year}')
         results = query_job.result().to_dataframe()
 
         #cuenta los valores distintos en la columna month para el year y month del último registro del dataframe
@@ -111,9 +100,72 @@ def calculate_kpi(kpi_id, year, borough):
         #delta es el valor de la columna f0_ para el segundo registro de los resultados más el 5%
         delta = (results['count'].values[-2] ) * 1.05
 
-        return value, delta, traces  
+        return value, delta, traces
+    elif kpi_id == 3:
+        if year == 'Todos':
+            if borough == 'Todos':
+                query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, pickup_quarter, avg_fare_amount FROM `driven-atrium-445021-m2.project_data.kpi3_nb`;')
+            else:
+                query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, pickup_quarter, avg_fare_amount FROM `driven-atrium-445021-m2.project_data.kpi3_sb` WHERE borough = \'{borough}\';')
+        else:
+            if borough == 'Todos':
+                query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, pickup_quarter, avg_fare_amount FROM `driven-atrium-445021-m2.project_data.kpi3_nb` WHERE pickup_year = {year};')
+            else:
+                query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, pickup_quarter, avg_fare_amount FROM`driven-atrium-445021-m2.project_data.kpi3_sb` WHERE borough = \'{borough}\' AND pickup_year = {year};')
+        results = query_job.result().to_dataframe()
 
+        #ordena los resultados por year y quarter
+        results = results.sort_values(by=['pickup_year', 'pickup_quarter'], ascending=[True, True])
 
+        #selecciona la columna avg_fare_amount en una lista
+        traces = results['avg_fare_amount'].map(lambda x: x).tolist()
+
+        #value es el valor de la columna avg_fare_amount para el ultimo registro de los resultados
+        value = results['avg_fare_amount'].values[-1]
+
+        #delta es el valor de la columna avg_fare_amount para el segundo registro de los resultados
+        delta = results['avg_fare_amount'].values[-2] * 1.02
+    else:
+        if year == 'Todos':
+            if borough == 'Todos':
+                query_job = bigquery.Client(credentials=credentials).query('SELECT taxi_type, pickup_year, pickup_quarter, pickup_month, cantidad FROM `driven-atrium-445021-m2.project_data.kpi4_nb`;')
+            else:
+                query_job = bigquery.Client(credentials=credentials).query(f'SELECT taxi_type, pickup_year, pickup_quarter, pickup_month, cantidad FROM `driven-atrium-445021-m2.project_data.kpi4_sb` WHERE borough = \'{borough}\';')
+        else:
+            if borough == 'Todos':
+                query_job = bigquery.Client(credentials=credentials).query(f'SELECT taxi_type, pickup_year, pickup_quarter, pickup_month, cantidad FROM `driven-atrium-445021-m2.project_data.kpi4_nb` WHERE pickup_year = {year};')
+            else:
+                query_job = bigquery.Client(credentials=credentials).query(f'SELECT taxi_type, pickup_year, pickup_quarter, pickup_month, cantidad FROM `driven-atrium-445021-m2.project_data.kpi4_sb` WHERE borough = \'{borough}\' AND pickup_year = {year};')
+        results = query_job.result().to_dataframe()
+
+        #ordena los resultados por year y quarter
+        results = results.sort_values(by=['pickup_year', 'pickup_quarter', 'pickup_month'], ascending=[True, True, True])
+
+        #agrega columna month_total cpon un apply a la funcion taxi_type_total_month(results)
+        results['month_total'] = results.apply(lambda row: results[
+            (results['pickup_year'] == row['pickup_year']) & 
+            (results['pickup_quarter'] == row['pickup_quarter']) & 
+            (results['pickup_month'] == row['pickup_month'])]['cantidad'].sum(), axis=1)
+
+        #elimina la fila si taxi_type es distinto a high_volume
+        results = results[results['taxi_type'] == 'high_volume']
+
+        #agrega columna cuota en la cual para cada registro el valor es cantidad / month_total
+        results['cuota'] = results.apply(lambda row: row['cantidad'] / row['month_total'], axis=1)
+
+        #selecciona la columna cantidad en una lista
+        traces = results['cuota'].map(lambda x: x).tolist()
+
+        
+        #value es el valor de la columna cantidad para el ultimo registro de los resultados
+        value = results['cantidad'].values[-1] / results['month_total'].values[-1] * 100
+
+        #delta es el valor de la columna cantidad para el segundo registro de los resultados
+        delta = (results['cantidad'].values[-2] / results['month_total'].values[-2] * 100) + 0.001
+        
+
+    return value, delta, traces
+    
 def calculate_correlaciones(year, borough):
     credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     
@@ -146,6 +198,8 @@ def render_viajes_lineas(year, borough):
         y='Cantidad',
         color='Distrito',
         markers=True,
+        #specify color of each line
+        color_discrete_sequence=['#1d4355', '#365b6d', '#41c1b0', '#6c9286', '#f2f1ec'],        
         #title= f'Cantidad de Viajes por Mes {year} y Distrito {borough}'
     )
 
@@ -207,9 +261,9 @@ def calculate_max_min_table(year, borough):
             query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, borough, zone, cantidad FROM project_data.trips_year_qtr_map where borough = \'{borough}\';')
     else:
         if borough == 'Todos':
-            query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, borough, zone, cantidad FROM project_data.trips_year_qtr_map WHERE pickup_year = {year};')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, borough, zone, cantidad FROM project_data.trips_year_qtr_map WHERE pickup_year = {year};')
         else:
-            query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, borough, zone, cantidad FROM project_data.trips_year_qtr_map WHERE pickup_year = {year} AND borough = \'{borough}\';')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, borough, zone, cantidad FROM project_data.trips_year_qtr_map WHERE pickup_year = {year} AND borough = \'{borough}\';')
         
     df = query_job.result().to_dataframe()
     
@@ -267,10 +321,10 @@ layout = html.Div([
                     html.Div(dcc.Graph(figure=render_kpi(2, 'Todos', 'Todos'), id='kpi2'), className='kpi_card_border'),
                 ], width=3),
                 dbc.Col([
-                    html.H2('', className='border-0'),
+                    html.Div(dcc.Graph(figure=render_kpi(3, 'Todos', 'Todos'), id='kpi3'), className='kpi_card_border'),
                 ], width=3),
                 dbc.Col([
-                    html.H2('', className='border-0'),
+                    html.Div(dcc.Graph(figure=render_kpi(4, 'Todos', 'Todos'), id='kpi4'), className='kpi_card_border'),
                 ], width=3),            
             ]),
             dbc.Row([
@@ -318,12 +372,14 @@ layout = html.Div([
 @callback(    
         [Output('kpi1', 'figure'),        
         Output('kpi2', 'figure'),
+        Output('kpi3', 'figure'),
+        Output('kpi4', 'figure'),
         Output('viajes_linea', 'figure'),        
         Output('mapa', 'figure'),
-        Output('max_min_table', 'data'),
-        Input('year-dropdown', 'value'),
-        Input('borough-dropdown', 'value')
-        ]    
+        Output('max_min_table', 'data')],
+        [Input('year-dropdown', 'value'),
+        Input('borough-dropdown', 'value')],
+        prevent_initial_call=True,
 )
 def update_kpis(selected_year, selected_borough):
     #correlations = render_correlaciones(selected_year, selected_borough)
@@ -331,8 +387,10 @@ def update_kpis(selected_year, selected_borough):
     mapa = render_mapa(selected_year, selected_borough)
     kpi1 = render_kpi(1, selected_year, selected_borough)
     kpi2 = render_kpi(2, selected_year, selected_borough)
+    kpi3 = render_kpi(3, selected_year, selected_borough)
+    kpi4 = render_kpi(4, selected_year, selected_borough)
     max_min_table = calculate_max_min_table(selected_year, selected_borough)
-    return kpi1, kpi2, viajes_linea, mapa, max_min_table.to_dict('records')
+    return kpi1, kpi2, kpi3, kpi4, viajes_linea, mapa, max_min_table.to_dict('records')
 
 
                 # dbc.Col([
