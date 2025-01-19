@@ -74,3 +74,15 @@ CREATE TABLE `project_data.active_vehicles_count` (
   `count` INT64 NOT NULL,
   PRIMARY KEY (`vehicle_type`, `quarter`, `month`, `year`) NOT ENFORCED 
 );
+
+-- Calcula poligonos
+SELECT coordinates.location_id, coordinates.geom, coordinates.zone, coordinates.borough, ST_GeogFromText(coordinates.geom) as polygon
+FROM `driven-atrium-445021-m2.project_data.coordinates` as coordinates;
+
+-- Vista que agrupa los viajes por year, quarter, location_id y borough
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.trips_year_qtr_map` AS
+SELECT trips.pickup_year, trips.pickup_quarter, polygons.location_id, polygons.borough, ANY_VALUE(polygons.polygon) as map_location, count(*) as cantidad
+FROM `driven-atrium-445021-m2.project_data.trips` as trips
+JOIN `driven-atrium-445021-m2.project_data.polygons` as polygons
+ON trips.pickup_location_id = polygons.location_id
+GROUP BY trips.pickup_year, trips.pickup_quarter, polygons.location_id, polygons.borough;

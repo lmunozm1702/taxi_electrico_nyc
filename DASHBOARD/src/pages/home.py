@@ -1,15 +1,30 @@
 import requests
+import pandas as pd
+from datetime import datetime
 
 from dash import dcc
-from dash import html
+from dash import html, dash_table
 from dash import register_page, callback
 from dash.dependencies import Input, Output
+from dash.dash_table.Format import Format, Group
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import plotly.express as px
 from google.cloud import bigquery
 from google.oauth2 import service_account
+import textwrap
 
+#Load data from BigQuery
+#start_time = datetime.now()
+#credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+#query_job = bigquery.Client(credentials=credentials).query('SELECT * FROM project_data.trips_year_qtr_map where pickup_year=2024;')
+#df_trips_by_borough = query_job.result().to_dataframe()
+#print(f'El tiempo fu de cargar los datos fue de: {datetime.now() - start_time}')
+#print(df_trips_by_borough.info())
+
+#query_job = bigquery.Client(credentials=credentials).query('SELECT * FROM project_data.vehicle_types_hev_hyb;')
+#df_trips_by_borough = query_job.result().to_dataframe()
+#print(df_trips_by_borough.info())
 
 register_page(__name__, name='Home', path='/')
 
@@ -24,7 +39,7 @@ def render_kpi(kpi_id, year, borough):
         mode = "number+delta",
         value = value,
         number = {"prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1]},
-        delta = {"reference": delta, "valueformat": ".0f", "prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1]},
+        delta = {"reference": delta, "valueformat": ",.0f", "prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1]},
         #delta = {"reference": delta, "prefix": kpi_prefixes[kpi_id-1], "suffix": kpi_suffixes[kpi_id-1], 'relative': True},
         title = {"text": f"{kpi_titles[kpi_id-1]}<br><span style='font-size:0.7em;color:gray'>{kpi_subtitles[kpi_id-1]}</span>"},
         domain = {'y': [0.15, 0.5], 'x': [0.25, 0.75]}))
@@ -37,7 +52,6 @@ def render_kpi(kpi_id, year, borough):
     return fig
 
 def calculate_kpi(kpi_id, year, borough):
-    print(kpi_id, year, borough)
     credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
 
     if kpi_id == 1:
@@ -105,23 +119,39 @@ def calculate_correlaciones(year, borough):
     
     if year == 'Todos':
         if borough == 'Todos':
-            query_job = bigquery.Client(credentials=credentials).query('SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id GROUP BY coordinates.borough, trips.pickup_day_of_week;')
+            query_job = bigquery.Client(credentials=credentials).query('SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id GROUP BY coordinates.borough, trips.pickup_day_of_week ORDER BY Dia_de_la_Semana;')
         else:
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE coordinates.borough = \'{borough}\' GROUP BY coordinates.borough, trips.pickup_day_of_week;')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE coordinates.borough = \'{borough}\' GROUP BY coordinates.borough, trips.pickup_day_of_week  ORDER BY Dia_de_la_Semana;')
     else:
         if borough == 'Todos':
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE trips.pickup_year = {year} GROUP BY coordinates.borough, trips.pickup_day_of_week;')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE trips.pickup_year = {year} GROUP BY coordinates.borough, trips.pickup_day_of_week  ORDER BY Dia_de_la_Semana;')
         else:
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE coordinates.borough = \'{borough}\' AND trips.pickup_year = {year} GROUP BY coordinates.borough, trips.pickup_day_of_week;')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, trips.pickup_day_of_week AS Dia_de_la_Semana, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE coordinates.borough = \'{borough}\' AND trips.pickup_year = {year} GROUP BY coordinates.borough, trips.pickup_day_of_week  ORDER BY Dia_de_la_Semana;')
         
     results = query_job.result().to_dataframe()
     
     results = results[results['Distrito'] != 'EWR']
     
-    dias_semana = { 0: 'Domingo', 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado' }
+    dias_semana = { 0: 'D', 1: 'L', 2: 'M', 3: 'X', 4: 'J', 5: 'V', 6: 'S' }
     results['Dia_de_la_Semana'] = results['Dia_de_la_Semana'].map(dias_semana)
-    
+
     return results
+
+#Crea grafico de lieas utilizando plotly
+def render_viajes_lineas(year, borough):
+    viajes = calculate_correlaciones(year, borough)
+    fig = px.line(
+        viajes,
+        x='Dia_de_la_Semana',
+        y='Cantidad',
+        color='Distrito',
+        markers=True,
+        #title= f'Cantidad de Viajes por Mes {year} y Distrito {borough}'
+    )
+
+    #ocultar titulo de eje x y eje y    
+    fig.update_layout(margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)', autosize=True, height=330, xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
+    return fig
 
 
 def render_correlaciones(year, borough):
@@ -130,11 +160,10 @@ def render_correlaciones(year, borough):
         viajes,
         x='Distrito',
         y='Dia_de_la_Semana',
-        size='Cantidad',
-        title= f'Cantidad de Viajes por Día de Año {year} y Distrito {borough}'
+        size='Cantidad',        
     )
     dias_de_semana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
-    fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=dias_de_semana[::-1]))
+    fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=dias_de_semana[::-1]), autosize=True, height=330, margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)')
     
     return fig
 
@@ -166,9 +195,40 @@ def render_mapa(year, borough):
     fig = px.choropleth_mapbox(viajes, geojson=geojson, locations='Distrito', featureidkey="properties.BoroName",
                                color='Cantidad', color_continuous_scale="Viridis",
                                center=dict(lat=40.7128, lon=-74.0060), mapbox_style="carto-positron", zoom=8)
-    fig.update_layout(title=f'Cantidad de Inicios de Viaje por Distrito {borough}', margin={"r":0,"t":40,"l":0,"b":0})
+    fig.update_layout(autosize=True, height=330, margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)')
     return fig
 
+def calculate_max_min_table(year, borough):
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    if year == 'Todos':
+        if borough == 'Todos':
+            query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, borough, zone, cantidad FROM project_data.trips_year_qtr_map;')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, borough, zone, cantidad FROM project_data.trips_year_qtr_map where borough = \'{borough}\';')
+    else:
+        if borough == 'Todos':
+            query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, borough, zone, cantidad FROM project_data.trips_year_qtr_map WHERE pickup_year = {year};')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, borough, zone, cantidad FROM project_data.trips_year_qtr_map WHERE pickup_year = {year} AND borough = \'{borough}\';')
+        
+    df = query_job.result().to_dataframe()
+    
+    #Order df by year, quarter, month
+    df = df.sort_values(by=['pickup_year', 'cantidad'], ascending=[False, False])
+
+    #Eliminar columnas pickup_year, pickup_quarter, map_location
+    df = df.drop(['pickup_year'], axis=1)
+    
+    #Eliminar duplicados por columna location_id dejando el primer registro
+    df = df.drop_duplicates(subset=['zone'], keep='first')
+
+    #wrap for column zone, permite wrapping over long words
+    df['zone'] = df['zone'].apply(lambda x: textwrap.shorten(x, width=20, placeholder='...'))    
+
+    df_max = df.head(5)
+    df_min = df.tail(5)
+
+    return pd.concat([df_max, df_min], axis=0).reset_index(drop=True)  
 
 dropdown_options = {
     'years': ['Todos',2023, 2024],
@@ -214,18 +274,40 @@ layout = html.Div([
                 ], width=3),            
             ]),
             dbc.Row([
+                dbc.Col([                    
+                    html.H2(dcc.Graph(figure=render_viajes_lineas('Todos', 'Todos'), id='viajes_linea'), className='kpi_card_border'),
+                ], width=4),
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_correlaciones('Todos', 'Todos'), id='correlations'), className='text-primary border border-primary'),
-                ], width=6),
+                    html.H2(dcc.Graph(figure=render_mapa('Todos', 'Todos'), id='mapa'), className='kpi_card_border'),
+                ], width=4),
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_mapa('Todos', 'Todos'), id='mapa'), className='text-primary border border-primary'),
-                ], width=6),
-                dbc.Col([
-                    html.H2('Gráfico 3', className='text-primary border border-primary'),
-                ], width=6),                           
-                dbc.Col([
-                    html.H2('Gráfico 4', className='text-primary border border-primary'),
-                ], width=6),
+                    html.Div(
+                        children=dash_table.DataTable(  
+                            data=calculate_max_min_table('Todos', 'Todos').to_dict('records'),                    
+                            id='max_min_table',
+                            columns =[{'name': 'Zona', 'id': 'zone'},
+                                      {'name': 'Barrio', 'id': 'borough'},
+                                      {'name': 'Cantidad', 'id': 'cantidad', 'type': 'numeric', 'format': Format(group=',')},
+                                ],                            
+                            style_data={
+                                'whiteSpace': 'normal',
+                                'height': 'auto',
+                                'lineHeight': '1px'
+                            },
+                            style_header={
+                                'backgroundColor': 'white',
+                                'fontWeight': 'bold'
+                            },
+                            fixed_rows={'headers': True},
+                            style_table={'height': 300},
+                            style_cell_conditional=[                                
+                                {'if': {'column_id': 'cantidad'}, 'textAlign': 'right'},
+                            ],
+                            style_as_list_view=True,
+                            style_cell={'padding': '3px', 'fontSize': 12, 'textAlign': 'left'},                            
+                        ),
+                        className='table_card_border'),
+                ], width=4),
             ])
         ], width=9)
     ], className='container-fluid'),
@@ -236,25 +318,26 @@ layout = html.Div([
 @callback(    
         [Output('kpi1', 'figure'),        
         Output('kpi2', 'figure'),
+        Output('viajes_linea', 'figure'),        
+        Output('mapa', 'figure'),
+        Output('max_min_table', 'data'),
         Input('year-dropdown', 'value'),
         Input('borough-dropdown', 'value')
         ]    
 )
 def update_kpis(selected_year, selected_borough):
+    #correlations = render_correlaciones(selected_year, selected_borough)
+    viajes_linea = render_viajes_lineas(selected_year, selected_borough)
+    mapa = render_mapa(selected_year, selected_borough)
     kpi1 = render_kpi(1, selected_year, selected_borough)
     kpi2 = render_kpi(2, selected_year, selected_borough)
-    return kpi1, kpi2
+    max_min_table = calculate_max_min_table(selected_year, selected_borough)
+    return kpi1, kpi2, viajes_linea, mapa, max_min_table.to_dict('records')
 
 
-#define callbacks
-@callback(    
-        [Output('correlations', 'figure'),        
-        Output('mapa', 'figure'),
-        Input('year-dropdown', 'value'),
-        Input('borough-dropdown', 'value')
-        ]    
-)
-def update_graphics(selected_year, selected_borough):
-    correlations = render_correlaciones(selected_year, selected_borough)
-    mapa = render_mapa(selected_year, selected_borough)
-    return correlations, mapa
+                # dbc.Col([
+                #     #<iframe width="600" height="450" src= frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+                #     html.Iframe(src="https://lookerstudio.google.com/embed/reporting/dfb5c74a-6d41-4767-b00c-a84154d7b9cf/page/ZEedE"),
+                #     #html.Div('<iframe width="600" height="450" src="https://lookerstudio.google.com/embed/reporting/dfb5c74a-6d41-4767-b00c-a84154d7b9cf/page/ZEedE" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>', className='text-primary border border-primary'),
+                #     #html.H2('Gráfico 3', className='text-primary border border-primary'),
+                # ], width=6), 
