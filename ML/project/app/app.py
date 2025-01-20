@@ -38,6 +38,43 @@ def load():
 
     return model_1, model_2, model_3, coordinates
 
+from google.cloud import storage
+from google.oauth2 import service_account
+
+def load2():
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    # Configura el cliente de almacenamiento
+    client = storage.Client(credentials=credentials)
+    bucket_name = 'modelo_entrenado'  # Reemplaza con el nombre de tu bucket
+    bucket = client.get_bucket(bucket_name)
+    
+    # Define las rutas de los archivos en el bucket
+    model_1_path = 'mxgboost_model_1.pkl'
+    model_2_path = 'xgboost_model_2.pkl'
+    model_3_path = 'xgboost_model_3.pkl'
+    coordinates_path = 'coordinates.csv'
+
+    print('antes de la carga')
+
+    # Carga los archivos desde el bucket
+    coordinates_blob = bucket.blob(coordinates_path)
+    coordinates = pd.read_csv(coordinates_blob.download_as_bytes())
+    print('se cargo coordinates')
+
+    model_1_blob = bucket.blob(model_1_path)
+    model_1 = joblib.load(model_1_blob.download_as_bytes())
+    
+    model_2_blob = bucket.blob(model_2_path)
+    model_2 = joblib.load(model_2_blob.download_as_bytes())
+    
+    model_3_blob = bucket.blob(model_3_path)
+    model_3 = joblib.load(model_3_blob.download_as_bytes())
+    
+    print('se cargaron bien')
+
+    return model_1, model_2, model_3, coordinates
+
+
 def get_clima(date):
     # Coordenadas y boroughs
     latitudes = [40.6815, 40.6501, 40.7834, 40.8499, 40.5623]

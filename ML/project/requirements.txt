@@ -10,3 +10,5 @@ joblib
 dash
 dash_bootstrap_components
 tabulate
+google-cloud-storage
+google-auth
