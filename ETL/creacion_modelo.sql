@@ -115,3 +115,15 @@ SELECT trips.taxi_type, trips.pickup_year, ANY_VALUE(trips.pickup_quarter) as pi
 INNER JOIN `driven-atrium-445021-m2.project_data.coordinates` as coordinates
 ON coordinates.location_id = trips.pickup_location_id
 GROUP BY trips.taxi_type, trips.pickup_year, trips.pickup_month, coordinates.borough
+
+-- card total viajes
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.card_total_viajes`
+SELECT trips.pickup_year, coordinates.borough, count(*) AS cantidad
+FROM `driven-atrium-445021-m2.project_data.trips` as trips INNER JOIN `driven-atrium-445021-m2.project_data.trips` as coordinates
+ON coordinates.location_id = trips.pickup_location_id
+GROUP BY trips.pickup_year, coordinates.borough;
+
+-- card viaje promnedio dia
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.card_viaje_promedio_dia`
+SELECT count(*) as cantidad, pickup_year, max(pickup_month) as pickup_month from `project_data.trips`
+group by pickup_year
