@@ -1,12 +1,11 @@
 import requests
 import pandas as pd
-from datetime import datetime
 
 from dash import dcc
 from dash import html, dash_table
 from dash import register_page, callback
 from dash.dependencies import Input, Output
-from dash.dash_table.Format import Format, Group
+from dash.dash_table.Format import Format
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import plotly.express as px
@@ -49,6 +48,9 @@ def calculate_kpi(kpi_id, year, borough):
         else:
             query_job = bigquery.Client(credentials=credentials).query(f'SELECT year, quarter, month, count FROM `driven-atrium-445021-m2.project_data.kpi1` WHERE year = {year}')
         results = query_job.result().to_dataframe()
+
+        #elimina duplicados
+        results = results.drop_duplicates()
 
         #cuenta los valores distintos en la columna month para el year y month del último registro del dataframe
         count = results[(results['year'] == results['year'].values[-1]) & (results['quarter'] == results['quarter'].values[-1])]['month'].nunique()
@@ -155,7 +157,6 @@ def calculate_kpi(kpi_id, year, borough):
 
         #selecciona la columna cantidad en una lista
         traces = results['cuota'].map(lambda x: x).tolist()
-
         
         #value es el valor de la columna cantidad para el ultimo registro de los resultados
         value = results['cantidad'].values[-1] / results['month_total'].values[-1] * 100
@@ -284,8 +285,74 @@ def calculate_max_min_table(year, borough):
 
     return pd.concat([df_max, df_min], axis=0).reset_index(drop=True)  
 
+def card_total_viajes(year, borough):
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+
+    if year == 'Todos':
+        if borough == 'Todos':
+            query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, borough, cantidad FROM project_data.card_total_viajes;')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, borough, cantidad FROM project_data.card_total_viajes where borough = \'{borough}\';')
+    else:
+        if borough == 'Todos':            
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, borough, cantidad FROM project_data.card_total_viajes WHERE pickup_year = {year};')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, borough, cantidad FROM project_data.card_total_viajes WHERE pickup_year = {year} AND borough = \'{borough}\';')
+    
+    df = query_job.result().to_dataframe()
+    results = df['cantidad'].sum()
+    #return results with comma separator and grouped by thousands
+    return "{:,}".format(results)
+
+def card_viaje_promedio_dia(year, borough):
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    if year == 'Todos':
+        if borough == 'Todos':
+            query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, pickup_month, borough, cantidad FROM project_data.card_viaje_promedio_dia;')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, pickup_month, borough, cantidad FROM project_data.card_viaje_promedio_dias where borough = \'{borough}\';')
+    else:
+        if borough == 'Todos':            
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, pickup_month, borough, cantidad FROM project_data.card_viaje_promedio_dia WHERE pickup_year = {year};')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, pickup_month, borough, cantidad FROM project_data.card_viaje_promedio_dia WHERE pickup_year = {year} AND borough = \'{borough}\';')
+    df = query_job.result().to_dataframe()
+
+    #Extract the unique pairs 'pickup_year' and 'pickup_month' and sum the 'pickup_month' column into a scalar variable
+    df2 = df.groupby(['pickup_year', 'pickup_month']).sum(['pickup_month']).reset_index()    
+
+    #print the toptal for column 'pickup_month'
+    total_days = df2['pickup_month'].sum() * 30
+    total_qty = df2['cantidad'].sum()
+
+    #return results with comma separator and without decimals
+    return "{:,.0f}".format(total_qty/total_days)
+
+def card_total_vehiculos(year, borough):
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    if year == 'Todos':
+        query_job = bigquery.Client(credentials=credentials).query('SELECT vehicle_type, year, month, count as cantidad FROM project_data.active_vehicles_count;')
+    else:
+        query_job = bigquery.Client(credentials=credentials).query(f'SELECT vehicle_type, year, month, count as cantidad FROM project_data.active_vehicles_count where year = {year};')
+
+    df = query_job.result().to_dataframe()
+
+    #eliminar duplicados
+    df = df.drop_duplicates()
+
+    #Agrupar registros por columna year y sumar la columna cantidad
+    df = df.groupby(['year', 'month']).sum(['cantidad']).reset_index()
+
+    #ordenar los registros por year y month
+    df = df.sort_values(by=['year', 'month'], ascending=[False, False])
+
+    #seleccionar el primer valor para la columna year
+    df_month = df[df['month'] == df['month'].values[0]].reset_index(drop=True)
+
+    return "{:,}".format(df_month['cantidad'].values[0])
+
 dropdown_options = {
-    'years': ['Todos',2023, 2024],
+    'years': [2024, 2023],
     'boroughs': ['Todos', 'Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'],
 }
 
@@ -309,35 +376,54 @@ layout = html.Div([
                     value='Todos',
                 ),  
                 dbc.FormText("Selecciona un barrio", className='text-muted p-0 m-0 ms-1'),
-            ])            
-            
+            ]),
+            dbc.Row([
+                dbc.Card([                    
+                    dbc.CardBody([
+                        html.H4("Total Viajes", className="card-title text-center text-secondary p-0 m-0"),
+                        html.H1(card_total_viajes(2024, 'Todos'), id='total_viajes', className="card-text text-center text-primary m-0 p-0"),
+                    ])
+                ], className='kpi_card_border py-3'),
+                dbc.Card([                    
+                    dbc.CardBody([
+                        html.H4("Viajes Promedio Día", className="card-title text-center text-secondary p-0 m-0"),
+                        html.H1(card_viaje_promedio_dia(2024, 'Todos'), id='viaje_promedio_dia', className="card-text text-center text-primary m-0 p-0"),
+                    ])
+                ], className='kpi_card_border py-3'),
+                dbc.Card([                    
+                    dbc.CardBody([
+                        html.H4("Vehiculos Activos", className="card-title text-center text-secondary p-0 m-0"),
+                        html.H1(card_total_vehiculos(2024, 'Todos'), id='total_vehiculos', className="card-text text-center text-primary m-0 p-0"),
+                    ])
+                ], className='kpi_card_border py-3'),                
+            ], className='px-5 mt-4'),                   
         ], width=3),
         dbc.Col([
             dbc.Row([
                 dbc.Col([
-                    html.Div(dcc.Graph(figure=render_kpi(1, 'Todos', 'Todos'), id='kpi1'), className='kpi_card_border'),
+                    html.Div(dcc.Graph(figure=render_kpi(1, 2024, 'Todos'), id='kpi1'), className='kpi_card_border'),
                 ], width=3),
                 dbc.Col([
-                    html.Div(dcc.Graph(figure=render_kpi(2, 'Todos', 'Todos'), id='kpi2'), className='kpi_card_border'),
+                    html.Div(dcc.Graph(figure=render_kpi(2, 2024, 'Todos'), id='kpi2'), className='kpi_card_border'),
                 ], width=3),
                 dbc.Col([
-                    html.Div(dcc.Graph(figure=render_kpi(3, 'Todos', 'Todos'), id='kpi3'), className='kpi_card_border'),
+                    html.Div(dcc.Graph(figure=render_kpi(3, 2024, 'Todos'), id='kpi3'), className='kpi_card_border'),
                 ], width=3),
                 dbc.Col([
-                    html.Div(dcc.Graph(figure=render_kpi(4, 'Todos', 'Todos'), id='kpi4'), className='kpi_card_border'),
+                    html.Div(dcc.Graph(figure=render_kpi(4, 2024, 'Todos'), id='kpi4'), className='kpi_card_border'),
                 ], width=3),            
             ]),
             dbc.Row([
                 dbc.Col([                    
-                    html.H2(dcc.Graph(figure=render_viajes_lineas('Todos', 'Todos'), id='viajes_linea'), className='kpi_card_border'),
+                    html.H2(dcc.Graph(figure=render_viajes_lineas(2024, 'Todos'), id='viajes_linea'), className='kpi_card_border'),
                 ], width=4),
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_mapa('Todos', 'Todos'), id='mapa'), className='kpi_card_border'),
+                    html.H2(dcc.Graph(figure=render_mapa(2024, 'Todos'), id='mapa'), className='kpi_card_border'),
                 ], width=4),
                 dbc.Col([
                     html.Div(
                         children=dash_table.DataTable(  
-                            data=calculate_max_min_table('Todos', 'Todos').to_dict('records'),                    
+                            data=calculate_max_min_table(2024, 'Todos').to_dict('records'),                    
                             id='max_min_table',
                             columns =[{'name': 'Zona', 'id': 'zone'},
                                       {'name': 'Barrio', 'id': 'borough'},
@@ -367,7 +453,6 @@ layout = html.Div([
     ], className='container-fluid'),
 ], className='container-fluid ')
 
-
 #define callbacks
 @callback(    
         [Output('kpi1', 'figure'),        
@@ -376,7 +461,11 @@ layout = html.Div([
         Output('kpi4', 'figure'),
         Output('viajes_linea', 'figure'),        
         Output('mapa', 'figure'),
-        Output('max_min_table', 'data')],
+        Output('max_min_table', 'data'),
+        Output('total_viajes', 'children'),
+        Output('viaje_promedio_dia', 'children'),
+        Output('total_vehiculos', 'children'),
+        ],
         [Input('year-dropdown', 'value'),
         Input('borough-dropdown', 'value')],
         prevent_initial_call=True,
@@ -390,7 +479,10 @@ def update_kpis(selected_year, selected_borough):
     kpi3 = render_kpi(3, selected_year, selected_borough)
     kpi4 = render_kpi(4, selected_year, selected_borough)
     max_min_table = calculate_max_min_table(selected_year, selected_borough)
-    return kpi1, kpi2, kpi3, kpi4, viajes_linea, mapa, max_min_table.to_dict('records')
+    total_viajes = card_total_viajes(selected_year, selected_borough)
+    viaje_promedio_dia = card_viaje_promedio_dia(selected_year, selected_borough)
+    total_vehiculos = card_total_vehiculos(selected_year, selected_borough)
+    return kpi1, kpi2, kpi3, kpi4, viajes_linea, mapa, max_min_table.to_dict('records'), total_viajes, viaje_promedio_dia, total_vehiculos
 
 
                 # dbc.Col([
