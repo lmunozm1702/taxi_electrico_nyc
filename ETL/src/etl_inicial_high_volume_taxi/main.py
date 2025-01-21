@@ -87,7 +87,7 @@ def transform_data(df, filename):
     pd.DataFrame: The transformed DataFrame
     """
     #cambiar nombre de columnas
-    df.columns = ['pickup_datetime', 'pickup_location_id', 'fare_amount']
+    df.columns = ['pickup_datetime', 'dropoff_datetime', 'pickup_location_id', 'dropoff_location_id', 'fare_amount']
     
     #eliminar registros con columna 'pickup_location_id' == na
     df = df.dropna(subset=['pickup_location_id'])
@@ -128,12 +128,19 @@ def transform_data(df, filename):
     #agregar columna 'hour_of_day' 
     df['pickup_hour_of_day'] = df['pickup_datetime'].dt.hour
 
+    #agregar columna 'trip_duration' con la direrencia entre 'dropoff_datetime' y 'pickup_datetime' en segundos
+    df['trip_duration'] = (df['dropoff_datetime'] - df['pickup_datetime']).dt.total_seconds()
+
     #pasar columnas tipo object a string
     df['trip_id'] = df['pickup_location_id'].astype(str)
     df['taxi_type'] = df['taxi_type'].astype(str)
     df['motor_type'] = df['motor_type'].astype(str)
 
-    df.drop(columns=['pickup_datetime'], inplace=True)
+    #pasar columnas tipo object a datetime
+    df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])
+    df['dropoff_datetime'] = pd.to_datetime(df['dropoff_datetime'])
+
+    #df.drop(columns=['pickup_datetime'], inplace=True)
 
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
@@ -143,7 +150,7 @@ def transform_data(df, filename):
 @functions_framework.http
 def etl_inicial_high_volume_taxi(request):
     print('**** Iniciando proceso ETL para HIGH VOLUME TAXI ****')
-    columns = ['pickup_datetime', 'PULocationID', 'base_passenger_fare']
+    columns = ['pickup_datetime', 'dropoff_datetime', 'PULocationID', 'DOLocationID', 'base_passenger_fare']
 
     initial_time = datetime.now()
     process_type = 'initial'
@@ -160,7 +167,7 @@ def etl_inicial_high_volume_taxi(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2023/fhvhv_tripdata_', max_results=3))    
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2024/fhvhv_tripdata_', max_results=12))    
 
     print(f'Proceso de tipo {process_type}')
 
