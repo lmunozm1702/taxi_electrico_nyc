@@ -119,23 +119,29 @@ def download_from_gcs(bucket_name, source_blob_name, destination_file_name):
     blob.download_to_filename(destination_file_name)
     print(f'Archivo {source_blob_name} descargado a {destination_file_name}.')
 
+model_1 = None
+coordinates = None
+
 def load4():
-    bucket_name = 'modelo_entrenado'
-    model_blob_name = 'xgboost_model_1.pkl'
-    coordinates_blob_name = 'coordinates.csv'
+    global model_1, coordinates
+    
+    if model_1 is None or coordinates is None:
+        bucket_name = 'modelo_entrenado'
+        model_blob_name = 'xgboost_model_1.pkl'
+        coordinates_blob_name = 'coordinates.csv'
 
-    # Cambiar la ruta a una carpeta dentro del directorio actual
-    model_local_path = 'downloads/xgboost_model_1.pkl'
-    coordinates_local_path = 'downloads/coordinates.csv'
+        # Cambiar la ruta a una carpeta dentro del directorio actual
+        model_local_path = 'downloads/xgboost_model_1.pkl'
+        coordinates_local_path = 'downloads/coordinates.csv'
 
-    # Descargar archivos desde GCS
-    download_from_gcs(bucket_name, model_blob_name, model_local_path)
-    download_from_gcs(bucket_name, coordinates_blob_name, coordinates_local_path)
+        # Descargar archivos desde GCS
+        download_from_gcs(bucket_name, model_blob_name, model_local_path)
+        download_from_gcs(bucket_name, coordinates_blob_name, coordinates_local_path)
 
-    # Cargar el modelo y los datos de coordenadas
-    model_1 = joblib.load(model_local_path)
-    coordinates = pd.read_csv(coordinates_local_path)
-
+        # Cargar el modelo y los datos de coordenadas
+        model_1 = joblib.load(model_local_path)
+        coordinates = pd.read_csv(coordinates_local_path)
+    
     return model_1, coordinates
 
 
