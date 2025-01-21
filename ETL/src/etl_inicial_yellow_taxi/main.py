@@ -88,9 +88,9 @@ def transform_data(df, filename):
     """
 
     #cambiar nombre de columnas
-    df.columns = ['vendor_id', 'pickup_datetime', 'dropoff_datetime', 'passenger_count', 'trip_distance', 'rate_code_id', 'store_and_forward_flag', 'pickup_location_id', 'end_location_id', 'payment_type', 'fare_amount', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'total_amount', 'congestion_surcharge', 'airport_fee']
+    df.columns = ['vendor_id', 'pickup_datetime', 'dropoff_datetime', 'passenger_count', 'trip_distance', 'rate_code_id', 'store_and_forward_flag', 'pickup_location_id', 'dropoff_location_id', 'payment_type', 'fare_amount', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'total_amount', 'congestion_surcharge', 'airport_fee']
 
-    df.drop(columns=['vendor_id', 'dropoff_datetime', 'passenger_count', 'trip_distance', 'rate_code_id', 'store_and_forward_flag', 'end_location_id', 'payment_type', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'total_amount', 'congestion_surcharge', 'airport_fee'], inplace=True)
+    df.drop(columns=['vendor_id', 'passenger_count', 'trip_distance', 'rate_code_id', 'store_and_forward_flag', 'payment_type', 'extra', 'mta_tax', 'tip_amount', 'tolls_amount', 'improvement_surcharge', 'total_amount', 'congestion_surcharge', 'airport_fee'], inplace=True)
 
     #Eliminar valores que no corresponden al mes y año del dataset
     print(filename)
@@ -128,10 +128,17 @@ def transform_data(df, filename):
     #agregar columna 'hour_of_day' 
     df['pickup_hour_of_day'] = df['pickup_datetime'].dt.hour
 
+    #agregar columna 'trip_duration' con la direrencia entre 'dropoff_datetime' y 'pickup_datetime' en segundos
+    df['trip_duration'] = (df['dropoff_datetime'] - df['pickup_datetime']).dt.total_seconds()
+
     #pasar columnas tipo object a string
     df['trip_id'] = df['trip_id'].astype(str)
     df['taxi_type'] = df['taxi_type'].astype(str)
     df['motor_type'] = df['motor_type'].astype(str)
+
+    #pasar columnas tipo object a datetime
+    df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])
+    df['dropoff_datetime'] = pd.to_datetime(df['dropoff_datetime'])
 
     df.drop(columns=['pickup_datetime'], inplace=True)
 
@@ -159,7 +166,7 @@ def etl_inicial_yellow_taxi(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2023/yellow_tripdata_', max_results=3))    
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2023/yellow_tripdata_', max_results=12))    
 
     print(f'Proceso de tipo {process_type}')
 
