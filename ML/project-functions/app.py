@@ -69,7 +69,9 @@ def load2():
 
     return model_1, coordinates
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'C:/Users/NoxiePC/Desktop/henry/driven-atrium-445021-m2-a773215c2f46.json'
+## os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'C:/Users/NoxiePC/Desktop/henry/driven-atrium-445021-m2-a773215c2f46.json'
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json'
 
 def invoke_function(name, archivo):
 
