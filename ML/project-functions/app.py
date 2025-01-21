@@ -371,10 +371,10 @@ app.layout = create_layout()
 
 
 # Ejecutar load4() al inicio y almacenar el modelo y las coordenadas en variables globales
+model_1, coordinates = None, None
 try:
     model_1, coordinates = load4()
 except Exception as e:
-    model_1, coordinates = None, None
     print(f"Error al cargar el modelo y las coordenadas: {str(e)}")
 
 def update_results(n_clicks, date, time):
