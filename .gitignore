@@ -171,8 +171,11 @@ cython_debug/
 # Francisco gitignore
 
 requirements_francisco.txt
-driven-atrium-445021-m2-a773215c2f46.json
+/DASHBOARD/src/driven-atrium-445021-m2-a773215c2f46.json
 /env_dash
+prueba.ipynb
+tabla_viajes.csv
+/DASHBOARD/src/tabla_viajes.csv
 
 #Archivos de prueba para ETLS
 assets/Datasets/yellow_tripdata_2024-09.parquet
