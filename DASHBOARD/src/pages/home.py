@@ -59,7 +59,8 @@ def render_kpi(kpi_id, year, borough):
     return fig
 
 def calculate_kpi(kpi_id, year, borough):
-    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
 
     if kpi_id == 1:
         if year == 'Todos':
@@ -187,6 +188,7 @@ def calculate_kpi(kpi_id, year, borough):
     return value, delta, traces
     
 def calculate_correlaciones(year, borough):
+    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     
     if year == 'Todos':
@@ -350,7 +352,8 @@ def render_mapa(year, borough, tabla):
     return fig
 
 def calculate_max_min_table(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     if year == 'Todos':
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, borough, zone, cantidad FROM project_data.trips_year_qtr_map;')
@@ -382,7 +385,8 @@ def calculate_max_min_table(year, borough):
     return pd.concat([df_max, df_min], axis=0).reset_index(drop=True)  
 
 def card_total_viajes(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
 
     if year == 'Todos':
         if borough == 'Todos':
@@ -401,7 +405,8 @@ def card_total_viajes(year, borough):
     return "{:,}".format(results)
 
 def card_viaje_promedio_dia(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     if year == 'Todos':
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, pickup_month, borough, cantidad FROM project_data.card_viaje_promedio_dia;')
@@ -425,7 +430,8 @@ def card_viaje_promedio_dia(year, borough):
     return "{:,.0f}".format(total_qty/total_days)
 
 def card_total_vehiculos(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     if year == 'Todos':
         query_job = bigquery.Client(credentials=credentials).query('SELECT vehicle_type, year, month, count as cantidad FROM project_data.active_vehicles_count;')
     else:
@@ -514,7 +520,7 @@ layout = html.Div([
                     html.H2(dcc.Graph(figure=render_viajes_lineas(2024, 'Todos'), id='viajes_linea'), className='kpi_card_border'),
                 ], width=4),
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_mapa(2024, 'Todos'), id='mapa'), className='kpi_card_border'),
+                    html.H2(dcc.Graph(figure=render_mapa(2024, 'Todos', tabla_viajes), id='mapa'), className='kpi_card_border'),
                 ], width=4),
                 dbc.Col([
                     html.Div(
@@ -569,7 +575,7 @@ layout = html.Div([
 def update_kpis(selected_year, selected_borough):
     #correlations = render_correlaciones(selected_year, selected_borough)
     viajes_linea = render_viajes_lineas(selected_year, selected_borough)
-    mapa = render_mapa(selected_year, selected_borough)
+    mapa = render_mapa(selected_year, selected_borough, tabla_viajes)
     kpi1 = render_kpi(1, selected_year, selected_borough)
     kpi2 = render_kpi(2, selected_year, selected_borough)
     kpi3 = render_kpi(3, selected_year, selected_borough)
