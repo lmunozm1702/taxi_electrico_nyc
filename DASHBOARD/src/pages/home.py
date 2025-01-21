@@ -20,19 +20,12 @@ def cargar_data_graficos():
     credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     
-    query_job = bigquery.Client(credentials=credentials).query(
-                '''SELECT borough, zone, pickup_year, map_location, cantidad
-                FROM project_data.trips_year_qtr_map
-                WHERE borough <> 'EWR';''')
+    query_job = bigquery.Client(credentials=credentials).query('SELECT borough, zone, pickup_year, map_location, cantidad FROM project_data.trips_year_qtr_map WHERE borough <> \'EWR\';')
     results = query_job.result().to_dataframe()
     
     return results
 
-
 tabla_viajes = cargar_data_graficos()
-
-#tabla_viajes = pd.read_csv('tabla_viajes.csv')
-
 
 #funcion para calcular el kpi1
 def render_kpi(kpi_id, year, borough):
