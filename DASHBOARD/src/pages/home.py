@@ -1,6 +1,4 @@
-import requests
 import pandas as pd
-
 from dash import dcc
 from dash import html, dash_table
 from dash import register_page, callback
@@ -13,12 +11,6 @@ from google.cloud import bigquery
 from google.oauth2 import service_account
 from shapely import wkt
 from shapely.geometry import MultiPolygon
-#from shapely.ops import unary_union
-#import pandas as pd
-#import matplotlib.cm as cm
-#import matplotlib.colors as mcolors
-#import numpy as np
-
 import textwrap
 
 register_page(__name__, name='Home', path='/')
@@ -318,9 +310,7 @@ def render_mapa(year, borough, tabla):
         featureidkey='properties.zone',
         color='cantidad', 
         color_continuous_scale="Viridis",
-        #center=center, #dict(lat=40.7128, lon=-74.0060), 
         mapbox_style="carto-positron", 
-        #zoom=zoom, #8,
         opacity=1
         )
     
