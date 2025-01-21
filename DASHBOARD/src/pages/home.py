@@ -395,7 +395,11 @@ layout = html.Div([
                         html.H4("Vehiculos Activos", className="card-title text-center text-secondary p-0 m-0"),
                         html.H1(card_total_vehiculos(2024, 'Todos'), id='total_vehiculos', className="card-text text-center text-primary m-0 p-0"),
                     ])
-                ], className='kpi_card_border py-3'),                
+                ], className='kpi_card_border py-3'),
+                html.Div(                
+                    html.Img(src='assets/sd_logo_transparente.png', className='img-fluid', style={'width': '60%', 'height': 'auto'}),
+                    className='d-flex justify-content-center pt-5 mt-5'
+                )
             ], className='px-5 mt-4'),                   
         ], width=3),
         dbc.Col([
