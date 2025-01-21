@@ -37,6 +37,10 @@ CREATE TABLE `project_data.trips` (
   `taxi_type` STRING NOT NULL,
   `motor_type` STRING NOT NULL,
   `pickup_location_id` INT64 NOT NULL,  
+  `dropoff_location_id` INT64 NOT NULL,
+  `pickup_datetime` DATETIME NOT NULL,
+  `dropoff_datetime` DATETIME NOT NULL,
+  `trip_duration` FLOAT64 NOT NULL,
   `pickup_quarter` INT64 NOT NULL,
   `pickup_year` INT64 NOT NULL,
   `pickup_month` INT64 NOT NULL,
@@ -81,7 +85,7 @@ FROM `driven-atrium-445021-m2.project_data.coordinates` as coordinates;
 
 -- Vista que agrupa los viajes por year, quarter, location_id y borough
 CREATE OR REPLACE MATERIALIZED VIEW `project_data.trips_year_qtr_map` AS
-SELECT trips.pickup_year, trips.pickup_quarter, polygons.location_id, polygons.borough, ANY_VALUE(polygons.polygon) as map_location, count(*) as cantidad
+SELECT trips.pickup_year, trips.pickup_quarter, polygons.location_id, polygons.borough, ANY_VALUE(polygons.polygon) as map_location, ANY_VALUE(polygons.zone) as zone, count(*) as cantidad
 FROM `driven-atrium-445021-m2.project_data.trips` as trips
 JOIN `driven-atrium-445021-m2.project_data.polygons` as polygons
 ON trips.pickup_location_id = polygons.location_id
@@ -89,7 +93,7 @@ GROUP BY trips.pickup_year, trips.pickup_quarter, polygons.location_id, polygons
 
 -- Vista KPI1
 CREATE OR REPLACE MATERIALIZED VIEW `project_data.kpi1` AS
-SELECT year, quarter, month, count FROM `driven-atrium-445021-m2.project_data.active_vehicles_count` WHERE vehicle_type = \'HYB\' or vehicle_type = \'BEV\'
+SELECT year, quarter, month, count FROM `driven-atrium-445021-m2.project_data.active_vehicles_count` WHERE vehicle_type = 'HYB' or vehicle_type = 'BEV';
 
 
 -- kpi3_no_borough
@@ -102,7 +106,7 @@ CREATE OR REPLACE MATERIALIZED VIEW `project_data.kpi3_sb` AS
 SELECT trips.pickup_year, trips.pickup_quarter, coordinates.borough as borough, avg(trips.fare_amount) as avg_fare_amount FROM `driven-atrium-445021-m2.project_data.trips` as trips
 INNER JOIN `driven-atrium-445021-m2.project_data.coordinates` as coordinates
 ON coordinates.location_id = trips.pickup_location_id
-GROUP BY pickup_year, pickup_quarter, coordinates.borough
+GROUP BY pickup_year, pickup_quarter, coordinates.borough;
 
 -- kpi4_no_borough
 CREATE OR REPLACE MATERIALIZED VIEW `project_data.kpi4_nb` AS
@@ -114,16 +118,19 @@ CREATE OR REPLACE MATERIALIZED VIEW `project_data.kpi4_sb` AS
 SELECT trips.taxi_type, trips.pickup_year, ANY_VALUE(trips.pickup_quarter) as pickup_quarter, trips.pickup_month, coordinates.borough as borough, count(*) as cantidad FROM `driven-atrium-445021-m2.project_data.trips` as trips
 INNER JOIN `driven-atrium-445021-m2.project_data.coordinates` as coordinates
 ON coordinates.location_id = trips.pickup_location_id
-GROUP BY trips.taxi_type, trips.pickup_year, trips.pickup_month, coordinates.borough
+GROUP BY trips.taxi_type, trips.pickup_year, trips.pickup_month, coordinates.borough;
 
 -- card total viajes
-CREATE OR REPLACE MATERIALIZED VIEW `project_data.card_total_viajes`
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.card_total_viajes` AS
 SELECT trips.pickup_year, coordinates.borough, count(*) AS cantidad
-FROM `driven-atrium-445021-m2.project_data.trips` as trips INNER JOIN `driven-atrium-445021-m2.project_data.trips` as coordinates
+FROM `driven-atrium-445021-m2.project_data.trips` as trips INNER JOIN `driven-atrium-445021-m2.project_data.coordinates` as coordinates
 ON coordinates.location_id = trips.pickup_location_id
 GROUP BY trips.pickup_year, coordinates.borough;
 
 -- card viaje promnedio dia
-CREATE OR REPLACE MATERIALIZED VIEW `project_data.card_viaje_promedio_dia`
-SELECT count(*) as cantidad, pickup_year, max(pickup_month) as pickup_month from `project_data.trips`
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.card_viaje_promedio_dia` AS
+SELECT count(*) as cantidad, pickup_year, max(pickup_month) as pickup_month, coordinates.borough 
+FROM `driven-atrium-445021-m2.project_data.trips` as trips INNER JOIN `driven-atrium-445021-m2.project_data.trips` as coordinates
+ON coordinates.location_id = trips.pickup_location_id
+GROUP BY trips.pickup_year, coordinates.borough;
 group by pickup_year

@@ -1,5 +1,5 @@
 import dash
-from dash import html, page_container
+from dash import html, page_container, DiskcacheManager, CeleryManager
 import dash_bootstrap_components as dbc
 
 
@@ -10,8 +10,14 @@ external_stylesheets = [dbc.themes.BOOTSTRAP, {
                           "rel": "stylesheet",
                         }]
 
+import diskcache
+cache = diskcache.Cache("./cache")
+background_callback_manager = DiskcacheManager(
+    cache, cache_by=[lambda: launch_uid], expire=60
+)
+
 # Create the app
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets, use_pages=True)
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets, use_pages=True, background_callback_manager=background_callback_manager)
 
 app.title = 'NYC Taxi Dashboard'
 

@@ -17,22 +17,15 @@ register_page(__name__, name='Home', path='/')
 
 
 def cargar_data_graficos():
-    credentials = service_account.Credentials.from_service_account_file(
-        'driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     
-    query_job = bigquery.Client(credentials=credentials).query(
-                '''SELECT borough, zone, pickup_year, map_location, cantidad
-                FROM project_data.trips_year_qtr_map
-                WHERE borough <> 'EWR';''')
+    query_job = bigquery.Client(credentials=credentials).query('SELECT borough, zone, pickup_year, map_location, cantidad FROM project_data.trips_year_qtr_map WHERE borough <> \'EWR\';')
     results = query_job.result().to_dataframe()
     
     return results
 
-
 tabla_viajes = cargar_data_graficos()
-
-#tabla_viajes = pd.read_csv('tabla_viajes.csv')
-
 
 #funcion para calcular el kpi1
 def render_kpi(kpi_id, year, borough):
@@ -59,8 +52,8 @@ def render_kpi(kpi_id, year, borough):
     return fig
 
 def calculate_kpi(kpi_id, year, borough):
-    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
 
     if kpi_id == 1:
         if year == 'Todos':
@@ -188,8 +181,8 @@ def calculate_kpi(kpi_id, year, borough):
     return value, delta, traces
     
 def calculate_correlaciones(year, borough):
-    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     
     if year == 'Todos':
         if borough == 'Todos':
@@ -288,6 +281,7 @@ def calculate_center_and_zoom(geometries):
 
 
 def render_mapa(year, borough, tabla):
+    return True
 
     viajes = calculate_mapa(year, borough, tabla)
     
@@ -347,18 +341,18 @@ def render_mapa(year, borough, tabla):
             center=center, 
             zoom=zoom 
             ),
-        autosize=True, 
-        height=330, 
-        margin=dict(l=20, r=20, t=20, b=20), 
-        paper_bgcolor='rgba(0,0,0,0)', 
+        autosize=True,
+        height=330,
+        margin=dict(l=20, r=20, t=20, b=20),
+        paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(29,67,85,0.1)'
-        )
+    )
 
     return fig
 
 def calculate_max_min_table(year, borough):
-    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     if year == 'Todos':
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, borough, zone, cantidad FROM project_data.trips_year_qtr_map;')
@@ -390,8 +384,8 @@ def calculate_max_min_table(year, borough):
     return pd.concat([df_max, df_min], axis=0).reset_index(drop=True)  
 
 def card_total_viajes(year, borough):
-    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
 
     if year == 'Todos':
         if borough == 'Todos':
@@ -410,8 +404,8 @@ def card_total_viajes(year, borough):
     return "{:,}".format(results)
 
 def card_viaje_promedio_dia(year, borough):
-    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     if year == 'Todos':
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, pickup_month, borough, cantidad FROM project_data.card_viaje_promedio_dia;')
@@ -435,8 +429,8 @@ def card_viaje_promedio_dia(year, borough):
     return "{:,.0f}".format(total_qty/total_days)
 
 def card_total_vehiculos(year, borough):
-    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     if year == 'Todos':
         query_job = bigquery.Client(credentials=credentials).query('SELECT vehicle_type, year, month, count as cantidad FROM project_data.active_vehicles_count;')
     else:
@@ -502,7 +496,11 @@ layout = html.Div([
                         html.H4("Vehiculos Activos", className="card-title text-center text-secondary p-0 m-0"),
                         html.H1(card_total_vehiculos(2024, 'Todos'), id='total_vehiculos', className="card-text text-center text-primary m-0 p-0"),
                     ])
-                ], className='kpi_card_border py-3'),                
+                ], className='kpi_card_border py-3'),
+                html.Div(                
+                    html.Img(src='assets/sd_logo_transparente.png', className='img-fluid', style={'width': '60%', 'height': 'auto'}),
+                    className='d-flex justify-content-center pt-5 mt-5'
+                )
             ], className='px-5 mt-4'),                   
         ], width=3),
         dbc.Col([
