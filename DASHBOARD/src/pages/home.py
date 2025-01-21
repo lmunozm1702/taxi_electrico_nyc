@@ -346,7 +346,12 @@ def render_mapa(year, borough, tabla):
             style="carto-positron",
             center=center, 
             zoom=zoom 
-            )
+            ),
+        autosize=True, 
+        height=330, 
+        margin=dict(l=20, r=20, t=20, b=20), 
+        paper_bgcolor='rgba(0,0,0,0)', 
+        plot_bgcolor='rgba(29,67,85,0.1)'
         )
 
     return fig
