@@ -371,12 +371,6 @@ app.layout = create_layout()
 
 
 # Ejecutar load4() al inicio y almacenar el modelo y las coordenadas en variables globales
-model_1, coordinates = None, None
-try:
-    model_1, coordinates = load4()
-except Exception as e:
-    print(f"Error al cargar el modelo y las coordenadas: {str(e)}")
-
 def update_results(n_clicks, date, time):
     if n_clicks is None:
         # Si el botón no ha sido presionado, no hacer nada.
@@ -385,29 +379,33 @@ def update_results(n_clicks, date, time):
         return dbc.Alert("Por favor, complete todos los campos.", color="warning")
 
     try:
-        # Usar las variables globales model_1 y coordinates
-        if model_1 is None or coordinates is None:
-            raise ValueError("Error al cargar el modelo y las coordenadas al inicio.")
+        # Cargar el modelo dentro de la función cuando se hace clic
+        model_1, coordinates = load4()  # Cargar el modelo solo cuando se hace la predicción
 
-        # Combina la fecha y la hora seleccionadas (date y time ya son cadenas)
+        if model_1 is None or coordinates is None:
+            raise ValueError("Error al cargar el modelo o las coordenadas.")
+
+        # Combina la fecha y la hora seleccionadas
         selected_datetime_str = f"{date} {time}"
-        # Llama a la función de predicción (asegúrate de tener modelos y datos cargados)
+
+        # Usar el modelo cargado para hacer la predicción
         df = get_prediction(selected_datetime_str, model_1, coordinates)
+        
         if df.empty:
             return dbc.Alert("No hay datos para la fecha y hora seleccionadas.", color="warning")
 
         if 'solicitudes' not in df.columns:
             return dbc.Alert("La columna 'solicitudes' no existe en los datos.", color="warning")
 
-        # Genera la imagen del mapa usando la función get_map
+        # Generar la imagen del mapa
         img = get_map(df)
 
-        # Convierte la imagen a formato base64 para incrustarla en HTML
+        # Convertir la imagen a formato base64 para incrustarla en HTML
         buffered = BytesIO()
         img.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
-        # Devuelve los resultados: solo la imagen del mapa generado
+        # Devolver la imagen generada
         return html.Div([
             html.Div([
                 html.H5("Mapa Generado", className="font-weight-bold mb-3"),
@@ -420,10 +418,10 @@ def update_results(n_clicks, date, time):
                 ),
             ])
         ])
+
     except Exception as e:
         return dbc.Alert(f"Error al procesar los datos: {str(e)}", color="danger")
 
-# Tu código adicional para configurar Dash, callbacks, etc.
 
 
 
