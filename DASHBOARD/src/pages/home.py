@@ -1,5 +1,3 @@
-import requests
-
 from dash import dcc
 from dash import html
 from dash import register_page, callback
@@ -9,9 +7,35 @@ import plotly.graph_objects as go
 import plotly.express as px
 from google.cloud import bigquery
 from google.oauth2 import service_account
+from shapely import wkt
+from shapely.geometry import MultiPolygon
+#from shapely.ops import unary_union
+import pandas as pd
+#import matplotlib.cm as cm
+#import matplotlib.colors as mcolors
+#import numpy as np
 
 
 register_page(__name__, name='Home', path='/')
+
+
+def cargar_data_graficos():
+    credentials = service_account.Credentials.from_service_account_file(
+        'driven-atrium-445021-m2-a773215c2f46.json')
+    
+    query_job = bigquery.Client(credentials=credentials).query(
+                '''SELECT borough, zone, pickup_year, map_location, cantidad
+                FROM project_data.trips_year_qtr_map
+                WHERE borough <> 'EWR';''')
+    results = query_job.result().to_dataframe()
+    
+    return results
+
+
+tabla_viajes = cargar_data_graficos()
+
+#tabla_viajes = pd.read_csv('tabla_viajes.csv')
+
 
 #funcion para calcular el kpi1
 def render_kpi(kpi_id, year, borough):
@@ -38,7 +62,7 @@ def render_kpi(kpi_id, year, borough):
 
 def calculate_kpi(kpi_id, year, borough):
     print(kpi_id, year, borough)
-    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
 
     if kpi_id == 1:
         if year == 'Todos':
@@ -101,7 +125,7 @@ def calculate_kpi(kpi_id, year, borough):
 
 
 def calculate_correlaciones(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     
     if year == 'Todos':
         if borough == 'Todos':
@@ -139,34 +163,113 @@ def render_correlaciones(year, borough):
     return fig
 
 
-def calculate_mapa(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+def calculate_mapa(year, borough, tabla):
+    tabla['geometry'] = tabla['map_location'].apply(wkt.loads)
+    
     if year == 'Todos':
         if borough == 'Todos':
-            query_job = bigquery.Client(credentials=credentials).query('SELECT coordinates.borough AS Distrito, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id GROUP BY coordinates.borough;')
+            results = tabla.groupby(
+                ['borough', 'zone']).agg({'cantidad': 'sum', 'geometry': 'first'}).reset_index()
         else:
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE coordinates.borough = \'{borough}\' GROUP BY coordinates.borough;')
+            results = tabla[tabla['borough'] == borough].groupby(
+                ['zone']).agg({'cantidad': 'sum', 'geometry': 'first'}).reset_index()
     else:
         if borough == 'Todos':
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE trips.pickup_year = {year} GROUP BY coordinates.borough;')
+            results = tabla[tabla['pickup_year'] == year].groupby(
+                ['borough', 'zone']).agg({'cantidad': 'sum', 'geometry': 'first'}).reset_index()
         else:
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT coordinates.borough AS Distrito, count(*) AS Cantidad FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates ON trips.pickup_location_id = coordinates.location_id WHERE coordinates.borough = \'{borough}\' AND trips.pickup_year = {year} GROUP BY coordinates.borough;')
-        
-    results = query_job.result().to_dataframe()
-    
-    results = results[results['Distrito'] != 'EWR']
+            results = tabla[(tabla['borough'] == borough) & (tabla['pickup_year'] == year)].groupby(
+                ['zone']).agg({'cantidad': 'sum', 'geometry': 'first'}).reset_index()
     
     return results
 
-def render_mapa(year, borough):
-    url = "https://raw.githubusercontent.com/dwillis/nyc-maps/master/boroughs.geojson"
-    response = requests.get(url)
-    geojson = response.json()
-    viajes = calculate_mapa(year, borough)
-    fig = px.choropleth_mapbox(viajes, geojson=geojson, locations='Distrito', featureidkey="properties.BoroName",
-                               color='Cantidad', color_continuous_scale="Viridis",
-                               center=dict(lat=40.7128, lon=-74.0060), mapbox_style="carto-positron", zoom=8)
-    fig.update_layout(title=f'Cantidad de Inicios de Viaje por Distrito {borough}', margin={"r":0,"t":40,"l":0,"b":0})
+
+def get_bounding_box(geometries):
+    bounds = [geom.bounds for geom in geometries]
+    min_x = min([b[0] for b in bounds])
+    min_y = min([b[1] for b in bounds])
+    max_x = max([b[2] for b in bounds])
+    max_y = max([b[3] for b in bounds])
+    return min_x, min_y, max_x, max_y
+
+def calculate_center_and_zoom(geometries):
+    min_x, min_y, max_x, max_y = get_bounding_box(geometries)
+    center = {'lat': (min_y + max_y) / 2, 'lon': (min_x + max_x) / 2}
+    # Ajustar el nivel de zoom dependiendo del tamaño del área
+    area = (max_x - min_x) * (max_y - min_y)
+    if area < 0.1:
+        zoom = 9.5
+        print('10')
+    else:
+        zoom = 8.5
+        print('8')
+    return center, zoom
+
+
+def render_mapa(year, borough, tabla):
+
+    viajes = calculate_mapa(year, borough, tabla)
+    
+    geojson_data = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {"zone": zone},
+                "geometry": geom.__geo_interface__
+            } for zone, geom in zip(viajes['zone'], viajes['geometry'])
+        ]
+    }
+    
+    geometries = viajes['geometry'].tolist()
+    center, zoom = calculate_center_and_zoom(geometries)
+    
+    fig = px.choropleth_mapbox(
+        viajes, 
+        geojson=geojson_data, 
+        locations='zone',
+        featureidkey='properties.zone',
+        color='cantidad', 
+        color_continuous_scale="Viridis",
+        #center=center, #dict(lat=40.7128, lon=-74.0060), 
+        mapbox_style="carto-positron", 
+        #zoom=zoom, #8,
+        opacity=1
+        )
+    
+    for _, row in viajes.iterrows():
+        geom = row['geometry']
+        
+        if isinstance(geom, MultiPolygon):
+            for polygon in geom.geoms:
+                fig.add_trace(go.Scattermapbox(
+                    lon=list(polygon.exterior.coords.xy[0]),
+                    lat=list(polygon.exterior.coords.xy[1]),
+                    mode='lines',
+                    line=dict(width=1, color='black'),
+                    text=f"{row['zone']}<br>Cantidad: {row['cantidad']}", 
+                    hoverinfo='text'
+                    )
+                )
+        else:
+            fig.add_trace(go.Scattermapbox(
+                lon=list(geom.exterior.coords.xy[0]),
+                lat=list(geom.exterior.coords.xy[1]),
+                mode='lines',
+                line=dict(width=1, color='black'),
+                text=f"{row['zone']}<br>Cantidad: {row['cantidad']}", 
+                hoverinfo='text'
+            ))
+            
+    fig.update_layout(
+        showlegend=False,
+        mapbox=dict(
+            style="carto-positron",
+            center=center, 
+            zoom=zoom 
+            )
+        )
+
     return fig
 
 
@@ -218,7 +321,7 @@ layout = html.Div([
                     html.H2(dcc.Graph(figure=render_correlaciones('Todos', 'Todos'), id='correlations'), className='text-primary border border-primary'),
                 ], width=6),
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_mapa('Todos', 'Todos'), id='mapa'), className='text-primary border border-primary'),
+                    html.H2(dcc.Graph(figure=render_mapa('Todos', 'Todos', tabla_viajes), id='mapa'), className='text-primary border border-primary'),
                 ], width=6),
                 dbc.Col([
                     html.H2('Gráfico 3', className='text-primary border border-primary'),
@@ -256,5 +359,5 @@ def update_kpis(selected_year, selected_borough):
 )
 def update_graphics(selected_year, selected_borough):
     correlations = render_correlaciones(selected_year, selected_borough)
-    mapa = render_mapa(selected_year, selected_borough)
+    mapa = render_mapa(selected_year, selected_borough, tabla_viajes)
     return correlations, mapa
