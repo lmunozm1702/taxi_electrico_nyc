@@ -10,7 +10,7 @@ from google.oauth2 import service_account
 from shapely import wkt
 from shapely.geometry import MultiPolygon
 #from shapely.ops import unary_union
-import pandas as pd
+#import pandas as pd
 #import matplotlib.cm as cm
 #import matplotlib.colors as mcolors
 #import numpy as np
