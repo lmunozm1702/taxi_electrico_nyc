@@ -370,6 +370,12 @@ app.layout = create_layout()
 )
 
 
+# Ejecutar load4() al inicio y almacenar el modelo y las coordenadas en variables globales
+try:
+    model_1, coordinates = load4()
+except Exception as e:
+    model_1, coordinates = None, None
+    print(f"Error al cargar el modelo y las coordenadas: {str(e)}")
 
 def update_results(n_clicks, date, time):
     if n_clicks is None:
@@ -379,7 +385,10 @@ def update_results(n_clicks, date, time):
         return dbc.Alert("Por favor, complete todos los campos.", color="warning")
 
     try:
-        model_1, coordinates = load4()
+        # Usar las variables globales model_1 y coordinates
+        if model_1 is None or coordinates is None:
+            raise ValueError("Error al cargar el modelo y las coordenadas al inicio.")
+
         # Combina la fecha y la hora seleccionadas (date y time ya son cadenas)
         selected_datetime_str = f"{date} {time}"
         # Llama a la función de predicción (asegúrate de tener modelos y datos cargados)
@@ -412,7 +421,10 @@ def update_results(n_clicks, date, time):
             ])
         ])
     except Exception as e:
-        return dbc.Alert(f"Error al procesar los datos: {str(e)}, ", color="danger")
+        return dbc.Alert(f"Error al procesar los datos: {str(e)}", color="danger")
+
+# Tu código adicional para configurar Dash, callbacks, etc.
+
 
 
 if __name__ == "__main__":
