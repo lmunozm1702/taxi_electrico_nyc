@@ -22,3 +22,11 @@ body {
   color: #365b6d;
   font-size: 0.2rem;
 }
+
+.table_card_border {
+  border: 0px solid rgb(54, 91, 109);
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 1rem;
+  background-color: rgb(54, 91, 109, 0.05);
+}
