@@ -231,8 +231,6 @@ def calculate_mapa(year, borough):
     credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     
-    query_job = bigquery.Client(credentials=credentials).query('SELECT borough, zone, pickup_year, map_location, cantidad FROM project_data.trips_year_qtr_map WHERE borough <> \'EWR\';')
-    
     if year == 'Todos':
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query(
@@ -244,7 +242,7 @@ def calculate_mapa(year, borough):
             query_job = bigquery.Client(credentials=credentials).query(
                 f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
                 FROM project_data.trips_year_qtr_map 
-                WHERE borough = \'{borough}\'
+                WHERE borough <> \'EWR\' AND borough = \'{borough}\'
                 GROUP BY zone;''')
     else:
         if borough == 'Todos':
@@ -263,7 +261,46 @@ def calculate_mapa(year, borough):
             
     results = query_job.result().to_dataframe()
     
-    results['geometry'] = results['geometry'].apply(wkt.loads)
+    #results['geometry'] = results['geometry'].apply(wkt.loads)
+    
+    return results
+
+
+def calculate_mapa_destino(year, borough):
+    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
+    
+    if year == 'Todos':
+        if borough == 'Todos':
+            query_job = bigquery.Client(credentials=credentials).query(
+                '''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                FROM project_data.dropoff_trips_year_qtr_map 
+                WHERE borough <> \'EWR\'
+                GROUP BY zone;''')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(
+                f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                FROM project_data.dropoff_trips_year_qtr_map 
+                WHERE borough = \'{borough}\'
+                GROUP BY zone;''')
+    else:
+        if borough == 'Todos':
+            query_job = bigquery.Client(credentials=credentials).query(
+                f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                FROM project_data.dropoff_trips_year_qtr_map 
+                WHERE pickup_year = {year}
+                GROUP BY zone;''')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(
+                f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                FROM project_data.dropoff_trips_year_qtr_map 
+                WHERE borough = \'{borough}\'
+                AND pickup_year = {year}
+                GROUP BY zone;''')
+            
+    results = query_job.result().to_dataframe()
+    
+    #results['geometry'] = results['geometry'].apply(wkt.loads)
     
     return results
 
@@ -290,11 +327,14 @@ def calculate_center_and_zoom(geometries):
     return center, zoom
 
 
-def render_mapa(year, borough):
+def render_mapa(year, borough, tipo_lugar):
 
     print('Año: ', year)
 
-    viajes = calculate_mapa(year, borough)
+    if tipo_lugar == 'origen':
+        viajes = calculate_mapa(year, borough)
+    elif tipo_lugar == 'destino':
+        viajes = calculate_mapa_destino(year, borough)
     
     viajes['geometry'] = viajes['geometry'].apply(lambda geom: geom.wkt if isinstance(geom, (Polygon, MultiPolygon)) else geom)
 
@@ -324,7 +364,7 @@ def render_mapa(year, borough):
         marker=dict(
             size=gdf['size'],
             color=gdf['cantidad'],
-            colorscale='Viridis',
+            colorscale=['#1d4355', '#365b6d', '#41c1b0', '#6c9286'],
             showscale=True,
             opacity=1
         ),
@@ -523,7 +563,13 @@ layout = html.Div([
                     html.H2(dcc.Graph(figure=render_viajes_lineas(2024, 'Todos'), id='viajes_linea'), className='kpi_card_border'),
                 ], width=4),
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_mapa(2024, 'Todos'), id='mapa'), className='kpi_card_border'),
+                    html.H2(dcc.Graph(figure=render_mapa(2024, 'Todos', 'origen'), id='mapa_origen'), className='kpi_card_border'),
+                ], width=4),
+                dbc.Col([
+                    html.H2(dcc.Graph(figure=render_mapa(2024, 'Todos', 'destino'), id='mapa_destino'), className='kpi_card_border'),
+                ], width=4),
+                dbc.Col([
+                    html.H2(dcc.Graph('Viaje por cada 100000 habitantes por distrito'), className='kpi_card_border'),
                 ], width=4),
                 dbc.Col([
                     html.Div(
@@ -565,7 +611,8 @@ layout = html.Div([
         Output('kpi3', 'figure'),
         Output('kpi4', 'figure'),
         Output('viajes_linea', 'figure'),        
-        Output('mapa', 'figure'),
+        Output('mapa_origen', 'figure'),
+        Output('mapa_destino', 'figure'),
         Output('max_min_table', 'data'),
         Output('total_viajes', 'children'),
         Output('viaje_promedio_dia', 'children'),
@@ -578,7 +625,8 @@ layout = html.Div([
 def update_kpis(selected_year, selected_borough):
     #correlations = render_correlaciones(selected_year, selected_borough)
     viajes_linea = render_viajes_lineas(selected_year, selected_borough)
-    mapa = render_mapa(selected_year, selected_borough)
+    mapa_origen = render_mapa(selected_year, selected_borough, 'origen')
+    mapa_destino = render_mapa(selected_year, selected_borough, 'destino')
     kpi1 = render_kpi(1, selected_year, selected_borough)
     kpi2 = render_kpi(2, selected_year, selected_borough)
     kpi3 = render_kpi(3, selected_year, selected_borough)
@@ -587,7 +635,7 @@ def update_kpis(selected_year, selected_borough):
     total_viajes = card_total_viajes(selected_year, selected_borough)
     viaje_promedio_dia = card_viaje_promedio_dia(selected_year, selected_borough)
     total_vehiculos = card_total_vehiculos(selected_year, selected_borough)
-    return kpi1, kpi2, kpi3, kpi4, viajes_linea, mapa, max_min_table.to_dict('records'), total_viajes, viaje_promedio_dia, total_vehiculos
+    return kpi1, kpi2, kpi3, kpi4, viajes_linea, mapa_origen, mapa_destino, max_min_table.to_dict('records'), total_viajes, viaje_promedio_dia, total_vehiculos
 
 
                 # dbc.Col([
