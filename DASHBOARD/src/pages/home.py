@@ -16,16 +16,16 @@ import textwrap
 register_page(__name__, name='Home', path='/')
 
 
-def cargar_data_graficos():
-    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
-    
-    query_job = bigquery.Client(credentials=credentials).query('SELECT borough, zone, pickup_year, map_location, cantidad FROM project_data.trips_year_qtr_map WHERE borough <> \'EWR\';')
-    results = query_job.result().to_dataframe()
-    
-    return results
+#def cargar_data_graficos():
+#    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+#    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
+#    
+#    query_job = bigquery.Client(credentials=credentials).query('SELECT borough, zone, pickup_year, map_location, cantidad FROM project_data.trips_year_qtr_map WHERE borough <> \'EWR\';')
+#    results = query_job.result().to_dataframe()
+#    
+#    return results
 
-tabla_viajes = cargar_data_graficos()
+#tabla_viajes = cargar_data_graficos()
 
 #funcion para calcular el kpi1
 def render_kpi(kpi_id, year, borough):
@@ -200,13 +200,15 @@ def calculate_correlaciones(year, borough):
     results = results[results['Distrito'] != 'EWR']
     
     dias_semana = { 0: 'D', 1: 'L', 2: 'M', 3: 'X', 4: 'J', 5: 'V', 6: 'S' }
-    results['Dia_de_la_Semana'] = results['Dia_de_la_Semana'].map(dias_semana)
+    results['Dia_de_la_Semana2'] = results['Dia_de_la_Semana'].map(dias_semana)
 
     return results
 
 #Crea grafico de lieas utilizando plotly
 def render_viajes_lineas(year, borough):
     viajes = calculate_correlaciones(year, borough)
+    #ordenar por distrito y dia de la semana
+    viajes = viajes.sort_values(by=['Distrito', 'Dia_de_la_Semana'])
     fig = px.line(
         viajes,
         x='Dia_de_la_Semana',
@@ -452,6 +454,53 @@ def card_total_vehiculos(year, borough):
 
     return "{:,}".format(df_month['cantidad'].values[0])
 
+def render_population_rate(year, borough):
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
+
+    if year == 'Todos':
+        if borough == 'Todos':
+            query_job = bigquery.Client(credentials=credentials).query('SELECT borough, pickup_day_of_week, cantidad FROM project_data.trips_week_day;')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough, pickup_day_of_week, cantidad FROM project_data.trips_week_day where borough = \'{borough}\';')
+    else:
+        if borough == 'Todos':            
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough, pickup_day_of_week, cantidad FROM project_data.trips_week_day WHERE pickup_year = {year};')
+        else:
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough, pickup_day_of_week, cantidad FROM project_data.trips_week_day where borough = \'{borough}\' AND pickup_year = {year};')
+    viajes = query_job.result().to_dataframe()
+
+    borough_population = {
+        'Manhattan': 3400000,
+        'Brooklyn': 2500000,
+        'Queens': 2200000,
+        'Bronx': 1400000,
+        'Staten Island': 450000
+    }
+
+    viajes['population_rate'] = viajes.apply(lambda row: row['cantidad'] / borough_population[row['borough']], axis=1)
+
+    #agrupar por distrito y dia de la semana
+    viajes = viajes.groupby(['borough', 'pickup_day_of_week']).sum().reset_index()
+
+    #ordenar por distrito y dia de la semana
+    viajes = viajes.sort_values(by=['borough', 'pickup_day_of_week'], ascending=[True, True])
+
+    fig = px.line(
+        viajes,
+        x='pickup_day_of_week',
+        y='population_rate',
+        color='borough',
+        markers=True,
+        #specify color of each line
+        color_discrete_sequence=['#1d4355', '#365b6d', '#41c1b0', '#6c9286', '#f2f1ec'],        
+        #title= f'Cantidad de Viajes por Mes {year} y Distrito {borough}'
+    )
+
+    #ocultar titulo de eje x y eje y    
+    fig.update_layout(margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)', autosize=True, height=330, xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
+    return fig
+
 dropdown_options = {
     'years': [2024, 2023],
     'boroughs': ['Todos', 'Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'],
@@ -523,7 +572,9 @@ layout = html.Div([
                     html.H2(dcc.Graph(figure=render_viajes_lineas(2024, 'Todos'), id='viajes_linea'), className='kpi_card_border'),
                 ], width=4),
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_mapa(2024, 'Todos', tabla_viajes), id='mapa'), className='kpi_card_border'),
+                    #html.H2(dcc.Graph(figure=render_mapa(2024, 'Todos', tabla_viajes), id='mapa'), className='kpi_card_border'),
+                #], width=4),
+                    html.H2(dcc.Graph(figure=render_population_rate(2024, 'Todos'), id='population_rate'), className='kpi_card_border'),
                 ], width=4),
                 dbc.Col([
                     html.Div(
@@ -565,11 +616,12 @@ layout = html.Div([
         Output('kpi3', 'figure'),
         Output('kpi4', 'figure'),
         Output('viajes_linea', 'figure'),        
-        Output('mapa', 'figure'),
+        #Output('mapa', 'figure'),
         Output('max_min_table', 'data'),
         Output('total_viajes', 'children'),
         Output('viaje_promedio_dia', 'children'),
         Output('total_vehiculos', 'children'),
+        Output('population_rate', 'figure'),
         ],
         [Input('year-dropdown', 'value'),
         Input('borough-dropdown', 'value')],
@@ -587,7 +639,8 @@ def update_kpis(selected_year, selected_borough):
     total_viajes = card_total_viajes(selected_year, selected_borough)
     viaje_promedio_dia = card_viaje_promedio_dia(selected_year, selected_borough)
     total_vehiculos = card_total_vehiculos(selected_year, selected_borough)
-    return kpi1, kpi2, kpi3, kpi4, viajes_linea, mapa, max_min_table.to_dict('records'), total_viajes, viaje_promedio_dia, total_vehiculos
+    population_rate = render_population_rate(selected_year, selected_borough)
+    return kpi1, kpi2, kpi3, kpi4, viajes_linea, mapa, max_min_table.to_dict('records'), total_viajes, viaje_promedio_dia, total_vehiculos, population_rate
 
 
                 # dbc.Col([

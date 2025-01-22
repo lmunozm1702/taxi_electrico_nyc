@@ -134,3 +134,11 @@ FROM `driven-atrium-445021-m2.project_data.trips` as trips INNER JOIN `driven-at
 ON coordinates.location_id = trips.pickup_location_id
 GROUP BY trips.pickup_year, coordinates.borough;
 group by pickup_year
+
+-- trips by day of week and borough
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.trips_week_day` AS
+SELECT coordinates.borough, trips.pickup_year, trips.pickup_day_of_week, count(*) AS cantidad
+FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates
+ON trips.pickup_location_id = coordinates.location_id 
+WHERE coordinates.borough <> 'EWR'
+GROUP BY coordinates.borough, trips.pickup_year, trips.pickup_day_of_week;
