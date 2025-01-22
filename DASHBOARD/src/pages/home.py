@@ -480,23 +480,36 @@ def render_population_rate(year, borough):
 
     viajes['population_rate'] = viajes.apply(lambda row: row['cantidad'] / borough_population[row['borough']], axis=1)
 
-    #agrupar por distrito y dia de la semana
-    viajes = viajes.groupby(['borough', 'pickup_day_of_week']).sum().reset_index()
+    #agrupar por distrito
+    viajes = viajes.groupby(['borough']).sum().reset_index()
+    #viajes = viajes.groupby(['borough', 'pickup_day_of_week']).sum().reset_index()
 
-    #ordenar por distrito y dia de la semana
-    viajes = viajes.sort_values(by=['borough', 'pickup_day_of_week'], ascending=[True, True])
+    #ordenar por distrito
+    viajes = viajes.sort_values(by=['borough'], ascending=[True])
+    #viajes = viajes.sort_values(by=['borough', 'pickup_day_of_week'], ascending=[True, True])
 
-    fig = px.line(
+    #grafico de barras por borough
+    fig = px.bar(
         viajes,
-        x='pickup_day_of_week',
+        x='borough',
         y='population_rate',
         color='borough',
-        markers=True,
-        #specify color of each line
-        color_discrete_sequence=['#1d4355', '#365b6d', '#41c1b0', '#6c9286', '#f2f1ec'],        
-        #title= f'Cantidad de Viajes por Mes {year} y Distrito {borough}'
+        #specify color of each bar
+        color_discrete_sequence=['#1d4355', '#365b6d', '#41c1b0', '#6c9286', '#f2f1ec'],
     )
 
+
+    #fig = px.line(
+    #    viajes,
+    #    x='pickup_day_of_week',
+    #    y='population_rate',
+    #    color='borough',
+    #    markers=True,
+    #    #specify color of each line
+    #    color_discrete_sequence=['#1d4355', '#365b6d', '#41c1b0', '#6c9286', '#f2f1ec'],        
+    #    #title= f'Cantidad de Viajes por Mes {year} y Distrito {borough}'
+    #)
+#
     #ocultar titulo de eje x y eje y    
     fig.update_layout(margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)', autosize=True, height=330, xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
     return fig
