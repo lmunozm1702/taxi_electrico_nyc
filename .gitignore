@@ -176,6 +176,7 @@ requirements_francisco.txt
 prueba.ipynb
 tabla_viajes.csv
 /DASHBOARD/src/tabla_viajes.csv
+/etc
 
 #Archivos de prueba para ETLS
 assets/Datasets/yellow_tripdata_2024-09.parquet
