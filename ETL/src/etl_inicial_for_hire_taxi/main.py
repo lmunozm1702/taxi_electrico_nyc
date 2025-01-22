@@ -133,14 +133,14 @@ def transform_data(df, filename):
     #Agregar columna 'quarter' con el trimestre de la columna 'pickup_datetime'
     df['pickup_quarter'] = df['pickup_datetime'].dt.quarter
 
-    #eliminar columna 'pickup_datetime'
-    df.drop(columns=['pickup_datetime'], inplace=True)
-
     #agregar columna 'fare_amount' = 0
     df['fare_amount'] = 0
 
     #eliminar registros con columna 'pickup_location_id' == na
     df = df.dropna(subset=['pickup_location_id'])
+
+    #eliminar registros con columna 'dropoff_location_id' == na
+    df = df.dropna(subset=['dropoff_location_id'])
 
     #Eliminar duplicados
     df = df.drop_duplicates()

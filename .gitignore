@@ -185,3 +185,6 @@ keys
 assets/Datasets/raw_datasets_active_medallion_vehicles_2024_2024-12_active_medallion_vehicles.csv
 /driven-atrium-445021-m2-6aa68b6352dd.json
 /driven-atrium-445021-m2-a773215c2f46.json
+DASHBOARD/src/cache/cache.db
+DASHBOARD/src/cache/cache.db-shm
+DASHBOARD/src/cache/cache.db-wal

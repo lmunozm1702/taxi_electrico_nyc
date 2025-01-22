@@ -94,6 +94,7 @@ def transform_data(df, filename):
 
     #eliminar registros con columna 'pickup_location_id' == na
     df = df.dropna(subset=['pickup_location_id'])
+    df = df.dropna(subset=['dropoff_location_id'])
 
     #Eliminar valores que no corresponden al mes y año del dataset
     print(filename)
@@ -143,11 +144,8 @@ def transform_data(df, filename):
     df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])
     df['dropoff_datetime'] = pd.to_datetime(df['dropoff_datetime'])
 
-    df.drop(columns=['pickup_datetime'], inplace=True)
-
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
-
     
     return df
 
