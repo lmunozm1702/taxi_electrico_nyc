@@ -1,7 +1,7 @@
 import pandas as pd
 from dash import dcc
 from dash import html, dash_table
-from dash import register_page, callback
+from dash import callback, register_page
 from dash.dependencies import Input, Output
 from dash.dash_table.Format import Format
 import dash_bootstrap_components as dbc
@@ -10,8 +10,9 @@ import plotly.express as px
 from google.cloud import bigquery
 from google.oauth2 import service_account
 from shapely import wkt
-from shapely.geometry import MultiPolygon
 import textwrap
+import geopandas as gpd
+from shapely.geometry import Polygon, MultiPolygon
 
 register_page(__name__, name='Home', path='/')
 
@@ -235,10 +236,10 @@ def calculate_mapa(year, borough):
     if year == 'Todos':
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query(
-                '''SELECT borough, zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                '''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
                 FROM project_data.trips_year_qtr_map 
                 WHERE borough <> \'EWR\'
-                GROUP BY borough, zone;''')
+                GROUP BY zone;''')
         else:
             query_job = bigquery.Client(credentials=credentials).query(
                 f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
@@ -251,7 +252,7 @@ def calculate_mapa(year, borough):
                 f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
                 FROM project_data.trips_year_qtr_map 
                 WHERE pickup_year = {year}
-                GROUP BY borough, zone;''')
+                GROUP BY zone;''')
         else:
             query_job = bigquery.Client(credentials=credentials).query(
                 f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
@@ -290,60 +291,48 @@ def calculate_center_and_zoom(geometries):
 
 
 def render_mapa(year, borough):
-    #return True
+
+    print('Año: ', year)
 
     viajes = calculate_mapa(year, borough)
     
-    geojson_data = {
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "properties": {"zone": zone},
-                "geometry": geom.__geo_interface__
-            } for zone, geom in zip(viajes['zone'], viajes['geometry'])
-        ]
-    }
+    viajes['geometry'] = viajes['geometry'].apply(lambda geom: geom.wkt if isinstance(geom, (Polygon, MultiPolygon)) else geom)
+
+    viajes['geometry'] = viajes['geometry'].apply(wkt.loads)
     
-    geometries = viajes['geometry'].tolist()
-    center, zoom = calculate_center_and_zoom(geometries)
+    gdf = gpd.GeoDataFrame(viajes, geometry='geometry', crs="EPSG:4326")
     
-    fig = px.choropleth_mapbox(
-        viajes, 
-        geojson=geojson_data, 
-        locations='zone',
-        featureidkey='properties.zone',
-        color='cantidad', 
-        color_continuous_scale="Viridis",
-        mapbox_style="carto-positron", 
-        opacity=1
-        )
+    gdf['text'] = gdf.apply(lambda row: f"Zona: {row['zone']}<br>Cantidad: {row['cantidad']}", axis=1)
     
-    for _, row in viajes.iterrows():
-        geom = row['geometry']
-        
-        if isinstance(geom, MultiPolygon):
-            for polygon in geom.geoms:
-                fig.add_trace(go.Scattermapbox(
-                    lon=list(polygon.exterior.coords.xy[0]),
-                    lat=list(polygon.exterior.coords.xy[1]),
-                    mode='lines',
-                    line=dict(width=1, color='black'),
-                    text=f"{row['zone']}<br>Cantidad: {row['cantidad']}", 
-                    hoverinfo='text'
-                    )
-                )
-        else:
-            fig.add_trace(go.Scattermapbox(
-                lon=list(geom.exterior.coords.xy[0]),
-                lat=list(geom.exterior.coords.xy[1]),
-                mode='lines',
-                line=dict(width=1, color='black'),
-                text=f"{row['zone']}<br>Cantidad: {row['cantidad']}", 
-                hoverinfo='text'
-            ))
+    center, zoom = calculate_center_and_zoom(gdf['geometry'].tolist())
+    
+    gdf_proj = gdf.to_crs(epsg=3857)
+    
+    gdf_proj['centroid'] = gdf_proj.geometry.centroid
+    
+    gdf['lon'] = gdf_proj['centroid'].to_crs(epsg=4326).x 
+    gdf['lat'] = gdf_proj['centroid'].to_crs(epsg=4326).y
+    
+    max_size = 20 
+    min_size = 5 
+    gdf['size'] = min_size + (max_size - min_size) * (gdf['cantidad'] - gdf['cantidad'].min()) / (gdf['cantidad'].max() - gdf['cantidad'].min())
+    
+    scattermapbox_data = go.Scattermapbox(
+        lon=gdf['lon'],
+        lat=gdf['lat'],
+        mode='markers',
+        marker=dict(
+            size=gdf['size'],
+            color=gdf['cantidad'],
+            colorscale='Viridis',
+            showscale=True,
+            opacity=1
+        ),
+        text=gdf['text'],
+        hoverinfo='text'
+    )
             
-    fig.update_layout(
+    layout = go.Layout(
         showlegend=False,
         mapbox=dict(
             style="carto-positron",
@@ -355,7 +344,9 @@ def render_mapa(year, borough):
         margin=dict(l=20, r=20, t=20, b=20),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(29,67,85,0.1)'
-    )
+        )
+
+    fig = go.Figure(data=[scattermapbox_data], layout=layout)
 
     return fig
 
@@ -419,7 +410,7 @@ def card_viaje_promedio_dia(year, borough):
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query('SELECT pickup_year, pickup_month, borough, cantidad FROM project_data.card_viaje_promedio_dia;')
         else:
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, pickup_month, borough, cantidad FROM project_data.card_viaje_promedio_dias where borough = \'{borough}\';')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, pickup_month, borough, cantidad FROM project_data.card_viaje_promedio_dia where borough = \'{borough}\';')
     else:
         if borough == 'Todos':            
             query_job = bigquery.Client(credentials=credentials).query(f'SELECT pickup_year, pickup_month, borough, cantidad FROM project_data.card_viaje_promedio_dia WHERE pickup_year = {year};')
