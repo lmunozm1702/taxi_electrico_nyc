@@ -15,18 +15,6 @@ import textwrap
 
 register_page(__name__, name='Home', path='/')
 
-
-#def cargar_data_graficos():
-#    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-#    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
-#    
-#    query_job = bigquery.Client(credentials=credentials).query('SELECT borough, zone, pickup_year, map_location, cantidad FROM project_data.trips_year_qtr_map WHERE borough <> \'EWR\';')
-#    results = query_job.result().to_dataframe()
-#    
-#    return results
-
-#tabla_viajes = cargar_data_graficos()
-
 #funcion para calcular el kpi1
 def render_kpi(kpi_id, year, borough):
     kpi_titles = ['Taxi EV/HYB activo (+5%)', 'Cantidad Viajes (+5%)', 'Ticket Promedio (+2%)', 'Cuota vs Taxi (+0.01%)']
@@ -217,13 +205,11 @@ def render_viajes_lineas(year, borough):
         markers=True,
         #specify color of each line
         color_discrete_sequence=['#1d4355', '#365b6d', '#41c1b0', '#6c9286', '#f2f1ec'],        
-        #title= f'Cantidad de Viajes por Mes {year} y Distrito {borough}'
     )
 
     #ocultar titulo de eje x y eje y    
     fig.update_layout(margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)', autosize=True, height=330, xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
     return fig
-
 
 def render_correlaciones(year, borough):
     viajes = calculate_correlaciones(year, borough)
@@ -237,7 +223,6 @@ def render_correlaciones(year, borough):
     fig.update_layout(yaxis=dict(categoryorder='array', categoryarray=dias_de_semana[::-1]), autosize=True, height=330, margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)')
     
     return fig
-
 
 def calculate_mapa(year, borough, tabla):
     tabla['geometry'] = tabla['map_location'].apply(wkt.loads)
@@ -402,6 +387,7 @@ def card_total_viajes(year, borough):
     
     df = query_job.result().to_dataframe()
     results = df['cantidad'].sum()
+
     #return results with comma separator and grouped by thousands
     return "{:,}".format(results)
 
@@ -498,18 +484,6 @@ def render_population_rate(year, borough):
         color_discrete_sequence=['#1d4355', '#365b6d', '#41c1b0', '#6c9286', '#f2f1ec'],
     )
 
-
-    #fig = px.line(
-    #    viajes,
-    #    x='pickup_day_of_week',
-    #    y='population_rate',
-    #    color='borough',
-    #    markers=True,
-    #    #specify color of each line
-    #    color_discrete_sequence=['#1d4355', '#365b6d', '#41c1b0', '#6c9286', '#f2f1ec'],        
-    #    #title= f'Cantidad de Viajes por Mes {year} y Distrito {borough}'
-    #)
-#
     #ocultar titulo de eje x y eje y    
     fig.update_layout(margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)', autosize=True, height=330, xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
     return fig
