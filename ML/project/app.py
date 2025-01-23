@@ -351,7 +351,10 @@ app.layout = create_layout()
 
 
 def update_results(n_clicks, date, time, r, location_id):
-    if not date or not time or r is None or location_id is None:
+   if n_clicks is None:
+        # Si el botón no ha sido presionado, no hacer nada.
+        return dbc.Alert("Por favor, complete todos los campos.", color="warning")
+    if not date or not time or not r or not location_id:
         return dbc.Alert("Por favor, complete todos los campos.", color="warning")
     try:
         # Cargar el modelo dentro de la función cuando se hace clic
@@ -385,6 +388,7 @@ def update_results(n_clicks, date, time, r, location_id):
             'relative_humidity': 'Humedad Relativa (%)',
             'apparent_temperature': 'Temperatura Aparente (°C)',
             'temperature': 'Temperatura (°C)',
+            'weather_code': 'Código del Clima',
             'cloud_cover': 'Cobertura de Nubes (%)',
             'wind_speed': 'Velocidad del Viento (m/s)',
             'wind_gusts': 'Ráfagas de Viento (m/s)'
@@ -397,6 +401,7 @@ def update_results(n_clicks, date, time, r, location_id):
             'Humedad Relativa (%)': f"{first_row['relative_humidity']}%",
             'Temperatura Aparente (°C)': f"{first_row['apparent_temperature'] - 273.15:.2f}",
             'Temperatura (°C)': f"{first_row['temperature'] - 273.15:.2f}",
+            'Código del Clima': f"{first_row['weather_code']}",
             'Cobertura de Nubes (%)': f"{first_row['cloud_cover']}%",
             'Velocidad del Viento (m/s)': f"{first_row['wind_speed']:.2f}",
             'Ráfagas de Viento (m/s)': f"{first_row['wind_gusts']:.2f}"
