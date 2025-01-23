@@ -44,7 +44,7 @@ coordinates = None
 
 def load4():
 
-    global model_1, coordinates
+    global model_1, model_2, model_3, coordinates
     
     if model_1 is not None or coordinates is not None or model_2 is not None or model_3 is not None:
         return model_1, model_2, model_3, coordinates
