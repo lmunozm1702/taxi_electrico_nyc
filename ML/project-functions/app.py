@@ -70,7 +70,6 @@ def load2():
 
 ## os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'C:/Users/NoxiePC/Desktop/henry/driven-atrium-445021-m2-a773215c2f46.json'
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json'
 
 def invoke_function(name, archivo):
 
@@ -104,6 +103,7 @@ def load3():
     coordinates = pd.read_csv(coordinates)
 
     return model_1, coordinates
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json'
 
 def download_from_gcs(bucket_name, source_blob_name, destination_file_name):
     """Descarga un archivo desde un bucket de GCS."""

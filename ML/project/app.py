@@ -28,6 +28,8 @@ from google.auth.transport.requests import Request
 from google.oauth2 import id_token
 import os
 
+import logging
+
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json'
 def download_from_gcs(bucket_name, source_blob_name, destination_file_name):
     """Descarga un archivo desde un bucket de GCS."""
@@ -48,6 +50,7 @@ model_3 = None
 coordinates = None
 
 def load4():
+
     global model_1, model_2, model_3, coordinates
     
     # Solo cargar si los modelos no están en memoria
@@ -342,6 +345,8 @@ def create_layout():
     ], fluid=True, style={"padding": "2rem"})
 app.layout = create_layout()
 
+# Configuración de logging para mayor detalle en los logs
+logging.basicConfig(level=logging.DEBUG)
 # Callbacks
 @app.callback(
     Output("output-results", "children"),
@@ -351,41 +356,52 @@ app.layout = create_layout()
     State("input-r", "value"),
     State("input-location", "value")
 )
-
-
-
 def update_results(n_clicks, date, time, r, location_id):
     if n_clicks is None:
         # Si el botón no ha sido presionado, no hacer nada.
+        logging.debug("No se ha presionado el botón.")
         return dbc.Alert("Por favor, complete todos los campos.", color="warning")
+    
     if not date or not time or not r or not location_id:
+        logging.debug("Faltan campos: Date: %s, Time: %s, R: %s, Location ID: %s", date, time, r, location_id)
         return dbc.Alert("Por favor, complete todos los campos.", color="warning")
+    
     try:
+        logging.debug("Cargando los modelos...")
         # Cargar el modelo dentro de la función cuando se hace clic
         model_1, model_2, model_3, coordinates = load4()
 
         if model_1 is None or coordinates is None or model_2 is None or model_3 is None:
+            logging.error("Error al cargar los modelos o las coordenadas. Modelos: %s, Coordenadas: %s", model_1, coordinates)
             raise ValueError("Error al cargar el modelo o las coordenadas.")
 
         # Combina la fecha y la hora seleccionadas
         selected_datetime_str = f"{date} {time}"
+        logging.debug("Fecha y hora seleccionadas: %s", selected_datetime_str)
 
         # Usar el modelo cargado para hacer la predicción
         df, loc_cercanos_df = get_prediction(selected_datetime_str, r, location_id, model_1, model_2, model_3, coordinates)
-        
+
         if df.empty:
+            logging.warning("El DataFrame de predicción está vacío.")
             return dbc.Alert("No hay datos para la fecha y hora seleccionadas.", color="warning")
 
         if 'k' not in df.columns:
+            logging.warning("La columna 'k' no existe en los datos.")
             return dbc.Alert("La columna 'k' no existe en los datos.", color="warning")
-
+        
+        logging.debug("Generando el mapa...")
         # Generar la imagen del mapa
         img = get_map(df, selected_datetime_str)
+        if img is None:
+            logging.error("Error al generar el mapa.")
+            return dbc.Alert("Error al generar el mapa.", color="danger")
 
         # Convertir la imagen a formato base64 para incrustarla en HTML
         buffered = BytesIO()
         img.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+        logging.debug("Imagen convertida a base64.")
 
         # Extraer las variables climáticas de la primera fila
         climatic_variables = {
@@ -399,6 +415,7 @@ def update_results(n_clicks, date, time, r, location_id):
         }
         
         first_row = df.iloc[0]
+        logging.debug("Primera fila de datos: %s", first_row)
 
         # Formatear las variables climáticas
         formatted_values = {
@@ -449,7 +466,7 @@ def update_results(n_clicks, date, time, r, location_id):
                 html.H5("Mapa Generado", className="font-weight-bold mb-3"),
                 dbc.Card(
                     dbc.CardBody([
-                        html.Img(src=f"data:image/png;base64,{img_str}", 
+                        html.Img(src=f"data:image/png;base64,{img_str}",
                                  style={"width": "100%", "height": "auto", "border-radius": "8px"})
                     ]),
                     className="mb-4",
@@ -467,6 +484,7 @@ def update_results(n_clicks, date, time, r, location_id):
         ])
 
     except Exception as e:
+        logging.error("Error al procesar los datos: %s", str(e))
         return dbc.Alert(f"Error al procesar los datos: {str(e)}", color="danger")
 
 
