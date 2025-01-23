@@ -5,7 +5,7 @@ import pandas as pd
 import geopandas as gpd
 import matplotlib.pyplot as plt
 from shapely import wkt
-from shapely.geometry import MultiPolygon
+from shapely.geometry import MultiPolygon, Point
 import io
 from PIL import Image
 import joblib
@@ -30,6 +30,7 @@ import os
 
 import logging
 
+#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'C:/Users/NoxiePC/Desktop/henry/driven-atrium-445021-m2-a773215c2f46.json'
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json'
 def download_from_gcs(bucket_name, source_blob_name, destination_file_name):
     """Descarga un archivo desde un bucket de GCS."""
@@ -252,32 +253,62 @@ def get_prediction(date, R, locationID, model_1, model_2, model_3, coordinates):
     
     return df, loc_cercanos_df
 
-def get_map(df, selected_datetime_str):
+# ------------------------------------ otro mapa --------------------------------#
+
+
+
+def get_map3(df, selected_datetime_str, location_id, r):
     # Convertir la columna 'geometry' de objetos geométricos a WKT
     df['geometry'] = df['geometry'].apply(lambda geom: geom.wkt if isinstance(geom, MultiPolygon) else geom)
 
     # Convertir la columna 'geometry' de WKT a objetos geométricos
     df['geometry'] = df['geometry'].apply(wkt.loads)
 
-    # Convertir el DataFrame a un GeoDataFrame
+    # Convertir el DataFrame a un GeoDataFrame con CRS WGS84
     geo_df = gpd.GeoDataFrame(df, geometry='geometry', crs="EPSG:4326")
+
+    # Transformar el GeoDataFrame a un CRS métrico (UTM zona 18N para Nueva York)
+    geo_df = geo_df.to_crs(epsg=32618)
 
     # Crear la columna logarítmica
     geo_df['log_k'] = np.log(geo_df['k'] + 1)  # Añadir 1 para evitar log(0)
 
     # Crear el mapa de calor con bordes negros
-    fig, ax = plt.subplots(1, 1, figsize=(18, 12))
-    geo_df.plot(column='log_k', ax=ax, legend=True, cmap='OrRd', edgecolor='black', legend_kwds={'label': "Logaritmo de Intensidad de K"})
+    fig, ax = plt.subplots(1, 1, figsize=(12, 10))  # Cambié el tamaño de la figura
+    geo_df.plot(column='log_k', ax=ax, legend=True, cmap='OrRd', edgecolor='black', 
+                legend_kwds={'label': "Logaritmo de Intensidad de K"})
 
-    # Colocar el valor de 'locationID' en el centro de cada locación
+    # Volver a transformar el GeoDataFrame a WGS84 para anotaciones en lat/lon
+    geo_df_wgs = geo_df.to_crs(epsg=4326)
+
+    # Colocar el valor de 'locationID' en el centro de cada locación (en coordenadas UTM)
     for idx, row in geo_df.iterrows():
-        plt.annotate(text=row['locationID'], xy=(row.geometry.centroid.x, row.geometry.centroid.y), 
-                     ha='center', va='center', fontsize=6, color='black', weight='bold')
+        centroid = row.geometry.centroid  # Calcular el centroide
+        centroid_x, centroid_y = centroid.x, centroid.y
+
+        # Añadir la anotación en el mapa (usando coordenadas UTM)
+        ax.text(
+            centroid_x, centroid_y, 
+            s=row['locationID'], 
+            ha='center', va='center', 
+            fontsize=6, color='black', weight='bold'
+        )
+
+    # Extraer la geometría del centroide de la ubicación seleccionada (en UTM)
+    location_row = geo_df.loc[geo_df['locationID'] == location_id]
+    if not location_row.empty:
+        centroid = location_row.geometry.centroid.values[0]  # Obtener el centroide
+        center_x, center_y = centroid.x, centroid.y
+
+        # Dibujar un círculo con radio r (en metros)
+        circle = plt.Circle((center_x, center_y), r * 1000, color='blue', alpha=0.2, label=f"Radio {r} km")
+        ax.add_artist(circle)
 
     # Configurar el gráfico
     ax.set_title(f"Mapa de Calor - K (Log) - {selected_datetime_str}", fontsize=14)
-    ax.set_xlabel("Longitud")
-    ax.set_ylabel("Latitud")
+    ax.set_xlabel("Coordenada X (UTM)")
+    ax.set_ylabel("Coordenada Y (UTM)")
+    ax.legend()
 
     # Convertir el gráfico en una imagen optimizada para la web
     buf = io.BytesIO()
@@ -288,6 +319,11 @@ def get_map(df, selected_datetime_str):
     return img
 
 # ----------------------------------  app web --------------------------------- #
+
+
+
+
+
 
 
 # Importa tus modelos y funciones
@@ -392,7 +428,7 @@ def update_results(n_clicks, date, time, r, location_id):
         
         logging.debug("Generando el mapa...")
         # Generar la imagen del mapa
-        img = get_map(df, selected_datetime_str)
+        img = get_map3(df, selected_datetime_str, location_id, r)
         if img is None:
             logging.error("Error al generar el mapa.")
             return dbc.Alert("Error al generar el mapa.", color="danger")
@@ -474,11 +510,11 @@ def update_results(n_clicks, date, time, r, location_id):
                 ),
             ]),
             html.Div([
-                html.H5("Variables Climáticas", className="font-weight-bold mb-3"),
+                html.H5(f"Condiciones climáticas de {first_row['borough']}", className="font-weight-bold mb-3"),
                 climatic_table
             ]),
             html.Div([
-                html.H5("Locaciones Cercanas", className="font-weight-bold mb-3"),
+                html.H5(f"Locaciones cercanas a la locación [{location_id}] a {r}km de distancia", className="font-weight-bold mb-3"),
                 loc_table
             ])
         ])
@@ -489,4 +525,4 @@ def update_results(n_clicks, date, time, r, location_id):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, host='0.0.0.0', port=8090)
+    app.run_server(debug=True)
