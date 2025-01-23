@@ -47,7 +47,7 @@ def render_kpi(kpi_id, year, borough):
     return fig
 
 def calculate_kpi(kpi_id, year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
 
     if kpi_id == 1:
@@ -176,7 +176,7 @@ def calculate_kpi(kpi_id, year, borough):
     return value, delta, traces
     
 def calculate_correlaciones(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     
     if year == 'Todos':
@@ -233,7 +233,7 @@ def render_correlaciones(year, borough):
 
 
 def calculate_mapa(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     
     if year == 'Todos':
@@ -269,7 +269,7 @@ def calculate_mapa(year, borough):
 
 
 def calculate_mapa_destino(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     start_process = datetime.now()
     
@@ -416,7 +416,7 @@ def render_mapa(year, borough, tipo_lugar):
     return fig
 
 def calculate_max_min_table(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     if year == 'Todos':
         if borough == 'Todos':
@@ -449,7 +449,7 @@ def calculate_max_min_table(year, borough):
     return pd.concat([df_max, df_min], axis=0).reset_index(drop=True)  
 
 def card_total_viajes(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
 
     if year == 'Todos':
@@ -470,7 +470,7 @@ def card_total_viajes(year, borough):
     return "{:,}".format(results)
 
 def card_viaje_promedio_dia(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     if year == 'Todos':
         if borough == 'Todos':
@@ -495,7 +495,7 @@ def card_viaje_promedio_dia(year, borough):
     return "{:,.0f}".format(total_qty/total_days)
 
 def card_total_vehiculos(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     if year == 'Todos':
         query_job = bigquery.Client(credentials=credentials).query('SELECT vehicle_type, year, month, count as cantidad FROM project_data.active_vehicles_count;')
@@ -519,7 +519,7 @@ def card_total_vehiculos(year, borough):
     return "{:,}".format(df_month['cantidad'].values[0])
 
 def card_tiempo_promedio_viaje(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     if year == 'Todos':
         if borough == 'Todos':
@@ -545,7 +545,7 @@ def card_tiempo_promedio_viaje(year, borough):
     
 
 def render_population_rate(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
 
     if year == 'Todos':
@@ -592,7 +592,7 @@ def render_population_rate(year, borough):
     return fig
 
 def render_hourly_pickup(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
 
     if year == 'Todos':
