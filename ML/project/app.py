@@ -43,10 +43,10 @@ model_3 = None
 coordinates = None
 
 def load4():
-
     global model_1, model_2, model_3, coordinates
     
-    if model_1 is not None or coordinates is not None or model_2 is not None or model_3 is not None:
+    # Solo cargar si los modelos no están en memoria
+    if model_1 is not None and model_2 is not None and model_3 is not None and coordinates is not None:
         return model_1, model_2, model_3, coordinates
 
     bucket_name = 'modelo_entrenado'
@@ -60,18 +60,17 @@ def load4():
     model_3_local_path = 'downloads/xgboost_model_3.pkl'
     coordinates_local_path = 'downloads/coordinates.csv'
 
+    # Descargar solo si no existen los archivos locales
     if not os.path.exists(model_1_local_path):
         download_from_gcs(bucket_name, model_1_blob_name, model_1_local_path)
-
     if not os.path.exists(model_2_local_path):
         download_from_gcs(bucket_name, model_2_blob_name, model_2_local_path)
-    
     if not os.path.exists(model_3_local_path):
         download_from_gcs(bucket_name, model_3_blob_name, model_3_local_path)
-    
     if not os.path.exists(coordinates_local_path):
         download_from_gcs(bucket_name, coordinates_blob_name, coordinates_local_path)
-    
+
+    # Cargar los modelos y las coordenadas
     model_1 = joblib.load(model_1_local_path)
     model_2 = joblib.load(model_2_local_path)
     model_3 = joblib.load(model_3_local_path)
