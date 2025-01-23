@@ -14,3 +14,5 @@ google-auth==2.37.0
 google-api-core==2.24.0
 google-cloud==0.34.0
 google-cloud-core==2.4.1
+flask  # Agregado para manejo de solicitudes HTTP
+gunicorn  # Agregado para entorno de producción
