@@ -1,7 +1,10 @@
 import dash
-from dash import html, page_container, DiskcacheManager, CeleryManager
+from dash import html, page_container, DiskcacheManager
 import dash_bootstrap_components as dbc
+import uuid
+import diskcache
 
+launch_uid = uuid.uuid4()
 
 # Load external stylesheets BOOTSTRAP and Google Fonts Montserrat
 external_stylesheets = [dbc.themes.BOOTSTRAP, {
@@ -10,7 +13,6 @@ external_stylesheets = [dbc.themes.BOOTSTRAP, {
                           "rel": "stylesheet",
                         }]
 
-import diskcache
 cache = diskcache.Cache("./cache")
 background_callback_manager = DiskcacheManager(
     cache, cache_by=[lambda: launch_uid], expire=60
