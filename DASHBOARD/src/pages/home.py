@@ -12,8 +12,6 @@ from google.oauth2 import service_account
 from shapely import wkt
 import textwrap
 import geopandas as gpd
-from datetime import datetime
-#from shapely.geometry import Polygon, MultiPolygon
 
 #hide userwarnings
 import warnings
@@ -270,8 +268,6 @@ def calculate_mapa(year, borough):
 
 def calculate_mapa_destino(year, borough):
     credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
-    start_process = datetime.now()
     
     if year == 'Todos':
         if borough == 'Todos':
@@ -302,13 +298,6 @@ def calculate_mapa_destino(year, borough):
             
     results = query_job.result().to_dataframe()
     
-    end_process = datetime.now()
-
-    print('QUERY')
-    print('Hora de inicio: ', start_process)
-    print('Hora de fin: ', end_process)
-    print('Tiempo de ejecucion: ', end_process - start_process)
-    
     return results
 
 
@@ -323,14 +312,11 @@ def get_bounding_box(geometries):
 def calculate_center_and_zoom(geometries):
     min_x, min_y, max_x, max_y = get_bounding_box(geometries)
     center = {'lat': (min_y + max_y) / 2, 'lon': (min_x + max_x) / 2}
-    # Ajustar el nivel de zoom dependiendo del tamaño del área
     area = (max_x - min_x) * (max_y - min_y)
     if area < 0.1:
         zoom = 9.5
-        #print('10')
     else:
         zoom = 8.5
-        #print('8')
     return center, zoom
 
 
@@ -341,16 +327,7 @@ def render_mapa(year, borough, tipo_lugar):
     else:
         viajes = calculate_mapa_destino(year, borough)
 
-    #viajes['geometry'] = viajes['geometry'].map(lambda geom: geom.simplify(tolerance=100000) if isinstance(geom, (Polygon, MultiPolygon)) else geom)
-
-    #viajes['geometry'] = viajes['geometry'].map(lambda geom: geom.wkt if isinstance(geom, (Polygon, MultiPolygon)) else geom)
-    
-    start_process = datetime.now()
-    
     viajes['geometry'] = viajes['geometry'].map(wkt.loads)
-    
-    #tolerance = 10
-    #viajes['geometry'] = viajes['geometry'].map(lambda geom: geom.simplify(tolerance))
     
     gdf = gpd.GeoDataFrame(viajes, geometry='geometry', crs="EPSG:4326")
     
@@ -405,13 +382,6 @@ def render_mapa(year, borough, tipo_lugar):
         )
 
     fig = go.Figure(data=[scattermapbox_data], layout=layout)
-
-    end_process = datetime.now()
-
-    print('MAPA')
-    print('Hora de inicio: ', start_process)
-    print('Hora de fin: ', end_process)
-    print('Tiempo de ejecucion: ', end_process - start_process)
 
     return fig
 
