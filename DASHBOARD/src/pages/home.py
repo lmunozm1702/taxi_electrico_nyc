@@ -320,7 +320,7 @@ def calculate_center_and_zoom(geometries):
     return center, zoom
 
 
-def render_mapa(year, borough, tipo_lugar):
+def render_mapa(year, borough, tipo_lugar, tipo_lugar_contrario):
 
     if tipo_lugar == 'origen':
         viajes = calculate_mapa(year, borough)
@@ -342,13 +342,16 @@ def render_mapa(year, borough, tipo_lugar):
     gdf['lon'] = gdf_proj['centroid'].to_crs(epsg=4326).x 
     gdf['lat'] = gdf_proj['centroid'].to_crs(epsg=4326).y
     
+    min_val = min(tipo_lugar['cantidad'].min(), tipo_lugar_contrario['cantidad'].min())
+    max_val = max(tipo_lugar['cantidad'].max(), tipo_lugar_contrario['cantidad'].max())
+    
     max_size = 20 
     min_size = 5 
     gdf['size'] = (
         min_size 
         + (max_size - min_size) 
-        * (gdf['cantidad'] - gdf['cantidad'].min()) 
-        / (gdf['cantidad'].max() - gdf['cantidad'].min())
+        * (gdf['cantidad'] - min_val) 
+        / (max_val - min_val)
         )
     
     scattermapbox_data = go.Scattermapbox(
@@ -768,7 +771,8 @@ def update_viajes_linea(selected_year, selected_borough):
      Input('borough-dropdown', 'value')]
 )
 def update_mapa_origen(selected_year, selected_borough):
-    return render_mapa(selected_year, selected_borough, 'origen')
+    viajes_destino = calculate_mapa_destino(selected_year, selected_borough)
+    return render_mapa(selected_year, selected_borough, 'origen', viajes_destino)
 
 
 @callback(
@@ -777,7 +781,8 @@ def update_mapa_origen(selected_year, selected_borough):
      Input('borough-dropdown', 'value')]
 )
 def update_mapa_destino(selected_year, selected_borough):
-    return render_mapa(selected_year, selected_borough, 'destino')
+    viajes_origen = calculate_mapa(selected_year, selected_borough)
+    return render_mapa(selected_year, selected_borough, 'destino', viajes_origen)
 
 
 @callback(
