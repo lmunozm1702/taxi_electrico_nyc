@@ -12,7 +12,8 @@ from google.oauth2 import service_account
 from shapely import wkt
 import textwrap
 import geopandas as gpd
-from shapely.geometry import Polygon, MultiPolygon
+from datetime import datetime
+#from shapely.geometry import Polygon, MultiPolygon
 
 #hide userwarnings
 import warnings
@@ -238,34 +239,31 @@ def calculate_mapa(year, borough):
     if year == 'Todos':
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query(
-                '''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                '''SELECT zone, ST_AsText(map_location) AS geometry, SUM(cantidad) AS cantidad
                 FROM project_data.trips_year_qtr_map 
-                WHERE borough <> \'EWR\'
-                GROUP BY zone;''')
+                GROUP BY zone, geometry;''')
         else:
             query_job = bigquery.Client(credentials=credentials).query(
-                f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                f'''SELECT zone, ST_AsText(map_location) AS geometry, SUM(cantidad) AS cantidad 
                 FROM project_data.trips_year_qtr_map 
-                WHERE borough <> \'EWR\' AND borough = \'{borough}\'
-                GROUP BY zone;''')
+                WHERE borough = \'{borough}\'
+                GROUP BY zone, geometry;''')
     else:
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query(
-                f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                f'''SELECT zone, ST_AsText(map_location) AS geometry, SUM(cantidad) AS cantidad
                 FROM project_data.trips_year_qtr_map 
                 WHERE pickup_year = {year}
-                GROUP BY zone;''')
+                GROUP BY zone, geometry;''')
         else:
             query_job = bigquery.Client(credentials=credentials).query(
-                f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                f'''SELECT zone, ST_AsText(map_location) AS geometry, SUM(cantidad) AS cantidad 
                 FROM project_data.trips_year_qtr_map 
                 WHERE borough = \'{borough}\'
                 AND pickup_year = {year}
-                GROUP BY zone;''')
+                GROUP BY zone, geometry;''')
             
     results = query_job.result().to_dataframe()
-    
-    #results['geometry'] = results['geometry'].apply(wkt.loads)
     
     return results
 
@@ -273,38 +271,43 @@ def calculate_mapa(year, borough):
 def calculate_mapa_destino(year, borough):
     credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
+    start_process = datetime.now()
     
     if year == 'Todos':
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query(
-                '''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                '''SELECT zone, ST_AsText(map_location) AS geometry, SUM(cantidad) AS cantidad 
                 FROM project_data.dropoff_trips_year_qtr_map 
-                WHERE borough <> \'EWR\'
-                GROUP BY zone;''')
+                GROUP BY zone, geometry;''')
         else:
             query_job = bigquery.Client(credentials=credentials).query(
-                f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                f'''SELECT zone, ST_AsText(map_location) AS geometry, SUM(cantidad) AS cantidad 
                 FROM project_data.dropoff_trips_year_qtr_map 
                 WHERE borough = \'{borough}\'
-                GROUP BY zone;''')
+                GROUP BY zone, geometry;''')
     else:
         if borough == 'Todos':
             query_job = bigquery.Client(credentials=credentials).query(
-                f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                f'''SELECT zone, ST_AsText(map_location) AS geometry, SUM(cantidad) AS cantidad 
                 FROM project_data.dropoff_trips_year_qtr_map 
                 WHERE pickup_year = {year}
-                GROUP BY zone;''')
+                GROUP BY zone, geometry;''')
         else:
             query_job = bigquery.Client(credentials=credentials).query(
-                f'''SELECT zone, SUM(cantidad) AS cantidad, ANY_VALUE(map_location) AS geometry 
+                f'''SELECT zone, ST_AsText(map_location) AS geometry, SUM(cantidad) AS cantidad 
                 FROM project_data.dropoff_trips_year_qtr_map 
                 WHERE borough = \'{borough}\'
                 AND pickup_year = {year}
-                GROUP BY zone;''')
+                GROUP BY zone, geometry;''')
             
     results = query_job.result().to_dataframe()
     
-    #results['geometry'] = results['geometry'].apply(wkt.loads)
+    end_process = datetime.now()
+
+    print('QUERY')
+    print('Hora de inicio: ', start_process)
+    print('Hora de fin: ', end_process)
+    print('Tiempo de ejecucion: ', end_process - start_process)
     
     return results
 
@@ -324,25 +327,30 @@ def calculate_center_and_zoom(geometries):
     area = (max_x - min_x) * (max_y - min_y)
     if area < 0.1:
         zoom = 9.5
-        print('10')
+        #print('10')
     else:
         zoom = 8.5
-        print('8')
+        #print('8')
     return center, zoom
 
 
 def render_mapa(year, borough, tipo_lugar):
 
-    print('Año: ', year)
-
     if tipo_lugar == 'origen':
         viajes = calculate_mapa(year, borough)
-    elif tipo_lugar == 'destino':
+    else:
         viajes = calculate_mapa_destino(year, borough)
-    
-    viajes['geometry'] = viajes['geometry'].apply(lambda geom: geom.wkt if isinstance(geom, (Polygon, MultiPolygon)) else geom)
 
-    viajes['geometry'] = viajes['geometry'].apply(wkt.loads)
+    #viajes['geometry'] = viajes['geometry'].map(lambda geom: geom.simplify(tolerance=100000) if isinstance(geom, (Polygon, MultiPolygon)) else geom)
+
+    #viajes['geometry'] = viajes['geometry'].map(lambda geom: geom.wkt if isinstance(geom, (Polygon, MultiPolygon)) else geom)
+    
+    start_process = datetime.now()
+    
+    viajes['geometry'] = viajes['geometry'].map(wkt.loads)
+    
+    #tolerance = 10
+    #viajes['geometry'] = viajes['geometry'].map(lambda geom: geom.simplify(tolerance))
     
     gdf = gpd.GeoDataFrame(viajes, geometry='geometry', crs="EPSG:4326")
     
@@ -359,7 +367,12 @@ def render_mapa(year, borough, tipo_lugar):
     
     max_size = 20 
     min_size = 5 
-    gdf['size'] = min_size + (max_size - min_size) * (gdf['cantidad'] - gdf['cantidad'].min()) / (gdf['cantidad'].max() - gdf['cantidad'].min())
+    gdf['size'] = (
+        min_size 
+        + (max_size - min_size) 
+        * (gdf['cantidad'] - gdf['cantidad'].min()) 
+        / (gdf['cantidad'].max() - gdf['cantidad'].min())
+        )
     
     scattermapbox_data = go.Scattermapbox(
         lon=gdf['lon'],
@@ -378,6 +391,7 @@ def render_mapa(year, borough, tipo_lugar):
             
     layout = go.Layout(
         showlegend=False,
+        uirevision=True,
         mapbox=dict(
             style="carto-positron",
             center=center, 
@@ -391,6 +405,13 @@ def render_mapa(year, borough, tipo_lugar):
         )
 
     fig = go.Figure(data=[scattermapbox_data], layout=layout)
+
+    end_process = datetime.now()
+
+    print('MAPA')
+    print('Hora de inicio: ', start_process)
+    print('Hora de fin: ', end_process)
+    print('Tiempo de ejecucion: ', end_process - start_process)
 
     return fig
 
@@ -604,7 +625,7 @@ def render_hourly_pickup(year, borough):
     return fig
 
 dropdown_options = {
-    'years': [2024, 2023],
+    'years': ['Todos', 2024, 2023],
     'boroughs': ['Todos', 'Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'],
 }
 
@@ -633,25 +654,25 @@ layout = html.Div([
                 dbc.Card([                    
                     dbc.CardBody([
                         html.H4("Total Viajes", className="card-title text-center text-secondary p-0 m-0"),
-                        html.H1(card_total_viajes(2024, 'Todos'), id='total_viajes', className="card-text text-center text-primary m-0 p-0"),
+                        html.H1(id='total_viajes', className="card-text text-center text-primary m-0 p-0"),
                     ])
                 ], className='kpi_card_border py-2'),
                 dbc.Card([                    
                     dbc.CardBody([
                         html.H4("Viajes Promedio Día", className="card-title text-center text-secondary p-0 m-0"),
-                        html.H1(card_viaje_promedio_dia(2024, 'Todos'), id='viaje_promedio_dia', className="card-text text-center text-primary m-0 p-0"),
+                        html.H1(id='viaje_promedio_dia', className="card-text text-center text-primary m-0 p-0"),
                     ])
                 ], className='kpi_card_border py-2'),
                 dbc.Card([                    
                     dbc.CardBody([
                         html.H4("Vehiculos Activos", className="card-title text-center text-secondary p-0 m-0"),
-                        html.H1(card_total_vehiculos(2024, 'Todos'), id='total_vehiculos', className="card-text text-center text-primary m-0 p-0"),
+                        html.H1(id='total_vehiculos', className="card-text text-center text-primary m-0 p-0"),
                     ])
                 ], className='kpi_card_border py-2'),
                 dbc.Card([                    
                     dbc.CardBody([
                         html.H4("Tiempo Promedio Viaje", className="card-title text-center text-secondary p-0 m-0"),
-                        html.H1(card_tiempo_promedio_viaje(2024, 'Todos'), id='tiempo_promedio_viaje', className="card-text text-center text-primary m-0 p-0"),
+                        html.H1(id='tiempo_promedio_viaje', className="card-text text-center text-primary m-0 p-0"),
                     ])
                 ], className='kpi_card_border py-2'),
                 html.Div(                
@@ -663,37 +684,37 @@ layout = html.Div([
         dbc.Col([
             dbc.Row([
                 dbc.Col([
-                    html.Div(dcc.Graph(figure=render_kpi(1, 2024, 'Todos'), id='kpi1'), className='kpi_card_border'),
+                    html.Div(dcc.Graph(id='kpi1'), className='kpi_card_border'),
                 ], width=3),
                 dbc.Col([
-                    html.Div(dcc.Graph(figure=render_kpi(2, 2024, 'Todos'), id='kpi2'), className='kpi_card_border'),
+                    html.Div(dcc.Graph(id='kpi2'), className='kpi_card_border'),
                 ], width=3),
                 dbc.Col([
-                    html.Div(dcc.Graph(figure=render_kpi(3, 2024, 'Todos'), id='kpi3'), className='kpi_card_border'),
+                    html.Div(dcc.Graph(id='kpi3'), className='kpi_card_border'),
                 ], width=3),
                 dbc.Col([
-                    html.Div(dcc.Graph(figure=render_kpi(4, 2024, 'Todos'), id='kpi4'), className='kpi_card_border'),
+                    html.Div(dcc.Graph(id='kpi4'), className='kpi_card_border'),
                 ], width=3),            
             ]),
             dbc.Row([
                 dbc.Col([                    
-                    html.H2(dcc.Graph(figure=render_viajes_lineas(2024, 'Todos'), id='viajes_linea'), className='kpi_card_border'),
+                    html.H2(dcc.Graph(id='viajes_linea'), className='kpi_card_border'),
                 ], width=4),                
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_mapa(2024, 'Todos', 'origen'), id='mapa_origen'), className='kpi_card_border'),
+                    html.H2(dcc.Graph(id='mapa_origen'), className='kpi_card_border'),
                 ], width=4),
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_mapa(2024, 'Todos', 'destino'), id='mapa_destino'), className='kpi_card_border'),
+                    html.H2(dcc.Graph(id='mapa_destino'), className='kpi_card_border'),
                 ], width=4),
             ]),
             dbc.Row([
                 dbc.Col([
-                    html.H2(dcc.Graph(figure=render_population_rate(2024, 'Todos'), id='population_rate'), className='kpi_card_border'),
+                    html.H2(dcc.Graph(id='population_rate'), className='kpi_card_border'),
                 ], width=4),              
                 dbc.Col([
                     html.Div(
                         children=dash_table.DataTable(  
-                            data=calculate_max_min_table(2024, 'Todos').to_dict('records'),                    
+                                               
                             id='max_min_table',
                             columns =[{'name': 'Zona', 'id': 'zone'},
                                       {'name': 'Barrio', 'id': 'borough'},
@@ -719,51 +740,138 @@ layout = html.Div([
                         className='table_card_border'),
                 ], width=4),
                 dbc.Col([                    
-                    html.H2(dcc.Graph(figure=render_hourly_pickup(2024, 'Todos'), id='hourly_pickup'), className='kpi_card_border'),
+                    html.H2(dcc.Graph(id='hourly_pickup'), className='kpi_card_border'),
                 ], width=4),
             ])
         ], width=9)
     ], className='container-fluid'),
 ], className='container-fluid ')
 
-#define callbacks
-@callback(    
-        [Output('kpi1', 'figure'),        
-        Output('kpi2', 'figure'),
-        Output('kpi3', 'figure'),
-        Output('kpi4', 'figure'),
-        Output('viajes_linea', 'figure'),        
-        Output('mapa_origen', 'figure'),
-        Output('mapa_destino', 'figure'),
-        Output('max_min_table', 'data'),
-        Output('total_viajes', 'children'),
-        Output('viaje_promedio_dia', 'children'),
-        Output('total_vehiculos', 'children'),
-        Output('tiempo_promedio_viaje', 'children'),
-        Output('population_rate', 'figure'),
-        Output('hourly_pickup', 'figure'),
-        ],
-        [Input('year-dropdown', 'value'),
-        Input('borough-dropdown', 'value')],
-        prevent_initial_call=True,
+@callback(
+    Output('kpi1', 'figure'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
 )
-def update_kpis(selected_year, selected_borough):
-    viajes_linea = render_viajes_lineas(selected_year, selected_borough)
-    mapa_origen = render_mapa(selected_year, selected_borough, 'origen')
-    mapa_destino = render_mapa(selected_year, selected_borough, 'destino')
-    kpi1 = render_kpi(1, selected_year, selected_borough)
-    kpi2 = render_kpi(2, selected_year, selected_borough)
-    kpi3 = render_kpi(3, selected_year, selected_borough)
-    kpi4 = render_kpi(4, selected_year, selected_borough)
-    max_min_table = calculate_max_min_table(selected_year, selected_borough)
-    total_viajes = card_total_viajes(selected_year, selected_borough)
-    viaje_promedio_dia = card_viaje_promedio_dia(selected_year, selected_borough)
-    total_vehiculos = card_total_vehiculos(selected_year, selected_borough)
-    tiempo_promedio_viaje = card_tiempo_promedio_viaje(selected_year, selected_borough)
-    population_rate = render_population_rate(selected_year, selected_borough)
-    hourly_pickup = render_hourly_pickup(selected_year, selected_borough)    
-    return kpi1, kpi2, kpi3, kpi4, viajes_linea, mapa_origen, mapa_destino, max_min_table.to_dict('records'), total_viajes, viaje_promedio_dia, total_vehiculos, tiempo_promedio_viaje, population_rate, hourly_pickup
-    
+def update_kpi1(selected_year, selected_borough):
+    return render_kpi(1, selected_year, selected_borough)
+
+
+@callback(
+    Output('kpi2', 'figure'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_kpi2(selected_year, selected_borough):
+    return render_kpi(2, selected_year, selected_borough)
+
+
+@callback(
+    Output('kpi3', 'figure'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_kpi3(selected_year, selected_borough):
+    return render_kpi(3, selected_year, selected_borough)
+
+
+@callback(
+    Output('kpi4', 'figure'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_kpi4(selected_year, selected_borough):
+    return render_kpi(4, selected_year, selected_borough)
+
+
+@callback(
+    Output('viajes_linea', 'figure'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_viajes_linea(selected_year, selected_borough):
+    return render_viajes_lineas(selected_year, selected_borough)
+
+
+@callback(
+    Output('mapa_origen', 'figure'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_mapa_origen(selected_year, selected_borough):
+    return render_mapa(selected_year, selected_borough, 'origen')
+
+
+@callback(
+    Output('mapa_destino', 'figure'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_mapa_destino(selected_year, selected_borough):
+    return render_mapa(selected_year, selected_borough, 'destino')
+
+
+@callback(
+    Output('max_min_table', 'data'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_max_min_table(selected_year, selected_borough):
+    return calculate_max_min_table(selected_year, selected_borough).to_dict('records')
+
+
+@callback(
+    Output('total_viajes', 'children'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_total_viajes(selected_year, selected_borough):
+    return card_total_viajes(selected_year, selected_borough)
+
+
+@callback(
+    Output('viaje_promedio_dia', 'children'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_viaje_promedio_dia(selected_year, selected_borough):
+    return card_viaje_promedio_dia(selected_year, selected_borough)
+
+
+@callback(
+    Output('total_vehiculos', 'children'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_total_vehiculos(selected_year, selected_borough):
+    return card_total_vehiculos(selected_year, selected_borough)
+
+
+@callback(
+    Output('tiempo_promedio_viaje', 'children'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_tiempo_promedio_viaje(selected_year, selected_borough):
+    return card_tiempo_promedio_viaje(selected_year, selected_borough)
+
+
+@callback(
+    Output('population_rate', 'figure'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_population_rate(selected_year, selected_borough):
+    return render_population_rate(selected_year, selected_borough)
+
+
+@callback(
+    Output('hourly_pickup', 'figure'),
+    [Input('year-dropdown', 'value'), 
+     Input('borough-dropdown', 'value')]
+)
+def update_hourly_pickup(selected_year, selected_borough):
+    return render_hourly_pickup(selected_year, selected_borough)
+
 
 
                 # dbc.Col([
