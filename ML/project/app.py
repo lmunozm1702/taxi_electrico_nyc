@@ -353,52 +353,113 @@ app.layout = create_layout()
 def update_results(n_clicks, date, time, r, location_id):
     if not date or not time or r is None or location_id is None:
         return dbc.Alert("Por favor, complete todos los campos.", color="warning")
-
     try:
-        model_1, model_2, model_3, coordinates = load2()
+        # Cargar el modelo dentro de la función cuando se hace clic
+        model_1, model_2, model_3, coordinates = load4()
 
-        # Combina la fecha y la hora seleccionadas (date y time ya son cadenas)
+        if model_1 is None or coordinates is None or model_2 is None or model_3 is None:
+            raise ValueError("Error al cargar el modelo o las coordenadas.")
+
+        # Combina la fecha y la hora seleccionadas
         selected_datetime_str = f"{date} {time}"
 
-        # Llama a la función de predicción (asegúrate de tener modelos y datos cargados)
+        # Usar el modelo cargado para hacer la predicción
         df, loc_cercanos_df = get_prediction(selected_datetime_str, r, location_id, model_1, model_2, model_3, coordinates)
+        
+        if df.empty:
+            return dbc.Alert("No hay datos para la fecha y hora seleccionadas.", color="warning")
 
-        # Genera la imagen del mapa usando la función get_map
+        if 'k' not in df.columns:
+            return dbc.Alert("La columna 'k' no existe en los datos.", color="warning")
+
+        # Generar la imagen del mapa
         img = get_map(df, selected_datetime_str)
 
-        # Convierte la imagen a formato base64 para incrustarla en HTML
+        # Convertir la imagen a formato base64 para incrustarla en HTML
         buffered = BytesIO()
         img.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
-        # Devuelve los resultados: imagen del mapa y el DataFrame de ubicaciones cercanas
+        # Extraer las variables climáticas de la primera fila
+        climatic_variables = {
+            'relative_humidity': 'Humedad Relativa (%)',
+            'apparent_temperature': 'Temperatura Aparente (°C)',
+            'temperature': 'Temperatura (°C)',
+            'cloud_cover': 'Cobertura de Nubes (%)',
+            'wind_speed': 'Velocidad del Viento (m/s)',
+            'wind_gusts': 'Ráfagas de Viento (m/s)'
+        }
+        
+        first_row = df.iloc[0]
+
+        # Formatear las variables climáticas
+        formatted_values = {
+            'Humedad Relativa (%)': f"{first_row['relative_humidity']}%",
+            'Temperatura Aparente (°C)': f"{first_row['apparent_temperature'] - 273.15:.2f}",
+            'Temperatura (°C)': f"{first_row['temperature'] - 273.15:.2f}",
+            'Cobertura de Nubes (%)': f"{first_row['cloud_cover']}%",
+            'Velocidad del Viento (m/s)': f"{first_row['wind_speed']:.2f}",
+            'Ráfagas de Viento (m/s)': f"{first_row['wind_gusts']:.2f}"
+        }
+
+        # Crear la tabla HTML para las variables climáticas
+        climatic_table = dbc.Table(
+            [
+                html.Thead(html.Tr([html.Th(col) for col in formatted_values.keys()])),
+                html.Tbody(html.Tr([html.Td(val) for val in formatted_values.values()]))
+            ],
+            bordered=True,
+            striped=True,
+            hover=True,
+            responsive=True,
+            class_name="mb-4"
+        )
+
+        # Ordenar loc_cercanos_df por 'k' de mayor a menor
+        loc_cercanos_df_sorted = loc_cercanos_df.sort_values(by='k', ascending=False)
+
+        # Crear la tabla HTML para loc_cercanos_df
+        loc_table = dbc.Table(
+            [
+                html.Thead(html.Tr([html.Th("ID de Ubicación"), html.Th("k")])),
+                html.Tbody([
+                    html.Tr([html.Td(row['locationID']), html.Td(f"{row['k']:.2f}")])
+                    for _, row in loc_cercanos_df_sorted.iterrows()
+                ])
+            ],
+            bordered=True,
+            striped=True,
+            hover=True,
+            responsive=True,
+            class_name="mb-4"
+        )
+
+        # Devolver el mapa, las variables climáticas y la tabla de locaciones cercanas
         return html.Div([
-            # Título y presentación de las ubicaciones cercanas
-            html.Div([
-                html.H5("Ubicaciones Cercanas", className="font-weight-bold mb-3"),
-                dbc.Card(
-                    dbc.CardBody([
-                        dcc.Markdown(loc_cercanos_df.to_markdown(index=False)),
-                    ]),
-                    className="mb-4",
-                    style={"box-shadow": "0 4px 8px rgba(0,0,0,0.1)", "border-radius": "8px", "background-color": "#f8f9fa"}
-                ),
-            ], className="mb-4"),
-            
-            # Título y presentación del mapa generado
             html.Div([
                 html.H5("Mapa Generado", className="font-weight-bold mb-3"),
                 dbc.Card(
                     dbc.CardBody([
-                        html.Img(src=f"data:image/png;base64,{img_str}", style={"width": "100%", "height": "auto", "border-radius": "8px"})
+                        html.Img(src=f"data:image/png;base64,{img_str}", 
+                                 style={"width": "100%", "height": "auto", "border-radius": "8px"})
                     ]),
                     className="mb-4",
                     style={"box-shadow": "0 4px 8px rgba(0,0,0,0.1)", "border-radius": "8px", "background-color": "#ffffff"}
                 ),
+            ]),
+            html.Div([
+                html.H5("Variables Climáticas", className="font-weight-bold mb-3"),
+                climatic_table
+            ]),
+            html.Div([
+                html.H5("Locaciones Cercanas", className="font-weight-bold mb-3"),
+                loc_table
             ])
         ])
+
     except Exception as e:
         return dbc.Alert(f"Error al procesar los datos: {str(e)}", color="danger")
+
 
 if __name__ == "__main__":
     app.run_server(debug=True, host='0.0.0.0', port=8080)
