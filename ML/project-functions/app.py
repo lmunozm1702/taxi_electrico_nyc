@@ -44,7 +44,6 @@ def load():
 
 def load2():
 
-
     credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('C:/Users/NoxiePC/Desktop/henry/driven-atrium-445021-m2-a773215c2f46.json')
     # Configura el cliente de almacenamiento
@@ -123,25 +122,28 @@ model_1 = None
 coordinates = None
 
 def load4():
+
     global model_1, coordinates
     
     if model_1 is None or coordinates is None:
-        bucket_name = 'modelo_entrenado'
-        model_blob_name = 'xgboost_model_1.pkl'
-        coordinates_blob_name = 'coordinates.csv'
+        return model_1, coordinates
 
-        # Cambiar la ruta a una carpeta dentro del directorio actual
-        model_local_path = 'downloads/xgboost_model_1.pkl'
-        coordinates_local_path = 'downloads/coordinates.csv'
+    bucket_name = 'modelo_entrenado'
+    model_blob_name = 'xgboost_model_1.pkl'
+    coordinates_blob_name = 'coordinates.csv'
 
-        # Descargar archivos desde GCS
+    model_local_path = 'downloads/xgboost_model_1.pkl'
+    coordinates_local_path = 'downloads/coordinates.csv'
+
+    if not os.path.exists(model_local_path):
         download_from_gcs(bucket_name, model_blob_name, model_local_path)
-        download_from_gcs(bucket_name, coordinates_blob_name, coordinates_local_path)
-
-        # Cargar el modelo y los datos de coordenadas
-        model_1 = joblib.load(model_local_path)
-        coordinates = pd.read_csv(coordinates_local_path)
     
+    if not os.path.exists(coordinates_local_path):
+        download_from_gcs(bucket_name, coordinates_blob_name, coordinates_local_path)
+    
+    model_1 = joblib.load(model_local_path)
+    coordinates = pd.read_csv(coordinates_local_path)
+
     return model_1, coordinates
 
 
