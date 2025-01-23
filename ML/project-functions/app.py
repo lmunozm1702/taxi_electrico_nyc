@@ -14,7 +14,7 @@ import tabulate
 import dash
 from dash import Input, Output, State, html, dcc
 import dash_bootstrap_components as dbc
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 import base64
 from io import BytesIO
@@ -323,7 +323,11 @@ def get_map(df):
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # Layout
+
 def create_layout():
+    today = date.today()
+    max_date = today + timedelta(days=2)
+    
     return dbc.Container([
         # Título principal con mayor estilo
         dbc.Row([
@@ -338,9 +342,9 @@ def create_layout():
                 dcc.DatePickerSingle(
                     id="date-picker",
                     min_date_allowed=date(2020, 1, 1),
-                    max_date_allowed=date(2030, 12, 31),
-                    initial_visible_month=date.today(),
-                    date=date.today(),
+                    max_date_allowed=max_date,
+                    initial_visible_month=today,
+                    date=today,
                     className="form-control"
                 ),
                 html.Label("Seleccione una hora:", className="mt-4 font-weight-bold"),
@@ -365,7 +369,9 @@ def create_layout():
             ], width=8, className="p-4", style={"background-color": "#ffffff", "border-radius": "8px", "box-shadow": "0 4px 8px rgba(0,0,0,0.1)"})
         ], justify="center")
     ], fluid=True, style={"padding": "2rem"})
+
 app.layout = create_layout()
+
 
 # Callbacks
 @app.callback(
