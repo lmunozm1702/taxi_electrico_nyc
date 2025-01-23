@@ -35,6 +35,7 @@ pandas
 plotly
 proto-plus
 protobuf
+psutil
 pyarrow
 pyasn1
 pyasn1_modules
