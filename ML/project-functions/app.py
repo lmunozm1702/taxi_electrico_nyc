@@ -125,7 +125,7 @@ def load4():
 
     global model_1, coordinates
     
-    if model_1 is None or coordinates is None:
+    if model_1 is not None or coordinates is not None:
         return model_1, coordinates
 
     bucket_name = 'modelo_entrenado'
