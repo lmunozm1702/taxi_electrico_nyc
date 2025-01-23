@@ -271,6 +271,8 @@ def get_prediction(date, model_1, coordinates):
 
     # Convertir predicciones negativas a cero
     solicitud = np.maximum(solicitud, 0)
+    # redondear solicitudes a enteros 
+    solicitud = np.round(solicitud).astype(int)
 
     # Añadir la columna de solicitudes al DataFrame
     df['solicitudes'] = solicitud
@@ -278,7 +280,7 @@ def get_prediction(date, model_1, coordinates):
     return df
 
 
-def get_map(df):
+def get_map(df, selected_datetime_str):
     # Convertir la columna 'geometry' de objetos geométricos a WKT
     df['geometry'] = df['geometry'].apply(lambda geom: geom.wkt if isinstance(geom, MultiPolygon) else geom)
 
@@ -302,7 +304,7 @@ def get_map(df):
                      ha='center', va='center', fontsize=6, color='black', weight='bold')
 
     # Configurar el gráfico
-    ax.set_title("Mapa de Calor - Solicitudes (Escala Logarítmica)", fontsize=16)
+    ax.set_title(f"Mapa de Calor - Solicitudes (Log) - {selected_datetime_str}", fontsize=14)
     ax.set_xlabel("Longitud")
     ax.set_ylabel("Latitud")
 
@@ -412,31 +414,52 @@ def update_results(n_clicks, date, time):
             return dbc.Alert("La columna 'solicitudes' no existe en los datos.", color="warning")
 
         # Generar la imagen del mapa
-        img = get_map(df)
+        img = get_map(df, selected_datetime_str)
 
         # Convertir la imagen a formato base64 para incrustarla en HTML
         buffered = BytesIO()
         img.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
-        # Devolver la imagen generada
+        # Extraer las variables climáticas de la primera fila
+        climatic_variables = ['relative_humidity', 'apparent_temperature', 'temperature', 
+                               'weather_code', 'cloud_cover', 'wind_speed', 'wind_gusts']
+        first_row = df.iloc[0][climatic_variables]
+
+        # Crear la tabla HTML para las variables climáticas
+        climatic_table = dbc.Table(
+            [
+                html.Thead(html.Tr([html.Th(col) for col in climatic_variables])),
+                html.Tbody(html.Tr([html.Td(first_row[col]) for col in climatic_variables]))
+            ],
+            bordered=True,
+            striped=True,
+            hover=True,
+            responsive=True,
+            class_name="mb-4"
+        )
+
+        # Devolver el mapa y las variables climáticas
         return html.Div([
             html.Div([
                 html.H5("Mapa Generado", className="font-weight-bold mb-3"),
                 dbc.Card(
                     dbc.CardBody([
-                        html.Img(src=f"data:image/png;base64,{img_str}", style={"width": "100%", "height": "auto", "border-radius": "8px"})
+                        html.Img(src=f"data:image/png;base64,{img_str}", 
+                                 style={"width": "100%", "height": "auto", "border-radius": "8px"})
                     ]),
                     className="mb-4",
                     style={"box-shadow": "0 4px 8px rgba(0,0,0,0.1)", "border-radius": "8px", "background-color": "#ffffff"}
                 ),
+            ]),
+            html.Div([
+                html.H5("Variables Climáticas", className="font-weight-bold mb-3"),
+                climatic_table
             ])
         ])
 
     except Exception as e:
         return dbc.Alert(f"Error al procesar los datos: {str(e)}", color="danger")
-
-
 
 
 if __name__ == "__main__":
