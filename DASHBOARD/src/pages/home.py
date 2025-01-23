@@ -320,12 +320,7 @@ def calculate_center_and_zoom(geometries):
     return center, zoom
 
 
-def render_mapa(year, borough, tipo_lugar, tipo_lugar_contrario):
-
-    if tipo_lugar == 'origen':
-        viajes = calculate_mapa(year, borough)
-    else:
-        viajes = calculate_mapa_destino(year, borough)
+def render_mapa(viajes, min_val, max_val):
 
     viajes['geometry'] = viajes['geometry'].map(wkt.loads)
     
@@ -342,10 +337,7 @@ def render_mapa(year, borough, tipo_lugar, tipo_lugar_contrario):
     gdf['lon'] = gdf_proj['centroid'].to_crs(epsg=4326).x 
     gdf['lat'] = gdf_proj['centroid'].to_crs(epsg=4326).y
     
-    min_val = min(tipo_lugar['cantidad'].min(), tipo_lugar_contrario['cantidad'].min())
-    max_val = max(tipo_lugar['cantidad'].max(), tipo_lugar_contrario['cantidad'].max())
-    
-    max_size = 20 
+    max_size = 40 
     min_size = 5 
     gdf['size'] = (
         min_size 
@@ -363,7 +355,9 @@ def render_mapa(year, borough, tipo_lugar, tipo_lugar_contrario):
             color=gdf['cantidad'],
             colorscale=['#1d4355', '#365b6d', '#41c1b0', '#6c9286'],
             showscale=True,
-            opacity=1
+            opacity=1,
+            cmin=min_val,
+            cmax=max_val
         ),
         text=gdf['text'],
         hoverinfo='text'
@@ -603,6 +597,10 @@ dropdown_options = {
 }
 
 layout = html.Div([
+    dcc.Store(id='viajes_origen'),
+    dcc.Store(id='viajes_destino'),
+    dcc.Store(id='min_val'),
+    dcc.Store(id='max_val'),
     dbc.Row([
         dbc.Col([
             dbc.Row([
@@ -720,6 +718,33 @@ layout = html.Div([
     ], className='container-fluid'),
 ], className='container-fluid ')
 
+
+@callback(
+    [Output('viajes_origen', 'data'),
+    Output('viajes_destino', 'data')],
+    [Input('year-dropdown', 'value'),
+    Input('borough-dropdown', 'value')]
+)
+def obtener_viajes(selected_year, selected_borough):
+    origen = calculate_mapa(selected_year, selected_borough).to_json(orient='split')
+    destino = calculate_mapa_destino(selected_year, selected_borough).to_json(orient='split')
+    return origen, destino
+
+
+@callback(
+    [Output('min_val', 'data'),
+     Output('max_val', 'data')],
+    [Input('viajes_origen', 'data'),
+    Input('viajes_destino', 'data')]
+)
+def obtener_min_max(origen, destino):
+    origen = pd.read_json(origen, orient='split')
+    destino = pd.read_json(destino, orient='split')
+    minimo = min(origen['cantidad'].min(), destino['cantidad'].min())
+    maximo = max(origen['cantidad'].max(), destino['cantidad'].max())
+    return minimo, maximo
+
+
 @callback(
     Output('kpi1', 'figure'),
     [Input('year-dropdown', 'value'), 
@@ -767,22 +792,24 @@ def update_viajes_linea(selected_year, selected_borough):
 
 @callback(
     Output('mapa_origen', 'figure'),
-    [Input('year-dropdown', 'value'), 
-     Input('borough-dropdown', 'value')]
+    [Input('viajes_origen', 'data'), 
+     Input('min_val', 'data'),
+     Input('max_val', 'data')]
 )
-def update_mapa_origen(selected_year, selected_borough):
-    viajes_destino = calculate_mapa_destino(selected_year, selected_borough)
-    return render_mapa(selected_year, selected_borough, 'origen', viajes_destino)
+def update_mapa_origen(origen, minimo, maximo):
+    origen = pd.read_json(origen, orient='split')
+    return render_mapa(origen, minimo, maximo)
 
 
 @callback(
     Output('mapa_destino', 'figure'),
-    [Input('year-dropdown', 'value'), 
-     Input('borough-dropdown', 'value')]
+    [Input('viajes_destino', 'data'), 
+     Input('min_val', 'data'),
+     Input('max_val', 'data')]
 )
-def update_mapa_destino(selected_year, selected_borough):
-    viajes_origen = calculate_mapa(selected_year, selected_borough)
-    return render_mapa(selected_year, selected_borough, 'destino', viajes_origen)
+def update_mapa_destino(destino, minimo, maximo):
+    destino = pd.read_json(destino, orient='split')
+    return render_mapa(destino, minimo, maximo)
 
 
 @callback(
