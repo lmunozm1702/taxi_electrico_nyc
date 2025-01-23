@@ -341,7 +341,7 @@ def create_layout():
                 html.Label("Seleccione una fecha:", className="font-weight-bold"),
                 dcc.DatePickerSingle(
                     id="date-picker",
-                    min_date_allowed=date(2020, 1, 1),
+                    min_date_allowed=today,
                     max_date_allowed=max_date,
                     initial_visible_month=today,
                     date=today,
