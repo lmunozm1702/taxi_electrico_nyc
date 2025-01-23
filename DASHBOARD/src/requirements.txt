@@ -10,6 +10,7 @@ dash-core-components
 dash-html-components
 dash-table
 db-dtypes
+diskcache
 fastparquet
 Flask
 fsspec
