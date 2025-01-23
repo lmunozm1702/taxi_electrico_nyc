@@ -3,6 +3,7 @@ cachetools
 certifi
 charset-normalizer
 click
+colorama
 cramjam
 dash
 dash-bootstrap-components
@@ -10,10 +11,12 @@ dash-core-components
 dash-html-components
 dash-table
 db-dtypes
+dill
 diskcache
 fastparquet
 Flask
 fsspec
+geopandas
 google-api-core
 google-auth
 google-cloud-bigquery
@@ -28,6 +31,7 @@ importlib_metadata
 itsdangerous
 Jinja2
 MarkupSafe
+multiprocess
 nest-asyncio
 numpy
 packaging
@@ -39,12 +43,15 @@ psutil
 pyarrow
 pyasn1
 pyasn1_modules
+pyogrio
+pyproj
 python-dateutil
 pytz
 requests
 retrying
 rsa
 setuptools
+shapely
 six
 tenacity
 typing_extensions
