@@ -14,14 +14,19 @@ import tabulate
 import dash
 from dash import Input, Output, State, html, dcc
 import dash_bootstrap_components as dbc
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 import base64
 from io import BytesIO
-import os
 
 from google.cloud import storage
 from google.oauth2 import service_account
+from google.auth.transport.requests import AuthorizedSession
+import google.auth.transport.requests
+
+from google.auth.transport.requests import Request
+from google.oauth2 import id_token
+import os
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json'
 def download_from_gcs(bucket_name, source_blob_name, destination_file_name):
