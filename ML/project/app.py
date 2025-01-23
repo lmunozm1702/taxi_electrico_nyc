@@ -329,7 +329,7 @@ def create_layout():
                 dbc.Input(id="input-r", type="number", placeholder="Distancia en kilómetros", min=0, className="form-control"),
                 html.Label("Ingrese el Location ID:", className="mt-4 font-weight-bold"),
                 dbc.Input(id="input-location", type="number", placeholder="ID de la ubicación", min=0, className="form-control"),
-                dbc.Button("Calcular", id="submit-button", color="primary", className="mt-4 w-100")
+                dbc.Button("Calcular", id="submit-button", color="primary", className="mt-4 w-100", n_clicks=0)
             ], width=4, className="p-4", style={"background-color": "#f8f9fa", "border-radius": "8px", "box-shadow": "0 4px 8px rgba(0,0,0,0.1)"}),
             
             # Resultados a la derecha con un diseño limpio y centrado
@@ -489,4 +489,4 @@ def update_results(n_clicks, date, time, r, location_id):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True, host='0.0.0.0', port=8080)
+    app.run_server(debug=True, host='0.0.0.0', port=8090)
