@@ -422,15 +422,34 @@ def update_results(n_clicks, date, time):
         img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
         # Extraer las variables climáticas de la primera fila
-        climatic_variables = ['relative_humidity', 'apparent_temperature', 'temperature', 
-                               'weather_code', 'cloud_cover', 'wind_speed', 'wind_gusts']
-        first_row = df.iloc[0][climatic_variables]
+        climatic_variables = {
+            'relative_humidity': 'Humedad Relativa (%)',
+            'apparent_temperature': 'Temperatura Aparente (°C)',
+            'temperature': 'Temperatura (°C)',
+            'weather_code': 'Código del Clima',
+            'cloud_cover': 'Cobertura de Nubes (%)',
+            'wind_speed': 'Velocidad del Viento (m/s)',
+            'wind_gusts': 'Ráfagas de Viento (m/s)'
+        }
+        
+        first_row = df.iloc[0]
+
+        # Formatear las variables climáticas
+        formatted_values = {
+            'Humedad Relativa (%)': f"{first_row['relative_humidity']}%",
+            'Temperatura Aparente (°C)': f"{first_row['apparent_temperature'] - 273.15:.2f}",
+            'Temperatura (°C)': f"{first_row['temperature'] - 273.15:.2f}",
+            'Código del Clima': f"{first_row['weather_code']}",
+            'Cobertura de Nubes (%)': f"{first_row['cloud_cover']}%",
+            'Velocidad del Viento (m/s)': f"{first_row['wind_speed']:.2f}",
+            'Ráfagas de Viento (m/s)': f"{first_row['wind_gusts']:.2f}"
+        }
 
         # Crear la tabla HTML para las variables climáticas
         climatic_table = dbc.Table(
             [
-                html.Thead(html.Tr([html.Th(col) for col in climatic_variables])),
-                html.Tbody(html.Tr([html.Td(first_row[col]) for col in climatic_variables]))
+                html.Thead(html.Tr([html.Th(col) for col in formatted_values.keys()])),
+                html.Tbody(html.Tr([html.Td(val) for val in formatted_values.values()]))
             ],
             bordered=True,
             striped=True,
@@ -460,6 +479,7 @@ def update_results(n_clicks, date, time):
 
     except Exception as e:
         return dbc.Alert(f"Error al procesar los datos: {str(e)}", color="danger")
+
 
 
 if __name__ == "__main__":

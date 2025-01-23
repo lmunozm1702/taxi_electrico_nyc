@@ -18,63 +18,67 @@ from datetime import date, datetime
 
 import base64
 from io import BytesIO
+import os
 
 from google.cloud import storage
 from google.oauth2 import service_account
 
-def load():
-    
-    model_1_path = 'models/xgboost_model_1.pkl'
-    model_2_path = 'models/xgboost_model_2.pkl'
-    model_3_path = 'models/xgboost_model_3.pkl'
-    coordinates_path = 'data/coordinates.csv'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json'
+def download_from_gcs(bucket_name, source_blob_name, destination_file_name):
+    """Descarga un archivo desde un bucket de GCS."""
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(source_blob_name)
 
-    print('antes de la carga')
-    # Carga los modelos y los datos
-    coordinates = pd.read_csv(coordinates_path)
-    print('se cargo coordinates')
-    model_1 = joblib.load(model_1_path)
-    model_2 = joblib.load(model_2_path)
-    model_3 = joblib.load(model_3_path)
-    print('se cargaron bien')
+    # Crear el directorio de destino si no existe
+    os.makedirs(os.path.dirname(destination_file_name), exist_ok=True)
+
+    # Descargar el archivo al destino
+    blob.download_to_filename(destination_file_name)
+    print(f'Archivo {source_blob_name} descargado a {destination_file_name}.')
+
+model_1 = None
+model_2 = None
+model_3 = None
+coordinates = None
+
+def load4():
+
+    global model_1, coordinates
+    
+    if model_1 is not None or coordinates is not None or model_2 is not None or model_3 is not None:
+        return model_1, model_2, model_3, coordinates
+
+    bucket_name = 'modelo_entrenado'
+    model_1_blob_name = 'xgboost_model_1.pkl'
+    model_2_blob_name = 'xgboost_model_2.pkl'
+    model_3_blob_name = 'xgboost_model_3.pkl'
+    coordinates_blob_name = 'coordinates.csv'
+
+    model_1_local_path = 'downloads/xgboost_model_1.pkl'
+    model_2_local_path = 'downloads/xgboost_model_2.pkl'
+    model_3_local_path = 'downloads/xgboost_model_3.pkl'
+    coordinates_local_path = 'downloads/coordinates.csv'
+
+    if not os.path.exists(model_1_local_path):
+        download_from_gcs(bucket_name, model_1_blob_name, model_1_local_path)
+
+    if not os.path.exists(model_2_local_path):
+        download_from_gcs(bucket_name, model_2_blob_name, model_2_local_path)
+    
+    if not os.path.exists(model_3_local_path):
+        download_from_gcs(bucket_name, model_3_blob_name, model_3_local_path)
+    
+    if not os.path.exists(coordinates_local_path):
+        download_from_gcs(bucket_name, coordinates_blob_name, coordinates_local_path)
+    
+    model_1 = joblib.load(model_1_local_path)
+    model_2 = joblib.load(model_2_local_path)
+    model_3 = joblib.load(model_3_local_path)
+    coordinates = pd.read_csv(coordinates_local_path)
 
     return model_1, model_2, model_3, coordinates
 
-
-
-def load2():
-    #credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-    credentials = service_account.Credentials.from_service_account_file('C:/Users/NoxiePC/Desktop/henry/driven-atrium-445021-m2-a773215c2f46.json')
-    # Configura el cliente de almacenamiento
-    client = storage.Client(credentials=credentials)
-    bucket_name = 'modelo_entrenado'  # Reemplaza con el nombre de tu bucket
-    bucket = client.get_bucket(bucket_name)
-    
-    # Define las rutas de los archivos en el bucket
-    model_1_path = 'mxgboost_model_1.pkl'
-    model_2_path = 'xgboost_model_2.pkl'
-    model_3_path = 'xgboost_model_3.pkl'
-    coordinates_path = 'coordinates.csv'
-
-    print('antes de la carga')
-
-    # Carga los archivos desde el bucket
-    coordinates_blob = bucket.blob(coordinates_path)
-    coordinates = pd.read_csv(coordinates_blob.download_as_bytes())
-    print('se cargo coordinates')
-
-    model_1_blob = bucket.blob(model_1_path)
-    model_1 = joblib.load(model_1_blob.download_as_bytes())
-    
-    model_2_blob = bucket.blob(model_2_path)
-    model_2 = joblib.load(model_2_blob.download_as_bytes())
-    
-    model_3_blob = bucket.blob(model_3_path)
-    model_3 = joblib.load(model_3_blob.download_as_bytes())
-    
-    print('se cargaron bien')
-
-    return model_1, model_2, model_3, coordinates
 
 
 def get_clima(date):
@@ -222,6 +226,7 @@ def get_prediction(date, R, locationID, model_1, model_2, model_3, coordinates):
     precio = np.maximum(precio, 0)
 
     k = (solicitud + 1) * (precio + 1) / (oferta + 1)
+    k = np.round(k, 2)
     df['k'] = k
 
     val = df[df['locationID'] == locationID].iloc[0]
@@ -240,7 +245,7 @@ def get_prediction(date, R, locationID, model_1, model_2, model_3, coordinates):
     
     return df, loc_cercanos_df
 
-def get_map(df):
+def get_map(df, selected_datetime_str):
     # Convertir la columna 'geometry' de objetos geométricos a WKT
     df['geometry'] = df['geometry'].apply(lambda geom: geom.wkt if isinstance(geom, MultiPolygon) else geom)
 
@@ -263,7 +268,7 @@ def get_map(df):
                      ha='center', va='center', fontsize=6, color='black', weight='bold')
 
     # Configurar el gráfico
-    ax.set_title("Mapa de Calor - Variable 'k' (Escala Logarítmica)", fontsize=16)
+    ax.set_title(f"Mapa de Calor - K (Log) - {selected_datetime_str}", fontsize=14)
     ax.set_xlabel("Longitud")
     ax.set_ylabel("Latitud")
 
@@ -359,7 +364,7 @@ def update_results(n_clicks, date, time, r, location_id):
         df, loc_cercanos_df = get_prediction(selected_datetime_str, r, location_id, model_1, model_2, model_3, coordinates)
 
         # Genera la imagen del mapa usando la función get_map
-        img = get_map(df)
+        img = get_map(df, selected_datetime_str)
 
         # Convierte la imagen a formato base64 para incrustarla en HTML
         buffered = BytesIO()
