@@ -351,7 +351,7 @@ app.layout = create_layout()
 
 
 def update_results(n_clicks, date, time, r, location_id):
-   if n_clicks is None:
+    if n_clicks is None:
         # Si el botón no ha sido presionado, no hacer nada.
         return dbc.Alert("Por favor, complete todos los campos.", color="warning")
     if not date or not time or not r or not location_id:
