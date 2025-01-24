@@ -197,7 +197,7 @@ GROUP BY coordinates.borough, trips.pickup_location_id,trips.pickup_year, trips.
 
 -- Vehicle type resume
 CREATE OR REPLACE MATERIALIZED VIEW `project_data.vehicle_type_resume` AS
-SELECT distinct(vehicle_type), year, month, count, from `driven-atrium-445021-m2.project_data.active_vehicles_count`;
+SELECT distinct(vehicle_type), year as pickup_year, month, count, from `driven-atrium-445021-m2.project_data.active_vehicles_count`;
 
 -- trips by hpur of day 
 CREATE OR REPLACE MATERIALIZED VIEW `project_data.trips_hourly_pickup` AS

@@ -478,15 +478,14 @@ def update_results(n_clicks, date, time):
 
         # Devolver el mapa y las variables climáticas
         return html.Div([
-            html.Div([
-                html.H5("Mapa Generado", className="font-weight-bold mb-3"),
+            html.Div([                
                 dbc.Card(
                     dbc.CardBody([
                         html.Img(src=f"data:image/png;base64,{img_str}", 
                                  style={"width": "100%", "height": "auto", "border-radius": "8px"})
                     ]),
                     className="mb-4",
-                    style={"box-shadow": "0 4px 8px rgba(0,0,0,0.1)", "border-radius": "8px", "background-color": "#ffffff"}
+                    style={"box-shadow": "0 4px 8px rgba(0,0,0,0.1)", "border-radius": "8px", "background-color": "#365b6d0d"}
                 ),
             ]),
             html.Div([
