@@ -335,42 +335,60 @@ def create_layout():
     return dbc.Container([
         # Título principal con mayor estilo
         dbc.Row([
-            dbc.Col(html.H1("Predicción de Indicadores", className="text-center mb-5 font-weight-bold"), width=12)
+            dbc.Col(html.Div("Predicción de Indicadores", className="text-secondary fs-3 text-start p-0 m-0 mb-4"), width=12),
         ]),
         
         # Contenedor con dos columnas: Inputs a la izquierda y resultados a la derecha
         dbc.Row([
             # Inputs a la izquierda con un diseño más limpio y espaciado
             dbc.Col([
-                html.Label("Seleccione una fecha:", className="font-weight-bold"),
-                dcc.DatePickerSingle(
-                    id="date-picker",
-                    min_date_allowed=today,
-                    max_date_allowed=max_date,
-                    initial_visible_month=today,
-                    date=today,
-                    className="form-control"
+                dbc.Row(
+                    dbc.Label("Fecha", html_for="date-picker", className='text-primary p-0 m-0 ms-1 fw-bold'),
+                    className="mb-1"
+                ),   
+                dbc.Row(             
+                    dcc.DatePickerSingle(
+                        id="date-picker",
+                        min_date_allowed=today,
+                        max_date_allowed=max_date,
+                        initial_visible_month=today,
+                        date=today,
+                        className="flex-fill border rounded form-control"
+                    ),
+                    className="mb-3"
                 ),
-                html.Label("Seleccione una hora:", className="mt-4 font-weight-bold"),
-                dcc.Input(
-                    id="time-picker",
-                    type="text",
-                    placeholder="HH:MM:SS",
-                    value="12:00:00",
-                    className="form-control"
+                dbc.Row(
+                    dbc.Label("Hora", html_for="date-picker", className='text-primary p-0 m-0 ms-1 fw-bold'),
+                    className="mb-1"
+                ), 
+                dbc.Row(
+                    dbc.Input(
+                        id="time-picker",
+                        type="text",
+                        placeholder="HH:MM:SS",
+                        value="12:00:00",
+                        className="form-control"
+                    ),className="mb-3"
                 ),
-                dbc.Button("Calcular", id="submit-button", color="primary", className="mt-4 w-100")
-            ], width=4, className="p-4", style={"background-color": "#f8f9fa", "border-radius": "8px", "box-shadow": "0 4px 8px rgba(0,0,0,0.1)"}),
-            
+                dbc.Row(
+                    dbc.Button("Calcular", id="submit-button", className="dash-button text-end"),
+                    className="mb-3 d-flex justify-content-end"
+                ),
+                html.Div(                
+                    html.Img(src='assets/sd_logo_transparente.png', className='img-fluid', style={'width': '60%', 'height': 'auto'}),
+                    className='d-flex justify-content-center margin-image'
+                )
+            ], width=3, className="pe-4",),
+            #style={"background-color": "#f8f9fa", "border-radius": "8px", "box-shadow": "0 4px 8px rgba(0,0,0,0.1)"}
             # Resultados a la derecha con un diseño limpio y centrado
             dbc.Col([
-                html.H4("Resultados", className="font-weight-bold mb-3"),
+                html.H4("Resultados", className="text-secondary fs-5 text-start p-0 m-0 mb-4"),
                 dcc.Loading(
                     id="loading-results",
                     type="circle",
                     children=html.Div(id="output-results")
                 ),
-            ], width=8, className="p-4", style={"background-color": "#ffffff", "border-radius": "8px", "box-shadow": "0 4px 8px rgba(0,0,0,0.1)"})
+            ], width=9, className="kpi_card_border p-5")
         ], justify="center")
     ], fluid=True, style={"padding": "2rem"})
 
@@ -390,9 +408,9 @@ app.layout = create_layout()
 def update_results(n_clicks, date, time):
     if n_clicks is None:
         # Si el botón no ha sido presionado, no hacer nada.
-        return dbc.Alert("Por favor, complete todos los campos.", color="warning")
+        return dbc.Alert("Por favor, complete todos los campos.", className="ml-alert")
     if not date or not time:
-        return dbc.Alert("Por favor, complete todos los campos.", color="warning")
+        return dbc.Alert("Por favor, complete todos los campos.", className="ml-alert")
 
     try:
         # Cargar el modelo dentro de la función cuando se hace clic
@@ -408,10 +426,10 @@ def update_results(n_clicks, date, time):
         df = get_prediction(selected_datetime_str, model_1, coordinates)
         
         if df.empty:
-            return dbc.Alert("No hay datos para la fecha y hora seleccionadas.", color="warning")
+            return dbc.Alert("No hay datos para la fecha y hora seleccionadas.", className="ml-alert")
 
         if 'solicitudes' not in df.columns:
-            return dbc.Alert("La columna 'solicitudes' no existe en los datos.", color="warning")
+            return dbc.Alert("La columna 'solicitudes' no existe en los datos.", className="ml-alert")
 
         # Generar la imagen del mapa
         img = get_map(df, selected_datetime_str)
@@ -478,7 +496,7 @@ def update_results(n_clicks, date, time):
         ])
 
     except Exception as e:
-        return dbc.Alert(f"Error al procesar los datos: {str(e)}", color="danger")
+        return dbc.Alert(f"Error al procesar los datos: {str(e)}", className="ml-alert")
 
 
 
