@@ -1,33 +1,55 @@
 import datetime
 import google.auth.transport.requests
+import json
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.google.common.utils import id_token_credentials as id_token_credential_utils
 from google.auth.transport.requests import AuthorizedSession
 
+def get_year():
+    """Retorna el año en curso
+    """
 
+    if datetime.datetime.now().month == 1:
+        year = datetime.datetime.now().year - 1
+    else:
+        year = datetime.datetime.now().year
+
+    return str(year)
+
+def get_prev_month():
+    """Retorna el año en curso
+    """
+
+    if datetime.datetime.now().month == 1:
+        month = 12
+    else:
+        month = datetime.datetime.now().month - 1
+
+    return str(month)
 
 
 #######################################################################################
 # PARAMETROS
 #######################################################################################
-nameDAG           = 'DAG_incremental_load_green_house_emissions'
+nameDAG           = 'DAG_incremental_load_weather'
 project           = 'incremental-load-taxi-electrico-nyc'
 owner             = 'juankaruna'
 email             = ['juankarua@gmail.com']
 
-raw_datasets_path = "raw_datasets/green_house_emissions/"
-current_year = str(datetime.datetime.now().year)
+raw_datasets_path = "raw_datasets/weather/"
+current_year = get_year()
+year_month = get_year() + '-' + get_prev_month()
 
 kwargs_extract = {
-    'function': "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/extract_greenhouse_gas_emissions",
+    'function': "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/extract_incremental_load_weather",
     'params': ""
 }
-kwargs_transform_load_green_house_emissions = {
-    'function': "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/etl_inicial_green_house_emissions",
+kwargs_transform_load_weather = {
+    'function': "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/etl_inicial_weather",
     'params': {
-                'filename': "".join([raw_datasets_path,current_year,'_green_house_emissions','.csv'])
+                'filename': "".join([raw_datasets_path,current_year,'/',year_month,'_weather.csv'])
             }
 }
 
@@ -52,12 +74,19 @@ def invoke_function(**kwargs):
 
     resp = AuthorizedSession(id_token_credentials).request("GET", url=url, params=kwargs['params']) # the authorized session object is used to access the Cloud Function
 
+    if kwargs['params']:
+        json_resp= json.loads(resp.content.decode("utf-8"))
+
+        if json_resp["duplicated"]:
+            raise ValueError("Se encontraron datos duplicados. Marcando tarea como fallida")
+        else:
+            return True
 
 with DAG(nameDAG,
          default_args = default_args,
          catchup = False,  # Ver caso catchup = True
          max_active_runs = 3,
-         schedule_interval = None) as dag: # schedule_interval = None # Caso sin trigger automático | schedule_interval = "0 12 * * *" | "0,2 12 * * *"
+         schedule_interval = '0 2 18 * *') as dag: # schedule_interval = None # Caso sin trigger automático | schedule_interval = "0 12 * * *" | "0,2 12 * * *"
 
     # FUENTE: CRONTRAB: https://crontab.guru/
     #############################################################
@@ -70,14 +99,14 @@ with DAG(nameDAG,
                                 op_kwargs=kwargs_extract
                             )
     
-    transform_load_green_house_emissions = PythonOperator(task_id='transform_load_green_house_emissions',
+    transform_load_weather = PythonOperator(task_id='transform_load_weather',
                                 provide_context=True,
                                 python_callable=invoke_function,
-                                op_kwargs=kwargs_transform_load_green_house_emissions
+                                op_kwargs=kwargs_transform_load_weather
                             )
 
     t_end = DummyOperator(task_id="end", trigger_rule='all_success')
 
     #############################################################
-    t_begin >> extract_cf >> transform_load_green_house_emissions >> t_end
+    t_begin >> extract_cf >> transform_load_weather >> t_end
 

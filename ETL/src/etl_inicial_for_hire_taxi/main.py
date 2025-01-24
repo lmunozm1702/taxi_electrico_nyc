@@ -117,10 +117,10 @@ def transform_data(df, filename):
     """
    
     #cambiar nombre de columnas
-    df.columns = ['dispatching_base_number', 'pickup_datetime', 'dropoff_datetime', 'pickup_location_id', 'end_location_id', 'sr_flag', 'affiliate_base_num']
+    df.columns = ['dispatching_base_number', 'pickup_datetime', 'dropoff_datetime', 'pickup_location_id', 'dropoff_location_id', 'sr_flag', 'affiliate_base_num']
 
     #eliminar las columnas 'dispatching_base_number', 'dropoff_datetime', 'end_location_id', 'sr_flag', 'affiliate_base_num'
-    df.drop(columns=['dispatching_base_number', 'dropoff_datetime', 'end_location_id', 'sr_flag', 'affiliate_base_num'], inplace=True)
+    df.drop(columns=['dispatching_base_number', 'sr_flag', 'affiliate_base_num'], inplace=True)
 
     #agregar uuid integer en columna 'trip_id'
     df['trip_id'] = uuid.uuid4()
@@ -166,22 +166,29 @@ def transform_data(df, filename):
     #Agregar columna 'quarter' con el trimestre de la columna 'pickup_datetime'
     df['pickup_quarter'] = df['pickup_datetime'].dt.quarter
 
-    #eliminar columna 'pickup_datetime'
-    df.drop(columns=['pickup_datetime'], inplace=True)
-
     #agregar columna 'fare_amount' = 0
     df['fare_amount'] = 0
 
     #eliminar registros con columna 'pickup_location_id' == na
     df = df.dropna(subset=['pickup_location_id'])
 
+    #eliminar registros con columna 'dropoff_location_id' == na
+    df = df.dropna(subset=['dropoff_location_id'])
+
     #Eliminar duplicados
     df = df.drop_duplicates()
+
+    #agregar columna 'trip_duration' con la direrencia entre 'dropoff_datetime' y 'pickup_datetime' en segundos
+    df['trip_duration'] = (df['dropoff_datetime'] - df['pickup_datetime']).dt.total_seconds()
 
     #pasar columnas tipo object a string
     df['trip_id'] = df['pickup_location_id'].astype(str)
     df['taxi_type'] = df['taxi_type'].astype(str)
     df['motor_type'] = df['motor_type'].astype(str)
+
+    #pasar columnas tipo object a datetime
+    df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])
+    df['dropoff_datetime'] = pd.to_datetime(df['dropoff_datetime'])
 
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
@@ -206,7 +213,7 @@ def etl_inicial_for_hire_taxi(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2023/fhv_tripdata_', max_results=3))    
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2023/fhv_tripdata_', max_results=12))    
 
     print(f'Proceso de tipo {process_type}')
 

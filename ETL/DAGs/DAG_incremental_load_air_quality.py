@@ -1,54 +1,34 @@
 import datetime
 import google.auth.transport.requests
+import json
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
 from airflow.providers.google.common.utils import id_token_credentials as id_token_credential_utils
 from google.auth.transport.requests import AuthorizedSession
 
-def get_year():
-    """Retorna el año en curso
-    """
 
-    if datetime.datetime.now().month == 1:
-        year = datetime.datetime.now().year - 1
-    else:
-        year = datetime.datetime.now().year
-
-    return str(year)
-
-def get_prev_month():
-    """Retorna el año en curso
-    """
-
-    if datetime.datetime.now().month == 1:
-        month = 12
-    else:
-        month = datetime.datetime.now().month - 1
-
-    return str(month)
 
 
 #######################################################################################
 # PARAMETROS
 #######################################################################################
-nameDAG           = 'DAG_incremental_load_weather'
+nameDAG           = 'DAG_incremental_load_air_quality'
 project           = 'incremental-load-taxi-electrico-nyc'
 owner             = 'juankaruna'
 email             = ['juankarua@gmail.com']
 
-raw_datasets_path = "raw_datasets/weather/"
-current_year = get_year()
-year_month = get_year() + '-' + get_prev_month()
+raw_datasets_path = "raw_datasets/air_quality/"
+current_year = str(datetime.datetime.now().year)
 
 kwargs_extract = {
-    'function': "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/extract_incremental_load_weather",
+    'function': "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/extract_air_quality",
     'params': ""
 }
-kwargs_transform_load_weather = {
-    'function': "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/etl_inicial_weather",
+kwargs_transform_load_air_quality = {
+    'function': "https://us-central1-driven-atrium-445021-m2.cloudfunctions.net/etl_inicial_air_quality",
     'params': {
-                'filename': "".join([raw_datasets_path,current_year,'/',year_month,'_weather.csv'])
+                'filename': "".join([raw_datasets_path,current_year,'_','air_qualit','.csv'])
             }
 }
 
@@ -61,7 +41,7 @@ default_args = {
     'email': email,
     #'email_on_failure': True,
     #'email_on_retry': True,
-    'retries': 1,  # Retry once before failing the task.
+    'retries': 0,  # Retry once before failing the task.
     'retry_delay': datetime.timedelta(minutes=1),  # Time between retries
     'dagrun_timeout': datetime.timedelta(minutes=3)
 }
@@ -73,12 +53,19 @@ def invoke_function(**kwargs):
 
     resp = AuthorizedSession(id_token_credentials).request("GET", url=url, params=kwargs['params']) # the authorized session object is used to access the Cloud Function
 
+    if kwargs['params']:
+        json_resp= json.loads(resp.content.decode("utf-8"))
+
+        if json_resp["duplicated"]:
+            raise ValueError("Se encontraron datos duplicados. Marcando tarea como fallida")
+        else:
+            return True
 
 with DAG(nameDAG,
          default_args = default_args,
          catchup = False,  # Ver caso catchup = True
          max_active_runs = 3,
-         schedule_interval = None) as dag: # schedule_interval = None # Caso sin trigger automático | schedule_interval = "0 12 * * *" | "0,2 12 * * *"
+         schedule_interval = '0 2 1 5 *') as dag: # schedule_interval = None # Caso sin trigger automático | schedule_interval = "0 12 * * *" | "0,2 12 * * *"
 
     # FUENTE: CRONTRAB: https://crontab.guru/
     #############################################################
@@ -91,14 +78,14 @@ with DAG(nameDAG,
                                 op_kwargs=kwargs_extract
                             )
     
-    transform_load_weather = PythonOperator(task_id='transform_load_weather',
+    transform_load_air_quality = PythonOperator(task_id='transform_load_air_quality',
                                 provide_context=True,
                                 python_callable=invoke_function,
-                                op_kwargs=kwargs_transform_load_weather
+                                op_kwargs=kwargs_transform_load_air_quality
                             )
 
     t_end = DummyOperator(task_id="end", trigger_rule='all_success')
 
     #############################################################
-    t_begin >> extract_cf >> transform_load_weather >> t_end
+    t_begin >> extract_cf >> transform_load_air_quality >> t_end
 

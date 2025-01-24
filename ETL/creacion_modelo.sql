@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS `project_data.coordinates`;
 
 CREATE TABLE `project_data.coordinates` (
   `location_id` INT64 NOT NULL,
+  `geom` STRING NOT NULL,
   `zone` STRING NOT NULL,
   `borough` STRING NOT NULL,
   PRIMARY KEY (`location_id`) NOT ENFORCED
@@ -36,6 +37,10 @@ CREATE TABLE `project_data.trips` (
   `taxi_type` STRING NOT NULL,
   `motor_type` STRING NOT NULL,
   `pickup_location_id` INT64 NOT NULL,  
+  `dropoff_location_id` INT64 NOT NULL,
+  `pickup_datetime` DATETIME NOT NULL,
+  `dropoff_datetime` DATETIME NOT NULL,
+  `trip_duration` FLOAT64 NOT NULL,
   `pickup_quarter` INT64 NOT NULL,
   `pickup_year` INT64 NOT NULL,
   `pickup_month` INT64 NOT NULL,
