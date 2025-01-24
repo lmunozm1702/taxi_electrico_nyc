@@ -214,6 +214,7 @@ def etl_inicial_for_hire_taxi(request):
     table_id = 'project_data.trips'
      
     if process_type == 'incremental':
+        #filename = raw_datasets/trip_record_data/2024/fhvhv_tripdata_2024-05.parquet
         df = pd.read_parquet(f'gs://ncy-taxi-bucket/{filename}')
         df = transform_data(df, filename)
         if df == False:
