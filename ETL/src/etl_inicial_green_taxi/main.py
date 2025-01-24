@@ -212,7 +212,7 @@ def etl_inicial_green_taxi(request):
         #filename = raw_datasets/trip_record_data/2024/green_tripdata_2024-09.parquet
         df = pd.read_parquet(f'gs://ncy-taxi-bucket/{filename}')
         df = transform_data(df, filename)
-        if df == False:
+        if df == True:
             result_json['Duplicated'] = "True"
             return result_json
         else:
