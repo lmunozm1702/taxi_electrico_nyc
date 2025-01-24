@@ -96,6 +96,9 @@ def calculate_kpi(kpi_id, year, borough):
         #agrupa los resultados por year y quarter
         results = results.groupby(['pickup_year', 'pickup_quarter']).sum().reset_index()
 
+        #elimina filas si pickup_year = 2024 and pickup_quarter = 4
+        results = results.drop(results[(results['pickup_year'] == 2024) & (results['pickup_quarter'] == 4)].index)        
+
         #ordena los resultados por year y quarter
         results = results.sort_values(by=['pickup_year', 'pickup_quarter'], ascending=[True, True])
 
@@ -124,6 +127,9 @@ def calculate_kpi(kpi_id, year, borough):
 
         #ordena los resultados por year y quarter
         results = results.sort_values(by=['pickup_year', 'pickup_quarter'], ascending=[True, True])
+
+        #elimina la fila si pickup_year = 2024 and pickup_quarter = 4
+        results = results.drop(results[(results['pickup_year'] == 2024) & (results['pickup_quarter'] == 4)].index)
 
         #selecciona la columna avg_fare_amount en una lista
         traces = results['avg_fare_amount'].map(lambda x: x).tolist()
