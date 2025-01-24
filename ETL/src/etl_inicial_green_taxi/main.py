@@ -76,6 +76,36 @@ def load_data_to_bigquery(df, client, table_id, filename):
         'rows_difference': rows_after_load - rows_before_load - df.shape[0]
     }
 
+def get_duplicated_rows(project_id, dataset_id, table_id, pickup_month, pickup_year):
+    """
+    Get the number of duplicated rows in a DataFrame
+
+    Args:
+    df (pd.DataFrame): The DataFrame to check
+
+    Returns:
+    int: The number of duplicated rows
+    """
+
+    client = bigquery.Client(project_id)
+    query = f"""
+        SELECT COUNT(*)
+        FROM `{dataset_id}.{table_id}`
+        WHERE pickup_month = {pickup_month} AND pickup_year = {pickup_year}
+    """
+    count = 0
+
+    try:
+        query_job = client.query(query)
+        for row in query_job:
+            count = row[0]
+            print(f'Registros duplicados: {count}') 
+            break
+        return count
+    except Exception:
+        return 0
+    
+
 def transform_data(df, filename):
     """
     Transform the data in a DataFrame
@@ -94,12 +124,17 @@ def transform_data(df, filename):
 
     #eliminar registros con columna 'pickup_location_id' == na
     df = df.dropna(subset=['pickup_location_id'])
+    df = df.dropna(subset=['dropoff_location_id'])
 
     #Eliminar valores que no corresponden al mes y año del dataset
     print(filename)
     dataset_month = filename.split('/')[-1].split('.')[0].split('_')[-1].split('-')[1]
     dataset_year = filename.split('/')[-1].split('.')[0].split('_')[-1].split('-')[0]
     df = df[(df['pickup_datetime'].dt.month == int(dataset_month)) & (df['pickup_datetime'].dt.year == int(dataset_year))]
+
+    #controlar duplicados por mes y año en bigquery
+    if get_duplicated_rows("driven-atrium-445021-m2", "project_data", "trips", dataset_month, dataset_year) > 0:
+        return True
 
     #agregar uuid integer en columna 'trip_id'
     df['trip_id'] = uuid.uuid4()
@@ -143,11 +178,8 @@ def transform_data(df, filename):
     df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])
     df['dropoff_datetime'] = pd.to_datetime(df['dropoff_datetime'])
 
-    df.drop(columns=['pickup_datetime'], inplace=True)
-
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
-
     
     return df
 
@@ -177,8 +209,15 @@ def etl_inicial_green_taxi(request):
     table_id = 'project_data.trips'
     
     if process_type == 'incremental':
+        #filename = raw_datasets/trip_record_data/2024/green_tripdata_2024-09.parquet
         df = pd.read_parquet(f'gs://ncy-taxi-bucket/{filename}')
         df = transform_data(df, filename)
+        if df == True:
+            result_json['Duplicated'] = "True"
+            return result_json
+        else:
+            result_json['Duplicated'] = "False"
+
         result_json[filename] = load_data_to_bigquery(df, client, table_id, filename)
     else:
         for blob in blobs: 

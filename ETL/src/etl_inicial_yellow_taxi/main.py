@@ -96,6 +96,10 @@ def transform_data(df, filename):
     print(filename)
     dataset_month = filename.split('/')[-1].split('.')[0].split('_')[-1].split('-')[1]
     dataset_year = filename.split('/')[-1].split('.')[0].split('_')[-1].split('-')[0]
+
+    df = df.dropna(subset=['pickup_location_id'])
+    df = df.dropna(subset=['dropoff_location_id'])
+
     df = df[(df['pickup_datetime'].dt.month == int(dataset_month)) & (df['pickup_datetime'].dt.year == int(dataset_year))]
 
     #agregar uuid integer en columna 'trip_id'
@@ -140,9 +144,6 @@ def transform_data(df, filename):
     df['pickup_datetime'] = pd.to_datetime(df['pickup_datetime'])
     df['dropoff_datetime'] = pd.to_datetime(df['dropoff_datetime'])
 
-    df.drop(columns=['pickup_datetime'], inplace=True)
-
-
     #regenerar índice
     df.reset_index(drop=True, inplace=True)
     
@@ -166,7 +167,7 @@ def etl_inicial_yellow_taxi(request):
         #Load file list from GCS bucket
         client = storage.Client()
         bucket = client.get_bucket('ncy-taxi-bucket')
-        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2023/yellow_tripdata_', max_results=12))    
+        blobs = list(bucket.list_blobs(prefix='raw_datasets/trip_record_data/2024/yellow_tripdata_', max_results=12))    
 
     print(f'Proceso de tipo {process_type}')
 

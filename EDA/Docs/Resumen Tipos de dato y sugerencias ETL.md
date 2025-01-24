@@ -86,7 +86,7 @@
 Del análisis exploratorio se tiene que el archivo `.csv` contiene 2 tablas:
 
 1. La primera contiene información sobre las ubicaciones solicitadas, en nuestro caso un punto de longitud y latitud correspondiente a cada uno de los 5 borough de NYC.
-2. La segunda contiene informacion sobre las variables del clima requeridos. En el [notebook](EDA-ETL-Corr-Clima_2022_2024.ipynb) está el codigo sobre como obtener ambas tablas separadas.
+2. La segunda contiene informacion sobre las variables del clima requeridos. En el [notebook](../EDA%20raw_dataset_weather_2022_2024.ipynb) está el codigo sobre como obtener ambas tablas separadas.
 
 Para el momento de realización de este EDA, **la data está disponible hasta las 19 horas del 31/12/2024**. Si se consulta algún valor posterior a esa hora, la tabla registrará las 2 primeras columnas (`location_id` y `time`), pero el resto de los valores serán nulos, lo cual hay que tomar en cuenta al momento de hacer la carga de estos datos.
 
@@ -111,4 +111,7 @@ Para el momento de realización de este EDA, **la data está disponible hasta la
 
 ### Todos los valores cuantitativos son del tipo `float64`, lo cual es esperado y correcto, por lo que no requiere transformacion. De igual forma con el `location_id` que esto tipo `int64`.
 
-### Para la columna `time`, que es tipo `object`, es necesario cambiarlo a `datetime`, ya que este valor sera necesario para hacer el `join` con el dataset the viajes. El código sugerido para realizar dicha transformación se encuentra en el siguiente [notebook](EDA%20raw_dataset_weather_2022_2024.ipynb).
+### Para la columna `time`, que es tipo `object`, es necesario cambiarlo a `datetime`, ya que este valor sera necesario para hacer el `join` con el dataset the viajes. El código sugerido para realizar dicha transformación se encuentra en el siguiente [notebook](../EDA%20raw_dataset_weather_2022_2024.ipynb).
+
+📄[EDA](../README.md)<br>
+🏠[Inicio](/README.md)

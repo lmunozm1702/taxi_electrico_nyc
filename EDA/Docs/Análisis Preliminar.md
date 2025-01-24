@@ -18,4 +18,5 @@ Sobre la data de los viajes de los diferentes grupos de taxis se usará principa
 
 Sobre la data de taxis en cirulacion, contaminación ($\text{CO}_2$ y calidad de aire), consumo de energía y modelos de carro, se utilizara principalmente para medir el impacto en la migración de la flota de vehículos a base de combustibles fósiles a vehículos eléctricos o híbridos, al comparar el cambio a través del tiempo en las flotas de transporte con las emisiones de gas en determinado período de tiempo.
 
+📄[EDA](../README.md)<br>
 🏠[Inicio](/README.md)
