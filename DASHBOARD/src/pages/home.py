@@ -204,7 +204,7 @@ def render_viajes_lineas(year, borough):
     viajes = viajes.sort_values(by=['Distrito', 'Dia_de_la_Semana'])
     fig = px.line(
         viajes,
-        x='Dia_de_la_Semana',
+        x='Dia_de_la_Semana2',
         y='Cantidad',
         color='Distrito',
         markers=True,
@@ -213,7 +213,21 @@ def render_viajes_lineas(year, borough):
     )
 
     #ocultar titulo de eje x y eje y    
-    fig.update_layout(margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)', autosize=True, height=310, xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
+    fig.update_layout(
+        title={
+        'text': 'Cantidad de viajes por Día por Borough',  
+        'font': {
+            'size': 14,  
+            'color': '#6c9286'  
+        },
+        'x': 0.5,  
+        'xanchor': 'center',
+        'yanchor': 'top'
+        },
+        margin=dict(l=20, r=20, t=50, b=20), 
+        paper_bgcolor='rgba(0,0,0,0)', 
+        plot_bgcolor='rgba(29,67,85,0.1)', 
+        autosize=True, height=310, xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
     return fig
 
 def render_correlaciones(year, borough):
@@ -232,7 +246,6 @@ def render_correlaciones(year, borough):
 
 def calculate_mapa(year, borough):
     credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
-    #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
     
     if year == 'Todos':
         if borough == 'Todos':
@@ -320,7 +333,7 @@ def calculate_center_and_zoom(geometries):
     return center, zoom
 
 
-def render_mapa(viajes, min_val, max_val):
+def render_mapa(viajes, min_val, max_val, tipo):
 
     viajes['geometry'] = viajes['geometry'].map(wkt.loads)
     
@@ -337,7 +350,7 @@ def render_mapa(viajes, min_val, max_val):
     gdf['lon'] = gdf_proj['centroid'].to_crs(epsg=4326).x 
     gdf['lat'] = gdf_proj['centroid'].to_crs(epsg=4326).y
     
-    max_size = 40 
+    max_size = 30 
     min_size = 5 
     gdf['size'] = (
         min_size 
@@ -364,6 +377,16 @@ def render_mapa(viajes, min_val, max_val):
     )
             
     layout = go.Layout(
+        title={
+        'text': f'Mapa de Cantidad de {tipo} de Viajes',  
+        'font': {
+            'size': 14,  
+            'color': '#6c9286'  
+        },
+        'x': 0.5,  
+        'xanchor': 'center',
+        'yanchor': 'top'
+        },
         showlegend=False,
         uirevision=True,
         mapbox=dict(
@@ -373,7 +396,7 @@ def render_mapa(viajes, min_val, max_val):
             ),
         autosize=True,
         height=310,
-        margin=dict(l=20, r=20, t=20, b=20),
+        margin=dict(l=20, r=20, t=50, b=20),
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(29,67,85,0.1)'
         )
@@ -555,11 +578,28 @@ def render_population_rate(year, borough):
     )
 
     #ocultar titulo de eje x y eje y    
-    fig.update_layout(margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)', autosize=True, height=310, xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
+    fig.update_layout(
+        title={
+        'text': 'Cantidad de Viajes por cada 100000 habitantes por Borough',  
+        'font': {
+            'size': 14,  
+            'color': '#6c9286'  
+        },
+        'x': 0.5,  
+        'xanchor': 'center',
+        'yanchor': 'top'
+        },
+        showlegend=False,
+        margin=dict(l=20, r=20, t=50, b=20), 
+        paper_bgcolor='rgba(0,0,0,0)', 
+        plot_bgcolor='rgba(29,67,85,0.1)', 
+        autosize=True, 
+        height=310, 
+        xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
     return fig
 
 def render_hourly_pickup(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
 
     if year == 'Todos':
@@ -588,11 +628,22 @@ def render_hourly_pickup(year, borough):
     )
 
     #ocultar titulo de eje x y eje y    
-    fig.update_layout(margin=dict(l=20, r=20, t=20, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)', autosize=True, height=310, xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
+    fig.update_layout(
+        title={
+        'text': 'Cantidad de Viajes por Hora por Borough',  
+        'font': {
+            'size': 14,  
+            'color': '#6c9286'  
+        },
+        'x': 0.5,  
+        'xanchor': 'center',
+        'yanchor': 'top'
+        },
+        margin=dict(l=20, r=20, t=50, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)', autosize=True, height=310, xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
     return fig
 
 dropdown_options = {
-    'years': ['Todos', 2024, 2023],
+    'years': [2024, 2023],
     'boroughs': ['Todos', 'Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'],
 }
 
@@ -608,7 +659,7 @@ layout = html.Div([
               dbc.Select(
                   id='year-dropdown',
                   options=[{'label': year, 'value': year} for year in dropdown_options['years']],
-                  value='Todos',
+                  value=2024,
                 ),  
                 dbc.FormText("Selecciona un año", className='text-muted p-0 m-0 ms-1'),
             ], className='mb-3'),
@@ -684,8 +735,9 @@ layout = html.Div([
                 ], width=4),              
                 dbc.Col([
                     html.Div(
-                        children=dash_table.DataTable(  
-                                               
+                        children=[
+                            html.H4("Cinco Mejores y Peores Zonas", style={'fontSize': '15px', 'color': '#6c9286', 'textAlign': 'center', 'fontWeight': 'normal'}),
+                            dash_table.DataTable(               
                             id='max_min_table',
                             columns =[{'name': 'Zona', 'id': 'zone'},
                                       {'name': 'Barrio', 'id': 'borough'},
@@ -707,7 +759,7 @@ layout = html.Div([
                             ],
                             style_as_list_view=True,
                             style_cell={'padding': '3px', 'fontSize': 12, 'textAlign': 'left'},                            
-                        ),
+                        )],
                         className='table_card_border'),
                 ], width=4),
                 dbc.Col([                    
@@ -720,15 +772,23 @@ layout = html.Div([
 
 
 @callback(
-    [Output('viajes_origen', 'data'),
-    Output('viajes_destino', 'data')],
+    Output('viajes_origen', 'data'),
     [Input('year-dropdown', 'value'),
     Input('borough-dropdown', 'value')]
 )
-def obtener_viajes(selected_year, selected_borough):
+def obtener_viajes_origen(selected_year, selected_borough):
     origen = calculate_mapa(selected_year, selected_borough).to_json(orient='split')
+    return origen
+
+
+@callback(
+    Output('viajes_destino', 'data'),
+    [Input('year-dropdown', 'value'),
+    Input('borough-dropdown', 'value')]
+)
+def obtener_viajes_destino(selected_year, selected_borough):
     destino = calculate_mapa_destino(selected_year, selected_borough).to_json(orient='split')
-    return origen, destino
+    return destino
 
 
 @callback(
@@ -798,7 +858,7 @@ def update_viajes_linea(selected_year, selected_borough):
 )
 def update_mapa_origen(origen, minimo, maximo):
     origen = pd.read_json(origen, orient='split')
-    return render_mapa(origen, minimo, maximo)
+    return render_mapa(origen, minimo, maximo, 'Origenes')
 
 
 @callback(
@@ -809,7 +869,7 @@ def update_mapa_origen(origen, minimo, maximo):
 )
 def update_mapa_destino(destino, minimo, maximo):
     destino = pd.read_json(destino, orient='split')
-    return render_mapa(destino, minimo, maximo)
+    return render_mapa(destino, minimo, maximo, 'Destinos')
 
 
 @callback(
