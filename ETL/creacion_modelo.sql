@@ -162,3 +162,35 @@ FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordina
 ON trips.pickup_location_id = coordinates.location_id 
 WHERE coordinates.borough <> 'EWR'
 GROUP BY trips.pickup_year, coordinates.borough;
+
+-- looker dashboard trips by month with fare and trip duration and geolocation
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.trips_by_month` AS
+SELECT coordinates.borough, trips.pickup_year, trips.pickup_month, count(*) AS cantidad, sum(trips.fare_amount) as fare_amount, avg(trips.trip_duration) as trip_duration
+FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates
+ON trips.pickup_location_id = coordinates.location_id 
+WHERE coordinates.borough <> 'EWR'
+GROUP BY coordinates.borough, trips.pickup_year, trips.pickup_month;
+
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.fare_year_qtr_map_from_trips` AS
+SELECT trips.pickup_year, trips.pickup_quarter, polygons.location_id, polygons.borough, ANY_VALUE(polygons.polygon) as map_location, ANY_VALUE(polygons.zone) as zone, count(*) as cantidad, sum(trips.fare_amount) as fare_amount, avg(trips.trip_duration) as trip_duration
+FROM `driven-atrium-445021-m2.project_data.trips` as trips
+JOIN `driven-atrium-445021-m2.project_data.polygons` as polygons
+ON trips.pickup_location_id = polygons.location_id
+WHERE polygons.borough <> 'EWR'
+GROUP BY trips.pickup_year, trips.pickup_quarter, polygons.location_id, polygons.borough;
+
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.fare_year_qtr_map_to_trips` AS
+SELECT trips.pickup_year, trips.pickup_quarter, polygons.location_id, polygons.borough, ANY_VALUE(polygons.polygon) as map_location, ANY_VALUE(polygons.zone) as zone, count(*) as cantidad, sum(trips.fare_amount) as fare_amount, avg(trips.trip_duration) as trip_duration
+FROM `driven-atrium-445021-m2.project_data.trips` as trips
+JOIN `driven-atrium-445021-m2.project_data.polygons` as polygons
+ON trips.dropoff_location_id = polygons.location_id
+WHERE polygons.borough <> 'EWR'
+GROUP BY trips.pickup_year, trips.pickup_quarter, polygons.location_id, polygons.borough;
+
+-- Fares for weekday
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.fares_weekday` AS
+SELECT trips.pickup_location_id,coordinates.borough, trips.pickup_year, trips.pickup_day_of_week, count(*) AS cantidad, sum(trips.fare_amount) as fare_amount, avg(trips.trip_duration) as trip_duration
+FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordinates
+ON trips.pickup_location_id = coordinates.location_id 
+WHERE coordinates.borough <> 'EWR'
+GROUP BY coordinates.borough, trips.pickup_location_id,trips.pickup_year, trips.pickup_day_of_week;
