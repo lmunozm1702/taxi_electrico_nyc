@@ -215,13 +215,13 @@ def render_viajes_lineas(year, borough):
     #ocultar titulo de eje x y eje y    
     fig.update_layout(
         title={
-        'text': 'Cantidad de viajes por Día por Borough',  
+        'text': 'Viajes por Día',  
         'font': {
             'size': 14,  
-            'color': '#6c9286'  
+            'color': '#41c1b0'  
         },
-        'x': 0.5,  
-        'xanchor': 'center',
+        'x': 0.1,  
+        'xanchor': 'left',
         'yanchor': 'top'
         },
         margin=dict(l=20, r=20, t=50, b=20), 
@@ -378,13 +378,13 @@ def render_mapa(viajes, min_val, max_val, tipo):
             
     layout = go.Layout(
         title={
-        'text': f'Mapa de Cantidad de {tipo} de Viajes',  
+        'text': f'{tipo} de Viajes',  
         'font': {
             'size': 14,  
-            'color': '#6c9286'  
+            'color': '#41c1b0'  
         },
-        'x': 0.5,  
-        'xanchor': 'center',
+        'x': 0.1,  
+        'xanchor': 'left',
         'yanchor': 'top'
         },
         showlegend=False,
@@ -580,13 +580,13 @@ def render_population_rate(year, borough):
     #ocultar titulo de eje x y eje y    
     fig.update_layout(
         title={
-        'text': 'Cantidad de Viajes por cada 100000 habitantes por Borough',  
+        'text': 'Viajes c/100.000 habitantes',  
         'font': {
             'size': 14,  
-            'color': '#6c9286'  
+            'color': '#41c1b0'  
         },
-        'x': 0.5,  
-        'xanchor': 'center',
+        'x': 0.1,  
+        'xanchor': 'left',
         'yanchor': 'top'
         },
         showlegend=False,
@@ -599,19 +599,19 @@ def render_population_rate(year, borough):
     return fig
 
 def render_hourly_pickup(year, borough):
-    credentials = service_account.Credentials.from_service_account_file('./etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
+    credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('driven-atrium-445021-m2-a773215c2f46.json')
 
     if year == 'Todos':
         if borough == 'Todos':
-            query_job = bigquery.Client(credentials=credentials).query('SELECT borough, pickup_hour_of_day, cantidad FROM project_data.trips_hourly_pickup;')
+            query_job = bigquery.Client(credentials=credentials).query('SELECT borough, pickup_hour_of_day, total FROM project_data.trips_hourly_pickup;')
         else:
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough, pickup_hour_of_day, cantidad FROM project_data.trips_hourly_pickup where borough = \'{borough}\';')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough, pickup_hour_of_day, total FROM project_data.trips_hourly_pickup where borough = \'{borough}\';')
     else:
         if borough == 'Todos':            
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough, pickup_hour_of_day, cantidad FROM project_data.trips_hourly_pickup WHERE pickup_year = {year};')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough, pickup_hour_of_day, total FROM project_data.trips_hourly_pickup WHERE pickup_year = {year};')
         else:
-            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough, pickup_hour_of_day, cantidad FROM project_data.trips_hourly_pickup where borough = \'{borough}\' AND pickup_year = {year};')
+            query_job = bigquery.Client(credentials=credentials).query(f'SELECT borough, pickup_hour_of_day, total FROM project_data.trips_hourly_pickup where borough = \'{borough}\' AND pickup_year = {year};')
     viajes = query_job.result().to_dataframe()
 
     #ordenar por distrito y dia de la semana
@@ -620,7 +620,7 @@ def render_hourly_pickup(year, borough):
     fig = px.line(
         viajes,
         x='pickup_hour_of_day',
-        y='cantidad',
+        y='total',
         color='borough',
         markers=True,
         #specify color of each line
@@ -630,13 +630,13 @@ def render_hourly_pickup(year, borough):
     #ocultar titulo de eje x y eje y    
     fig.update_layout(
         title={
-        'text': 'Cantidad de Viajes por Hora por Borough',  
+        'text': 'Viajes por Hora',  
         'font': {
             'size': 14,  
-            'color': '#6c9286'  
+            'color': '#41c1b0'  
         },
-        'x': 0.5,  
-        'xanchor': 'center',
+        'x': 0.1,  
+        'xanchor': 'left',
         'yanchor': 'top'
         },
         margin=dict(l=20, r=20, t=50, b=20), paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(29,67,85,0.1)', autosize=True, height=310, xaxis_title=None, yaxis_title=None, legend_yanchor="top", legend_xanchor="left", legend_orientation="h")
@@ -736,7 +736,7 @@ layout = html.Div([
                 dbc.Col([
                     html.Div(
                         children=[
-                            html.H4("Cinco Mejores y Peores Zonas", style={'fontSize': '15px', 'color': '#6c9286', 'textAlign': 'center', 'fontWeight': 'normal'}),
+                            html.H4("Mejores y Peores Zonas", style={'fontSize': '15px', 'color': '#41c1b0', 'textAlign': 'left', 'fontWeight': 'normal'}),                            
                             dash_table.DataTable(               
                             id='max_min_table',
                             columns =[{'name': 'Zona', 'id': 'zone'},
@@ -753,7 +753,7 @@ layout = html.Div([
                                 'fontWeight': 'bold'
                             },
                             fixed_rows={'headers': True},
-                            style_table={'height': 280, 'overflowY': 'auto'},
+                            style_table={'height': 255, 'overflowY': 'auto'},
                             style_cell_conditional=[                                
                                 {'if': {'column_id': 'cantidad'}, 'textAlign': 'right'},
                             ],
