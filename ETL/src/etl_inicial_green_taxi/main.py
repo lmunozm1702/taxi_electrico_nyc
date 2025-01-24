@@ -99,6 +99,7 @@ def get_duplicated_rows(project_id, dataset_id, table_id, pickup_month, pickup_y
         query_job = client.query(query)
         for row in query_job:
             count = row[0]
+            print(f'Registros duplicados: {count}') 
             break
         return count
     except Exception:
@@ -133,7 +134,7 @@ def transform_data(df, filename):
 
     #controlar duplicados por mes y año en bigquery
     if get_duplicated_rows("driven-atrium-445021-m2", "project_data", "trips", dataset_month, dataset_year) > 0:
-        return False
+        return True
 
     #agregar uuid integer en columna 'trip_id'
     df['trip_id'] = uuid.uuid4()
@@ -211,11 +212,11 @@ def etl_inicial_green_taxi(request):
         #filename = raw_datasets/trip_record_data/2024/green_tripdata_2024-09.parquet
         df = pd.read_parquet(f'gs://ncy-taxi-bucket/{filename}')
         df = transform_data(df, filename)
-        if df == False:
-            result_json['Duplicated'] = False
+        if df == True:
+            result_json['Duplicated'] = "True"
             return result_json
         else:
-            result_json['Duplicated'] = True
+            result_json['Duplicated'] = "False"
 
         result_json[filename] = load_data_to_bigquery(df, client, table_id, filename)
     else:
