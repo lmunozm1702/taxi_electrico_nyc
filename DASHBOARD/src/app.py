@@ -25,8 +25,9 @@ app.title = 'NYC Taxi Dashboard'
 
 navbar = dbc.NavbarSimple(
     children=[
-        dbc.NavItem(dbc.NavLink("Inicio", href="/", active="exact")),
-        dbc.NavItem(dbc.NavLink("Diccionario", href="/dictionary", active="exact")),
+        dbc.NavItem(dbc.NavLink("Viajes", href="/", active="exact")),
+        dbc.NavItem(dbc.NavLink("Tarifas", href="/fares", active="exact")),
+        #dbc.NavItem(dbc.NavLink("Diccionario", href="/dictionary", active="exact")),
     ],
     brand="Dashboard NYC Taxi",
     brand_href="/",

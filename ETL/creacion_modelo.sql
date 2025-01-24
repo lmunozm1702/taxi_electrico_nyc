@@ -194,3 +194,15 @@ FROM project_data.trips AS trips INNER JOIN project_data.coordinates AS coordina
 ON trips.pickup_location_id = coordinates.location_id 
 WHERE coordinates.borough <> 'EWR'
 GROUP BY coordinates.borough, trips.pickup_location_id,trips.pickup_year, trips.pickup_day_of_week;
+
+-- Vehicle type resume
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.vehicle_type_resume` AS
+SELECT distinct(vehicle_type), year, month, count, from `driven-atrium-445021-m2.project_data.active_vehicles_count`;
+
+-- trips by hpur of day 
+CREATE OR REPLACE MATERIALIZED VIEW `project_data.trips_hourly_pickup` AS
+SELECT coordinates.borough, trips.pickup_year, trips.pickup_hour_of_day, sum(trips.fare_amount) as total FROM `driven-atrium-445021-m2.project_data.trips` as trips
+INNER JOIN `driven-atrium-445021-m2.project_data.coordinates` as coordinates
+ON trips.pickup_location_id = coordinates.location_id
+WHERE coordinates.borough <> 'EWR'
+group by coordinates.borough, trips.pickup_year, trips.pickup_hour_of_day;
