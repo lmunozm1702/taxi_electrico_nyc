@@ -14,7 +14,7 @@ import tabulate
 import dash
 from dash import Input, Output, State, html, dcc
 import dash_bootstrap_components as dbc
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 import base64
 from io import BytesIO
@@ -44,7 +44,6 @@ def load():
 
 def load2():
 
-
     credentials = service_account.Credentials.from_service_account_file('/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json')
     #credentials = service_account.Credentials.from_service_account_file('C:/Users/NoxiePC/Desktop/henry/driven-atrium-445021-m2-a773215c2f46.json')
     # Configura el cliente de almacenamiento
@@ -71,7 +70,6 @@ def load2():
 
 ## os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'C:/Users/NoxiePC/Desktop/henry/driven-atrium-445021-m2-a773215c2f46.json'
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json'
 
 def invoke_function(name, archivo):
 
@@ -105,6 +103,7 @@ def load3():
     coordinates = pd.read_csv(coordinates)
 
     return model_1, coordinates
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = '/etc/secrets/driven-atrium-445021-m2-a773215c2f46.json'
 
 def download_from_gcs(bucket_name, source_blob_name, destination_file_name):
     """Descarga un archivo desde un bucket de GCS."""
@@ -123,25 +122,28 @@ model_1 = None
 coordinates = None
 
 def load4():
+
     global model_1, coordinates
     
-    if model_1 is None or coordinates is None:
-        bucket_name = 'modelo_entrenado'
-        model_blob_name = 'xgboost_model_1.pkl'
-        coordinates_blob_name = 'coordinates.csv'
+    if model_1 is not None or coordinates is not None:
+        return model_1, coordinates
 
-        # Cambiar la ruta a una carpeta dentro del directorio actual
-        model_local_path = 'downloads/xgboost_model_1.pkl'
-        coordinates_local_path = 'downloads/coordinates.csv'
+    bucket_name = 'modelo_entrenado'
+    model_blob_name = 'xgboost_model_1.pkl'
+    coordinates_blob_name = 'coordinates.csv'
 
-        # Descargar archivos desde GCS
+    model_local_path = 'downloads/xgboost_model_1.pkl'
+    coordinates_local_path = 'downloads/coordinates.csv'
+
+    if not os.path.exists(model_local_path):
         download_from_gcs(bucket_name, model_blob_name, model_local_path)
-        download_from_gcs(bucket_name, coordinates_blob_name, coordinates_local_path)
-
-        # Cargar el modelo y los datos de coordenadas
-        model_1 = joblib.load(model_local_path)
-        coordinates = pd.read_csv(coordinates_local_path)
     
+    if not os.path.exists(coordinates_local_path):
+        download_from_gcs(bucket_name, coordinates_blob_name, coordinates_local_path)
+    
+    model_1 = joblib.load(model_local_path)
+    coordinates = pd.read_csv(coordinates_local_path)
+
     return model_1, coordinates
 
 
@@ -269,6 +271,8 @@ def get_prediction(date, model_1, coordinates):
 
     # Convertir predicciones negativas a cero
     solicitud = np.maximum(solicitud, 0)
+    # redondear solicitudes a enteros 
+    solicitud = np.round(solicitud).astype(int)
 
     # Añadir la columna de solicitudes al DataFrame
     df['solicitudes'] = solicitud
@@ -276,7 +280,7 @@ def get_prediction(date, model_1, coordinates):
     return df
 
 
-def get_map(df):
+def get_map(df, selected_datetime_str):
     # Convertir la columna 'geometry' de objetos geométricos a WKT
     df['geometry'] = df['geometry'].apply(lambda geom: geom.wkt if isinstance(geom, MultiPolygon) else geom)
 
@@ -300,7 +304,7 @@ def get_map(df):
                      ha='center', va='center', fontsize=6, color='black', weight='bold')
 
     # Configurar el gráfico
-    ax.set_title("Mapa de Calor - Solicitudes (Escala Logarítmica)", fontsize=16)
+    ax.set_title(f"Mapa de Calor - Solicitudes (Log) - {selected_datetime_str}", fontsize=14)
     ax.set_xlabel("Longitud")
     ax.set_ylabel("Latitud")
 
@@ -323,7 +327,11 @@ def get_map(df):
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # Layout
+
 def create_layout():
+    today = date.today()
+    max_date = today + timedelta(days=2)
+    
     return dbc.Container([
         # Título principal con mayor estilo
         dbc.Row([
@@ -337,10 +345,10 @@ def create_layout():
                 html.Label("Seleccione una fecha:", className="font-weight-bold"),
                 dcc.DatePickerSingle(
                     id="date-picker",
-                    min_date_allowed=date(2020, 1, 1),
-                    max_date_allowed=date(2030, 12, 31),
-                    initial_visible_month=date.today(),
-                    date=date.today(),
+                    min_date_allowed=today,
+                    max_date_allowed=max_date,
+                    initial_visible_month=today,
+                    date=today,
                     className="form-control"
                 ),
                 html.Label("Seleccione una hora:", className="mt-4 font-weight-bold"),
@@ -365,7 +373,9 @@ def create_layout():
             ], width=8, className="p-4", style={"background-color": "#ffffff", "border-radius": "8px", "box-shadow": "0 4px 8px rgba(0,0,0,0.1)"})
         ], justify="center")
     ], fluid=True, style={"padding": "2rem"})
+
 app.layout = create_layout()
+
 
 # Callbacks
 @app.callback(
@@ -404,30 +414,71 @@ def update_results(n_clicks, date, time):
             return dbc.Alert("La columna 'solicitudes' no existe en los datos.", color="warning")
 
         # Generar la imagen del mapa
-        img = get_map(df)
+        img = get_map(df, selected_datetime_str)
 
         # Convertir la imagen a formato base64 para incrustarla en HTML
         buffered = BytesIO()
         img.save(buffered, format="PNG")
         img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
 
-        # Devolver la imagen generada
+        # Extraer las variables climáticas de la primera fila
+        climatic_variables = {
+            'relative_humidity': 'Humedad Relativa (%)',
+            'apparent_temperature': 'Temperatura Aparente (°C)',
+            'temperature': 'Temperatura (°C)',
+            'weather_code': 'Código del Clima',
+            'cloud_cover': 'Cobertura de Nubes (%)',
+            'wind_speed': 'Velocidad del Viento (m/s)',
+            'wind_gusts': 'Ráfagas de Viento (m/s)'
+        }
+        
+        first_row = df.iloc[0]
+
+        # Formatear las variables climáticas
+        formatted_values = {
+            'Humedad Relativa (%)': f"{first_row['relative_humidity']}%",
+            'Temperatura Aparente (°C)': f"{first_row['apparent_temperature'] - 273.15:.2f}",
+            'Temperatura (°C)': f"{first_row['temperature'] - 273.15:.2f}",
+            'Código del Clima': f"{first_row['weather_code']}",
+            'Cobertura de Nubes (%)': f"{first_row['cloud_cover']}%",
+            'Velocidad del Viento (m/s)': f"{first_row['wind_speed']:.2f}",
+            'Ráfagas de Viento (m/s)': f"{first_row['wind_gusts']:.2f}"
+        }
+
+        # Crear la tabla HTML para las variables climáticas
+        climatic_table = dbc.Table(
+            [
+                html.Thead(html.Tr([html.Th(col) for col in formatted_values.keys()])),
+                html.Tbody(html.Tr([html.Td(val) for val in formatted_values.values()]))
+            ],
+            bordered=True,
+            striped=True,
+            hover=True,
+            responsive=True,
+            class_name="mb-4"
+        )
+
+        # Devolver el mapa y las variables climáticas
         return html.Div([
             html.Div([
                 html.H5("Mapa Generado", className="font-weight-bold mb-3"),
                 dbc.Card(
                     dbc.CardBody([
-                        html.Img(src=f"data:image/png;base64,{img_str}", style={"width": "100%", "height": "auto", "border-radius": "8px"})
+                        html.Img(src=f"data:image/png;base64,{img_str}", 
+                                 style={"width": "100%", "height": "auto", "border-radius": "8px"})
                     ]),
                     className="mb-4",
                     style={"box-shadow": "0 4px 8px rgba(0,0,0,0.1)", "border-radius": "8px", "background-color": "#ffffff"}
                 ),
+            ]),
+            html.Div([
+                html.H5("Variables Climáticas", className="font-weight-bold mb-3"),
+                climatic_table
             ])
         ])
 
     except Exception as e:
         return dbc.Alert(f"Error al procesar los datos: {str(e)}", color="danger")
-
 
 
 
